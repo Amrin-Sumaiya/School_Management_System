@@ -18,7 +18,8 @@ export const create = async(req,res)=>{
          }
 
         const savedData = await newStudent.save();
-        res.status(200).json(savedData);
+       //res.status(200).json(savedData);
+       res.status(200).json({message: "User created succefully."});
 
 
     }catch (error) {

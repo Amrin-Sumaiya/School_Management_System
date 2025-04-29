@@ -1,16 +1,13 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FaArrowLeft } from "react-icons/fa";  // Import Back Icon
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { FaArrowLeft } from "react-icons/fa";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-
-
-
-const Add_Student = () => {
+const Update_Student = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  // State for form inputs
   const [student, setStudent] = useState({
     name: '',
     class: '',
@@ -20,45 +17,47 @@ const Add_Student = () => {
     email: '',
   });
 
-  // Handle input changes
+  useEffect(() => {
+    axios.get(`http://localhost:8000/api//student/${id}`)
+      .then((res) => setStudent(res.data))
+      .catch((err) => {
+        console.error(err);
+        toast.error("Failed to fetch student data", { position: "top-right" });
+      });
+  }, [id]);
+
   const handleChange = (e) => {
     setStudent({ ...student, [e.target.name]: e.target.value });
   };
 
-
-
-  const submitForm = async(e)=>{
-    e.preventDefault()
-    await axios.post("http://localhost:8000/api/students", student)
-    .then((response)=>{
-       // console.log("Student Add Successfully")
-       toast.success(response.data.message, { position: "top-right", className: "text-gray-700 font-semibold" });
-
-        navigate("/all_students")
-    })
-    .catch((error)=>{
-        console.log(error)
-
-    })
-  }
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(`http://localhost:8000/api/update/student/${id}`, student);
+      toast.success("Student updated successfully!", { position: "top-right" });
+      navigate("/all_students");
+    } catch (error) {
+      console.error(error);
+      toast.error("Update failed!", { position: "top-right" });
+    }
+  };
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-blue-gray-200 shadow-md rounded-lg mt-10">
       {/* Back Button & Title */}
       <div className="flex items-center gap-3 mb-6">
-      <button 
-  onClick={() => navigate('/all_students')} 
-  className="flex items-center gap-2 px-4 py-2 bg-gray-700 text-white rounded-md shadow-md hover:bg-gray-800 transition duration-300"
->
-  <FaArrowLeft className="text-lg" />
-  <span className="text-sm font-medium">Back</span>
-</button>
-
+        <button 
+          onClick={() => navigate('/all_students')} 
+          className="flex items-center gap-2 px-4 py-2 bg-gray-700 text-white rounded-md shadow-md hover:bg-gray-800 transition duration-300"
+        >
+          <FaArrowLeft className="text-lg" />
+          <span className="text-sm font-medium">Back</span>
+        </button>
       </div>
 
-      <h2 className="text-2xl font-semibold text-center mb-6 text-black drop-shadow-lg">ADD NEW STUDENT</h2>
+      <h2 className="text-2xl font-semibold text-center mb-6 text-black drop-shadow-lg">UPDATE STUDENT</h2>
 
-      <form onSubmit={submitForm} className="space-y-4">
+      <form onSubmit={handleUpdate} className="space-y-4">
         {/* Name */}
         <div>
           <label className="block font-medium">Full Name</label>
@@ -103,7 +102,7 @@ const Add_Student = () => {
 
         {/* Version */}
         <div>
-          <label className="block font-medium border-blue-gray-500">Version</label>
+          <label className="block font-medium">Version</label>
           <select
             name="version"
             value={student.version}
@@ -150,15 +149,8 @@ const Add_Student = () => {
 
         {/* Buttons */}
         <div className="flex justify-between">
-          <button type="submit" className="bg-blue-700 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700">
-            Submit
-          </button>
-          <button 
-            type="reset" 
-            className="bg-gray-800 text-white px-4 py-2 rounded-md shadow-md hover:bg-gray-500"
-            onClick={() => setStudent({ name: '', class: '', age: '', version: '', sex: '', email: '' })}
-          >
-            Reset
+          <button type="submit" className="bg-blue-700 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-800">
+            Update
           </button>
           <button 
             type="button" 
@@ -173,4 +165,4 @@ const Add_Student = () => {
   );
 };
 
-export default Add_Student;
+export default Update_Student;

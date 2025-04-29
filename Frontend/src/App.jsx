@@ -5,7 +5,7 @@ import Dashboard from './Pages/Dashboard.jsx'; // Import the Dashboard page
 import All_Students from './Students/All_Students.jsx';
 import All_Teachers from './Teacher/All_Teachers.jsx';
 import Add_Student from './Students/Add_Student/Add_student.jsx';
-
+import Update_Student from './Students/Add_Student/Update_Student.jsx';
 
 const App = () => {
   return (
@@ -19,6 +19,7 @@ const App = () => {
         <Route path="/all_students" element={<All_Students />} />
         <Route path="/all_teachers" element={<All_Teachers />} />
         <Route path="/add_student" element={<Add_Student />} />  
+        <Route path="/update/:id" element={<Update_Student />} />
         </Routes>
         </WrapperScreen>
       </Router>

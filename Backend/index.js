@@ -3,6 +3,8 @@ import mongoose from "mongoose"
 import bodyParser from "body-parser"
 import dotenv from "dotenv"
 import route from "./model/controller/routes/userRoute.js"
+import TeacherRoute from "./Teacher_Route/TeacherRoute.js"
+import PaymentRoute from "./Payment_Route/FeesRoute.js"
 import cors from "cors"
 
 
@@ -27,4 +29,6 @@ mongoose
 
 
 app.use("/api", route);
+app.use("/api/teachers", TeacherRoute)
+app.use("/api/payment", PaymentRoute)
 

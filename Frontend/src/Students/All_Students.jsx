@@ -59,7 +59,7 @@ const All_Students = () => {
               <td className="border p-4">{student.sex}</td>
               <td className="border p-4">{student.email}</td>
               <td className="border p-4">
-                <button className="text-black px-2 py-1 rounded flex items-center gap-1">
+                <button   onClick={() => navigate(`/update/`+student._id)} className="text-black px-2 py-1 rounded flex items-center gap-1">
                   <FaEdit />
                 </button>
               </td>

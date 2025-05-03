@@ -5,6 +5,8 @@ import dotenv from "dotenv"
 import route from "./Student_model/controller/routes/userRoute.js"
 import TeacherRoute from "./Teacher_Route/TeacherRoute.js"
 import PaymentRoute from "./Payment_Route/FeesRoute.js"
+import AttendanceRoute from "./Attendance_Route/AttendRoute.js"
+import ClassRoute from "./Class_Route/classRoutes.js"
 import cors from "cors"
 
 
@@ -31,4 +33,6 @@ mongoose
 app.use("/api", route);
 app.use("/api/teachers", TeacherRoute)
 app.use("/api/payment", PaymentRoute)
+app.use("/api/attendance", AttendanceRoute)
+app.use("/api/class", ClassRoute)
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
-const column_title = ['ID', 'Name', 'Age', 'Sex', 'Experience', 'Department', 'Email', 'Update', 'Delete'];
+const column_title = ['ID', 'Name', 'Age', 'Sex',  'Department', 'Contact', 'Email', 'Update', 'Delete'];
 
 const All_Teachers = () => {
     return (

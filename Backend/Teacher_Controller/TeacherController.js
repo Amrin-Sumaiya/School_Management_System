@@ -21,7 +21,7 @@ export const create = async(req, res) => {
         res.status(500).json({errorMessage:error.message})
     }
 }
-
+ //get all teacher list 
 export const getAllTeachers = async(req, res)=>{
     try{
 
@@ -38,7 +38,7 @@ export const getAllTeachers = async(req, res)=>{
     }
 }
 
-///get users with specific id
+///get teacher with specific id
 
 export const getTeacherById = async (req, res)=> {
     try{

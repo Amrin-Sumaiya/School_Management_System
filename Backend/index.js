@@ -7,6 +7,8 @@ import TeacherRoute from "./ROUTE/TeacherRoute.js"
 import PaymentRoute from "./ROUTE/FeesRoute.js"
 import AttendanceRoute from "./ROUTE/AttendRoute.js"
 import ClassRoute from "./ROUTE/classRoutes.js"
+import SubjectsRoute from "./ROUTE/SubjectRoute.js"
+
 import cors from "cors"
 
 
@@ -35,4 +37,5 @@ app.use("/api/teachers", TeacherRoute)
 app.use("/api/payment", PaymentRoute)
 app.use("/api/attendance", AttendanceRoute)
 app.use("/api/class", ClassRoute)
+app.use("/api/subject", SubjectsRoute)
 

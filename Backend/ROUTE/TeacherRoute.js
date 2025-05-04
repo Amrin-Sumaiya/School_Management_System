@@ -1,6 +1,6 @@
 import express from "express"
 
-import { create, deleteTeacher, getAllTeachers, getTeacherById, update } from "../Teacher_Controller/TeacherController.js"
+import { create, deleteTeacher, getAllTeachers, getTeacherById, update } from "../CONTROLLER/TeacherController.js"
 
 const route = express.Router();
 

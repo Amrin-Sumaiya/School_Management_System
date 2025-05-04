@@ -1,7 +1,7 @@
 import express from "express"
 
 
-import {create, getAllStudents, getStudentById ,update, deleteStudent} from "../userController.js"
+import {create, getAllStudents, getStudentById ,update, deleteStudent} from "../CONTROLLER/userController.js"
 
 
 const route = express.Router()

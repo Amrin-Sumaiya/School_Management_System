@@ -1,6 +1,6 @@
 import express from "express"
 
-import { create, deleteFeesRecord, getAllPayments, getPaymentById, update } from "../Payment_controller/FeesController.js"
+import { create, deleteFeesRecord, getAllPayments, getPaymentById, update } from "../CONTROLLER/FeesController.js"
 
 const route = express.Router()
 

@@ -1,5 +1,5 @@
 
-import Student from "../userModel.js"
+import Student from "../MODEL/userModel.js"
 
 
 export const create = async(req,res)=>{

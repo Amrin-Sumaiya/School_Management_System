@@ -1,4 +1,4 @@
-import Fees from "../Payement_Model/Fees.Model.js"
+import Fees from "../MODEL/Fees.Model.js"
 
 export const create = async(req, res) =>{
     try {

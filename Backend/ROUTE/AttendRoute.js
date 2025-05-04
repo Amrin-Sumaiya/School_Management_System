@@ -1,6 +1,6 @@
 import express from "express"
 
-import { create, getAllAttendanceRecord, UpdateAttendanceById } from "../Attendance_controller/AttendController.js"
+import { create, getAllAttendanceRecord, UpdateAttendanceById } from "../CONTROLLER/AttendController.js"
 
 const route = express.Router()
 

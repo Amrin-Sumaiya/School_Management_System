@@ -42,7 +42,7 @@ export const getClassroomById = async(req,res) =>{
     try {
         const id = req.params.id;
         const classExist = await Class.findById(id);
-        if(!classData || classData.length === 0){
+        if(!classExist){
             return res.status(404).json({ message: "ClassRoom not FOund"});
 
         }
@@ -54,4 +54,43 @@ export const getClassroomById = async(req,res) =>{
     }
 }
 
+
+//Update Classroom Information 
+export const update = async (req, res) =>{
+    try{
+
+        const id = req.params.id;
+        const classExist = await Class.findById(id);
+        if(!classExist){
+            return res.status(404).json({ message: "ClassRoom not FOund"});
+
+        }
+
+        const updateData= await Class.findByIdAndUpdate(id, req.body, {
+            new:true
+        })
+        res.status(200).json(updateData)
+
+    } catch(error){
+        res.status(500).json({ errorMessage: error.message });
+    }
+}
+
+
+//Delete Classroom Information
+export const deleteClassInfo = async(req, res) => {
+    try {
+        const id = req.params.id;
+        const classExist = await Class.findById(id);
+
+        if (!classExist) {
+            return res.status(404).json({ message: "Classroom not found" });
+        }
+
+        await Class.findByIdAndDelete(id);
+        res.status(200).json({ message: "Classroom information deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ errorMessage: error.message });
+    }
+}
 

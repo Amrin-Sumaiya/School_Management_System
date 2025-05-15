@@ -31,7 +31,7 @@ const Add_Student = () => {
     e.preventDefault()
     await axios.post("http://localhost:8000/api/students", student)
     .then((response)=>{
-       // console.log("Student Add Successfully")
+        console.log("Student Add Successfully")
        toast.success(response.data.message, { position: "top-right", className: "text-gray-700 font-semibold" });
 
         navigate("/all_students")

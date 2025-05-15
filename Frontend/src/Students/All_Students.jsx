@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FaEdit, FaTrash, FaUserPlus } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';  // Import useNavigate
 import axios from "axios";
+import { toast } from 'react-toastify';
 
 const All_Students = () => {
   const [students, setStudents] = useState([]);
@@ -18,6 +19,23 @@ const All_Students = () => {
     };
     fetchData();
   }, []);
+
+  const deleteStudent = async (studentId) => {
+
+    try {
+      const response = await axios.delete(`http://localhost:8000/api/delete/student/${studentId}`);
+
+      setStudents(prevStudents => prevStudents.filter(student => student._id !== studentId));
+
+      toast.success(response.data.message, { position: "top-right"});
+
+    }catch (error){
+      console.log("Error deleting student: ", error);
+      toast.error("Failed to delte student ");
+    }
+
+
+  }
 
   return (
     <div className="p-4">
@@ -59,12 +77,12 @@ const All_Students = () => {
               <td className="border p-4">{student.sex}</td>
               <td className="border p-4">{student.email}</td>
               <td className="border p-4">
-                <button   onClick={() => navigate(`/update/`+student._id)} className="text-black px-2 py-1 rounded flex items-center gap-1">
+                <button   onClick={() => navigate(`/update_student/`+student._id)} className="text-black px-2 py-1 rounded flex items-center gap-1">
                   <FaEdit />
                 </button>
               </td>
               <td className="border p-4">
-                <button className="text-red-600 px-2 py-1 rounded flex items-center gap-1">
+                <button onClick={() =>deleteStudent(student._id)} className="text-red-600 hover:bg-orange-200 px-2 py-1 rounded flex items-center gap-1">
                   <FaTrash />
                 </button>
               </td>

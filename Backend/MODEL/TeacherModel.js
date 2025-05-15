@@ -20,7 +20,7 @@ const All_TeachersSchema = new mongoose.Schema({
         required : true
     },
     join_date: {
-        type: Number,
+        type: String,
         required : true
     },
     age: {

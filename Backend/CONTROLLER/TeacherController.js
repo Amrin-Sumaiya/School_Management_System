@@ -90,10 +90,10 @@ export const deleteTeacher = async (req, res)=> {
         }
 
         await Teacher.findByIdAndDelete(id);
-        res.status(200).json({ message: "User deleted successfully ."})
+        res.status(200).json({ message: "Teacher deleted successfully ."})
 
     }catch (error){
-        res.status(500).json({ errorMessage: error.mesage});
+        res.status(500).json({ errorMessage: error.message});
 
     }
 };

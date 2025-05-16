@@ -32,7 +32,17 @@ const All_Teachers = () => {
     fetchData();
   }, []);
 
+ const deleteTeacher = async (teacherId) =>{
+  await axios.delete(`http://localhost:8000/api/teachers/delete/teacher/${teacherId}`)
+  .then((response)=>{
+    setTeachers((prevTeacher)=>prevTeacher.filter((teacher) => teacher._id !==teacherId))
+      toast.success(response.data.message,{position:"top-right"})
+  })
 
+  .catch((error)=>{
+    console.log(error);
+  })
+ }
 
 
 
@@ -91,7 +101,7 @@ const All_Teachers = () => {
                   </button>
                 </td>
                 <td className="border p-4">
-                  <button
+                  <button onClick={()=>deleteTeacher(teacher._id)}
                     // Implement delete logic here
                     className="text-red-600 px-2 py-1 rounded flex items-center justify-center hover:scale-110 transition"
                   >

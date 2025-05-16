@@ -41,7 +41,7 @@ const All_Students = () => {
     <div className="p-4">
       {/* Title and Add Student Button */}
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-3xl font-semibold absolute left-1/2 transform -translate-x-1/2">Students Data</h2>
+        <h2 className="text-3xl font-semibold absolute left-1/2 transform -translate-x-1/2"> Student’s Records</h2>
         <button 
           onClick={() => navigate('/add_student')}  // Navigate to Add Student page
           className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700 transition"

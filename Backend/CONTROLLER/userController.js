@@ -19,7 +19,7 @@ export const create = async(req,res)=>{
 
         const savedData = await newStudent.save();
        //res.status(200).json(savedData);
-       res.status(200).json({message: "User created succefully."});
+       res.status(200).json({message: "Teacher created succefully."});
 
 
     }catch (error) {
@@ -98,7 +98,7 @@ export const create = async(req,res)=>{
 
         }
         await Student.findByIdAndDelete(id);
-    res.status(200).json({ message: "User deleted successfully" })
+    res.status(200).json({ message: "Student deleted successfully" })
 
     } catch (error) {
         res.status(500).json({ errorMessage: error.message });

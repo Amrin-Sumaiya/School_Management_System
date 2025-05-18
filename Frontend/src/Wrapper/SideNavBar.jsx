@@ -27,6 +27,7 @@ import {
   FaChalkboardTeacher, 
   FaClipboardList, 
   FaChevronRight,
+FaFileInvoiceDollar  ,
   FaBook,
   FaHistory,
 } from "react-icons/fa";
@@ -134,7 +135,7 @@ const SideNavBar = () => {
                   </ListItemPrefix>
                   Yearly Occantion Planning
                 </ListItem>
-                <ListItem>
+                <ListItem  onClick={() => navigate("/vacation")}>
                   <ListItemPrefix>
                     <FaChevronRight className="h-3 w-5" />
                   </ListItemPrefix>
@@ -253,7 +254,7 @@ const SideNavBar = () => {
           </ListItemPrefix>
           Students' Marks Management
         </ListItem>
-        <ListItem>
+        <ListItem onClick={() => navigate("/attendace/:id")}>
           <ListItemPrefix>
             <FaCalendarCheck className="h-4 w-4" />
           </ListItemPrefix>
@@ -265,6 +266,7 @@ const SideNavBar = () => {
     </AccordionBody>
   )}
 </Accordion>
+
 
 
 

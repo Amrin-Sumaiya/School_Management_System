@@ -1,10 +1,13 @@
 import mongoose from "mongoose"
+//import student from "./userModel.js"
 
 const attendenceSchema = new mongoose.Schema({
-    student_id: {
-        type: String,
-        required: true,
-    },
+  studentId: {
+    type: mongoose.Schema.Types.ObjectId,
+     ref: "student",
+    required: true,
+  },
+
 
     date: {
         type: Date,

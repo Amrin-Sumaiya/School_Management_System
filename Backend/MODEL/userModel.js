@@ -3,6 +3,11 @@ import mongoose from "mongoose"
 
 const All_studentsSchema = new mongoose.Schema({
 
+      studentId: {
+    type: String,
+    required: true,
+  },
+
     name:{
         type:String,
         required : true
@@ -31,5 +36,7 @@ const All_studentsSchema = new mongoose.Schema({
 
 
 },
-{ collection: "students" } )
+{ collection: "students" } );
+
+All_studentsSchema.index({ studentId: 1, class: 1 }, { unique: true });
 export default mongoose.model("student", All_studentsSchema)

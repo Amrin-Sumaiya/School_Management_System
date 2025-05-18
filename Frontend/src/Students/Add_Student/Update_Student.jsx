@@ -9,6 +9,7 @@ const Update_Student = () => {
   const navigate = useNavigate();
 
   const [student, setStudent] = useState({
+    studentId: '',
     name: '',
     class: '',
     age: '',
@@ -58,6 +59,21 @@ const Update_Student = () => {
       <h2 className="text-2xl font-semibold text-center mb-6 text-black drop-shadow-lg">UPDATE STUDENT</h2>
 
       <form onSubmit={handleUpdate} className="space-y-4">
+
+
+                {/* Student ID */}
+        <div>
+          <label className="block font-medium">Student ID (Roll)</label>
+          <input
+            type="text"
+            name="studentId"
+            value={student.studentId}
+            onChange={handleChange}
+            required
+            className="w-full border p-2 rounded-md border-blue-gray-500"
+            placeholder="Enter student roll number"
+          />
+        </div>
         {/* Name */}
         <div>
           <label className="block font-medium">Full Name</label>

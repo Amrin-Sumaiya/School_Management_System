@@ -9,6 +9,9 @@ import Add_Teacher from './Teacher/Add_Teachers/Add_Teacher.jsx';
 import Add_Student from './Students/Add_Student/Add_student.jsx';
 import Update_Student from './Students/Add_Student/Update_Student.jsx';
 import UpdateTeacher from './Teacher/Add_Teachers/Update_Teacher.jsx';
+import StudentAttendance from './Attendance/attendance.jsx'
+import Holiday from './Holiday/Vacation.jsx'
+
 
 const App = () => {
   return (
@@ -25,6 +28,9 @@ const App = () => {
         <Route path="/update_student/:id" element={<Update_Student />} />
         <Route path="/add_teacher" element={ <Add_Teacher />} />
         <Route path="/update_teacher/:id" element={ <UpdateTeacher />} />
+        <Route path="/attendace/:id" element={ <StudentAttendance />} />
+         <Route path="/vacation" element={<Holiday />} />
+
 
         </Routes>
         </WrapperScreen>

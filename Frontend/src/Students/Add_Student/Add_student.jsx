@@ -12,6 +12,7 @@ const Add_Student = () => {
 
   // State for form inputs
   const [student, setStudent] = useState({
+    studentId: '',
     name: '',
     class: '',
     age: '',
@@ -58,7 +59,22 @@ const Add_Student = () => {
 
       <h2 className="text-2xl font-semibold text-center mb-6 text-black drop-shadow-lg">ADD NEW STUDENT</h2>
 
+
       <form onSubmit={submitForm} className="space-y-4">
+
+                {/* Student ID (Roll) */}
+        <div>
+          <label className="block font-medium">Student ID (Roll)</label>
+          <input
+            type="text"
+            name="studentId"
+            value={student.studentId}
+            onChange={handleChange}
+            required
+            className="w-full border p-2 rounded-md border-blue-gray-500"
+            placeholder="Enter student roll number"
+          />
+        </div>
         {/* Name */}
         <div>
           <label className="block font-medium">Full Name</label>

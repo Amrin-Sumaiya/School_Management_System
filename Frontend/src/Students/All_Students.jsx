@@ -56,6 +56,7 @@ const All_Students = () => {
         <thead>
           <tr className='bg-gray-300'>
             <th className="border p-4">SI</th>
+            <th className="border p-4">Student ID</th>
             <th className="border p-4">Name</th>
             <th className="border p-4">Class</th>
             <th className="border p-4">Age</th>
@@ -70,6 +71,7 @@ const All_Students = () => {
           {students.map((student, index) => (
             <tr key={student.id || index} className="text-center border">  
               <td className="border p-4">{index + 1}</td>
+                <td className="border p-4">{student.studentId || "N/A"}</td>
               <td className="border p-4">{student.name}</td>
               <td className="border p-4">{student.class}</td>
               <td className="border p-4">{student.age}</td>

@@ -6,9 +6,11 @@ const Attendance = () => {
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState({}); // { studentId: "Present" | "Absent" }
 
+
+
   // Fetch students on mount
   useEffect(() => {
-    axios.get("http://localhost:8000/api/student")
+    axios.get("http://localhost:8000/api/oneclassteacher/attendancebyteacher/class/8/version/english")
       .then(res => setStudents(res.data))
       .catch(err => console.error("Error fetching students:", err));
   }, []);
@@ -34,14 +36,14 @@ const Attendance = () => {
       }
       toast.success("Attendance submitted successfully!");
     } catch (error) {
-      console.error("Error submitting attendance:", error);
+     
       toast.error("Failed to submit attendance.");
     }
   };
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg mt-10">
-      <h2 className="text-2xl font-bold mb-6 text-center text-green-900 ">Attendance Sheet</h2>
+      <h2 className="text-2xl font-bold mb-6 text-center text-green-900 ">Attendance Sheet (class: 8, Version: English)</h2>
 
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-300">
@@ -54,17 +56,17 @@ const Attendance = () => {
           </thead>
           <tbody>
             {students.map(student => (
-              <tr key={student._id}>
+              <tr key={student.studentId}>
                 <td className="py-2 px-4 border text-center">{student.studentId}</td>
                 <td className="py-2 px-4 border text-center">{student.name}</td>
                 <td className="py-2 px-4 border text-center">
                   <label className="inline-flex items-center space-x-2">
                     <input
                       type="checkbox"
-                      checked={attendance[student._id] === "Present"}
-                      onChange={() => handleToggle(student._id)}
+                      checked={attendance[student.studentId] === "Present"}
+                      onChange={() => handleToggle(student.studentId)}
                     />
-                    <span>{attendance[student._id] || "Absent"}</span>
+                    <span>{attendance[student.studentId] || "Absent"}</span>
                   </label>
                 </td>
               </tr>

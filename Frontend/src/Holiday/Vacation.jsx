@@ -12,7 +12,7 @@ import {
 const Vacation = () => {
   return (
     <div className="min-h-screen bg-white p-8">
-      <div className="max-w-6xl mx-auto bg-gradient-to-r from-teal-100 via-blue-100 to-green-100 rounded-3xl shadow-xl p-10">
+      <div className="max-w-6xl mx-auto bg-gray-300 rounded-3xl shadow-xl p-10">
         <div className="text-center mb-10">
           <FaUmbrellaBeach className="mx-auto text-teal-500 text-5xl mb-3" />
           <h1 className="text-4xl font-bold text-gray-900">Holiday & Vacation Schedule - 2025</h1>
@@ -27,7 +27,7 @@ const Vacation = () => {
             <p className="text-gray-600">June 1 - July 10</p>
           </div>
 
-          <div className="bg-gradient-to-tr from-green-200 to-green-300 rounded-xl shadow-md p-6 hover:scale-105 transition-transform">
+          <div className="bg-gradient-to-tr from-green-200 to-green-100 rounded-xl shadow-md p-6 hover:scale-105 transition-transform">
             <FaTree className="text-3xl text-yellow-600 mb-4" />
             <h2 className="font-semibold text-lg text-gray-900">Eid Holidays</h2>
             <p className="text-gray-600">April 18 - April 25</p>
@@ -40,7 +40,7 @@ const Vacation = () => {
           </div>
 
           {/* New Holidays */}
-          <div className="bg-gradient-to-tr from-pink-100 to-pink-200 rounded-xl shadow-md p-6 hover:scale-105 transition-transform">
+          <div className="bg-gradient-to-tr from-pink-100 to-pink-100 rounded-xl shadow-md p-6 hover:scale-105 transition-transform">
             <FaFlag className="text-3xl text-red-500 mb-4" />
             <h2 className="font-semibold text-lg text-gray-900">Victory Day</h2>
             <p className="text-gray-600">December 16</p>
@@ -55,10 +55,10 @@ const Vacation = () => {
           <div className="bg-gradient-to-tr from-blue-100 to-yellow-300 rounded-xl shadow-md p-6 hover:scale-105 transition-transform">
             <FaStar className="text-3xl text-yellow-500 mb-4" />
             <h2 className="font-semibold text-lg text-gray-900">Star Sunday</h2>
-            <p className="text-gray-600">Every 1st Sunday of the month</p>
+            <p className="text-gray-600">Every 1st Sunday of May month</p>
           </div>
 
-          <div className="bg-gradient-to-tr from-purple-100 to-purple-200 rounded-xl shadow-md p-6 hover:scale-105 transition-transform">
+          <div className="bg-gradient-to-tr from-purple-100 to-purple-100 rounded-xl shadow-md p-6 hover:scale-105 transition-transform">
             <FaMosque className="text-3xl text-purple-600 mb-4" />
             <h2 className="font-semibold text-lg text-gray-900">Eid-ul-Adha</h2>
             <p className="text-gray-600">June 16 - June 18</p>

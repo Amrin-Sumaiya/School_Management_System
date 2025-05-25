@@ -3,7 +3,7 @@ import Attendance from "../MODEL/AttendModel.js"
 export const create = async(req, res)=>{
     try {
         const { studentId, date} =req.body;
-
+       
         const attendanceIdExist = await Attendance.findOne({ studentId, date });
         if (attendanceIdExist){
             return res.status(400).json({ message: "Student Attendence already Exists. "});
@@ -12,6 +12,7 @@ export const create = async(req, res)=>{
         const newAttendance = new Attendance(req.body);
         const savedData = await newAttendance.save();
         res.status(200).json(savedData);
+        
 
     } catch (error){
         res.status(500).json({ errorMessage: error.message})

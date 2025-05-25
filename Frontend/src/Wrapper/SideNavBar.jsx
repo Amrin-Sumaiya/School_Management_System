@@ -99,11 +99,17 @@ const SideNavBar = () => {
           {isExpanded && openAccordion === 1 && (
             <AccordionBody className="py-1">
               <List className="p-0">
-                <ListItem className=" max-w-60   p-1 min-h-[20px] hover:bg-gray-200 transition-all duration-200">
+                <ListItem onClick={() => navigate("/dashboard")} className=" max-w-60   p-1 min-h-[20px] hover:bg-gray-200 transition-all duration-200">
                   <ListItemPrefix>
                     <FaChevronRight className="h-3 w-5" />
                   </ListItemPrefix>
-                  <Link to="/dashboard">Admission Info</Link>
+                  <Link to="/dashboard">Dashboard</Link>
+                </ListItem>
+                         <ListItem>
+                  <ListItemPrefix>
+                    <FaChevronRight className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Admission Info
                 </ListItem>
                 <ListItem>
                   <ListItemPrefix>

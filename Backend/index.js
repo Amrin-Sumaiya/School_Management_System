@@ -10,6 +10,7 @@ import ClassRoute from "./ROUTE/classRoutes.js"
 import SubjectsRoute from "./ROUTE/SubjectRoute.js"
 import ExamRoute from "./ROUTE/ExamRoute.js"
 import ResultRoute from "./ROUTE/ResultRoute.js"
+import ClassTeacherRoute from "./ROUTE/ClassTeacherRoute.js"
 
 import cors from "cors"
 
@@ -42,4 +43,6 @@ app.use("/api/class", ClassRoute)
 app.use("/api/subject", SubjectsRoute)
 app.use("/api/exam", ExamRoute)
 app.use("/api/result", ResultRoute)
+app.use("/api/oneclassteacher", ClassTeacherRoute); 
+
 

@@ -8,32 +8,46 @@ const Attendance = () => {
 
 
 
-  // Fetch students on mount
+  // Fetch and sort  students on mount
   useEffect(() => {
     axios.get("http://localhost:8000/api/oneclassteacher/attendancebyteacher/class/8/version/english")
-      .then(res => setStudents(res.data))
+      .then(res => {
+        const sorted = res.data.sort((a,b) =>{
+          const idA = parseInt(a.studentId, 10);
+          const idB = parseInt(b.studentId, 10);
+          return idA - idB;
+        });
+        setStudents(sorted)
+      })
       .catch(err => console.error("Error fetching students:", err));
   }, []);
 
   // Handle checkbox toggle
-  const handleToggle = (studentId) => {
+  const handleToggle = (id) => {
     setAttendance(prev => ({
       ...prev,
-      [studentId]: prev[studentId] === "Present" ? "Absent" : "Present"
+      [id]: prev[id] === "Present" ? "Absent" : "Present"
     }));
   };
 
   // Submit attendance
   const handleSubmit = async () => {
     try {
-      for (const studentId in attendance) {
+
+      const presentStudents = Object.keys(attendance).filter(id => attendance[id] === "Present");
+
+      if (presentStudents.length === 0){
+        toast.warn("No students marked as Present ");
+        return;
+      }
+      
         await axios.post("http://localhost:8000/api/attendance/student_attendance", {
-          studentId: studentId,
+          studentId: presentStudents, 
           date: new Date(),
-          status: attendance[studentId],
+          status: 'Present',
           remarks: ""
         });
-      }
+   
       toast.success("Attendance submitted successfully!");
     } catch (error) {
      
@@ -59,14 +73,14 @@ const Attendance = () => {
               <tr key={student.studentId}>
                 <td className="py-2 px-4 border text-center">{student.studentId}</td>
                 <td className="py-2 px-4 border text-center">{student.name}</td>
-                <td className="py-2 px-4 border text-center">
-                  <label className="inline-flex items-center space-x-2">
+                <td className="py-2 px-4 border text-center w-36">
+                  <label className="inline-flex items-center justify-center w-full gap-2">
                     <input
                       type="checkbox"
-                      checked={attendance[student.studentId] === "Present"}
-                      onChange={() => handleToggle(student.studentId)}
+                      checked={attendance[student.id] === "Present"}
+                      onChange={() => handleToggle(student.id)}
                     />
-                    <span>{attendance[student.studentId] || "Absent"}</span>
+                    <span className='inline-block w-16 text-center'>{attendance[student.id] || "Absent"}</span>
                   </label>
                 </td>
               </tr>

@@ -64,7 +64,7 @@ export const getStudentsByClassAndVersion = async (req, res) =>{
     const filtered = students.map(student =>({
 
     
-
+id:student?._id,
       studentId: student.studentId,
       name: student.name,
     }))

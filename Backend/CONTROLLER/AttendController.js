@@ -26,39 +26,66 @@ export const create = async (req, res) => {
     try {
         const { studentId, date,  status, remarks } = req.body;
 
-        if (!Array.isArray(studentId)) {
-            return res.status(400).json({ message: "StudentId in the array must be "});
-
-        }
 
         const createdRecords = [];
         const skippedRecords = [];
 
-        for (const id of studentId) {
-            const exists = await Attendance.findOne({ studentId: id, date });
+        //valid input 
 
-            if (exists) {
-                skippedRecords.push(id);
+    
+
+        for (const student of studentId) {
+            const { id, status } = student;
+
+            if (!id || !status) {
+                skippedRecords.push({ id, reason: "Absent student ID or status"});
                 continue;
             }
 
-            const newAttendance = new Attendance({
+
+            try{
+
+                // check  same id is present in same date
+
+                const exists = await Attendance.findOne({  
+                    studentId: id,
+                     date:{
+                        $gte: new Date(new Date(date).setHours(0, 0, 0, 0)),
+                        $lt: new Date(new Date(date).setHours(23, 59, 59, 999)), 
+                     }
+                    
+                });
+
+                if (exists) {
+                    skippedRecords.push({ id, reason: "Attendance already recorded for this date"})
+                    continue;
+                }
+                   
+                const newAttendance = new Attendance({
                 studentId: id,
                 date,
-                status: "Present",
+                status,
 
                 remarks: remarks || ""
             });
 
-            const saved = await newAttendance.save();
-            createdRecords.push(saved);
+             const saved = await newAttendance.save();
+              createdRecords.push(saved);
+
+            } catch (err) {
+              
+                    skippedRecords.push({ id, reason: err.message})
+            }
+
 
         }
+
 
         res.status(200).json({
             message: "Attendance Processed",
             createdCount: createdRecords.length,
             skippedCount: skippedRecords.length,
+            created: createdRecords,
             skipped: skippedRecords
         });
 
@@ -67,6 +94,10 @@ export const create = async (req, res) => {
 
     }
 }
+
+
+
+
 
 // get allstudents attendance record
 

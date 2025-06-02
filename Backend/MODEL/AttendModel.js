@@ -25,5 +25,7 @@ const attendenceSchema = new mongoose.Schema({
         default: "",
     }
 }, { timestamps: true });
+attendenceSchema.index({ studentId: 1, date: 1 }, { unique: true });
+
 
 export default mongoose.model("Attendance", attendenceSchema)

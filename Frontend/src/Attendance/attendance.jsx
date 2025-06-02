@@ -17,7 +17,7 @@ const Attendance = () => {
           const idB = parseInt(b.studentId, 10);
           return idA - idB;
         });
-        setStudents(sorted)
+        setStudents(sorted) 
       })
       .catch(err => console.error("Error fetching students:", err));
   }, []);
@@ -34,23 +34,26 @@ const Attendance = () => {
   const handleSubmit = async () => {
     try {
 
-      const presentStudents = Object.keys(attendance).filter(id => attendance[id] === "Present");
+    const formattedData = students.map(student => ({
+      id: student.id,
+      status: attendance[student.id] || "Absent"
+    }));
 
-      if (presentStudents.length === 0){
-        toast.warn("No students marked as Present ");
-        return;
-      }
+      // if (formattedData.length === 0){
+      //   toast.warn("No students marked as Present ");
+      //   return;
+      // }
       
         await axios.post("http://localhost:8000/api/attendance/student_attendance", {
-          studentId: presentStudents, 
+          studentId: formattedData, 
           date: new Date(),
-          status: 'Present',
+         
           remarks: ""
         });
    
       toast.success("Attendance submitted successfully!");
     } catch (error) {
-     
+     console.error(error)
       toast.error("Failed to submit attendance.");
     }
   };
@@ -69,8 +72,8 @@ const Attendance = () => {
             </tr>
           </thead>
           <tbody>
-            {students.map(student => (
-              <tr key={student.studentId}>
+            {students.map((student, index) => (
+              <tr key={student.id || index}>
                 <td className="py-2 px-4 border text-center">{student.studentId}</td>
                 <td className="py-2 px-4 border text-center">{student.name}</td>
                 <td className="py-2 px-4 border text-center w-36">

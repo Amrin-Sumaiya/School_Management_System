@@ -1,6 +1,6 @@
 import React from "react";
 import { FaUser } from "react-icons/fa";
-import ChartBar from '../Pages/ApexChart/ChartBar.jsx'
+import ChartBar from '../common/ChartBar.jsx'
 
 
 
@@ -14,7 +14,7 @@ const Dashboard = () => {
 
       {/* Dashboard Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-full px-8">
-        {/* Total Boards */}
+        {/* Total Teachers */}
         <div className="bg-orange-200 shadow-lg rounded-lg p-6 flex items-center text-black">
           <FaUser className="text-4xl mr-4 opacity-80" />
           <div>
@@ -23,7 +23,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Total Colleges */}
+        {/* Total Students */}
         <div className="bg-green-200 shadow-lg rounded-lg p-6 flex items-center text-black">
 
 
@@ -34,7 +34,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Total Districts */}
+        {/* Present Students */}
         <div className="bg-blue-300 shadow-lg rounded-lg p-6 flex items-center text-black">
           <FaUser className="text-4xl mr-4 opacity-80" />
           <div>

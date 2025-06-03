@@ -1,7 +1,7 @@
 import React, { children } from 'react'
 import SideNavBar from './SideNavBar'
-import Header from '../Header/Header'
-import Footer from '../Footer/Footer'
+import Header from './Header'
+import Footer from './Footer'
 
 
 const WrapperScreen = ({ children }) => {

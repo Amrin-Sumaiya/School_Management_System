@@ -1,15 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import WrapperScreen from './Wrapper/WrapperScreen';
-import Dashboard from './Pages/Dashboard.jsx'; // Import the Dashboard page
-import All_Students from './Students/All_Students.jsx';
-import All_Teachers from './Teacher/All_Teachers.jsx';
-import Add_Teacher from './Teacher/Add_Teachers/Add_Teacher.jsx';
-import Add_Student from './Students/Add_Student/Add_student.jsx';
-import Update_Student from './Students/Add_Student/Update_Student.jsx';
-import UpdateTeacher from './Teacher/Add_Teachers/Update_Teacher.jsx';
-import StudentAttendance from './Attendance/attendance.jsx'
+import WrapperScreen from './components/WrapperScreen.jsx';
+import Dashboard from './screen/Dashboard.jsx'; // Import the Dashboard page
+import All_Students from './screen/All_Students.jsx';
+import All_Teachers from './screen/All_Teachers.jsx';
+import Add_Teacher from './screen/Add_Teacher.jsx';
+import Add_Student from './screen/Add_student.jsx';
+import Update_Student from './screen/Update_Student.jsx';
+import UpdateTeacher from './screen/Update_Teacher.jsx';
+import StudentAttendance from './screen/attendance.jsx'
 import Holiday from './Holiday/Vacation.jsx'
 
 

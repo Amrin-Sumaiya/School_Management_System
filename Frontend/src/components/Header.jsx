@@ -10,7 +10,7 @@ const Header = () => {
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen); // Toggle the sidebar
   };
-3
+
   return (
     <header className="p-3 px-10 bg-green-100 text-black  shadow-md">
       {/* Container for header content */}

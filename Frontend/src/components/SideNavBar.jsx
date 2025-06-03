@@ -33,7 +33,7 @@ FaFileInvoiceDollar  ,
 } from "react-icons/fa";
 
 const SideNavBar = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate() 
 
 
   const [isExpanded, setIsExpanded] = useState(true); // Sidebar toggle state

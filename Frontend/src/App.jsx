@@ -11,6 +11,8 @@ import Update_Student from './screen/Update_Student.jsx';
 import UpdateTeacher from './screen/Update_Teacher.jsx';
 import StudentAttendance from './screen/attendance.jsx'
 import Holiday from './Holiday/Vacation.jsx'
+import Classroom from './screen/Classroom.jsx'
+
 
 
 const App = () => {
@@ -29,7 +31,9 @@ const App = () => {
         <Route path="/add_teacher" element={ <Add_Teacher />} />
         <Route path="/update_teacher/:id" element={ <UpdateTeacher />} />
         <Route path="/attendace/:id" element={ <StudentAttendance />} />
-         <Route path="/vacation" element={<Holiday />} />
+        <Route path="/vacation" element={<Holiday />} />
+        <Route path="/classroom" element={<Classroom />} />
+  
 
 
         </Routes>

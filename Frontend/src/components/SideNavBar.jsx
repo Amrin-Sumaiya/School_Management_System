@@ -99,7 +99,7 @@ const SideNavBar = () => {
           {isExpanded && openAccordion === 1 && (
             <AccordionBody className="py-1">
               <List className="p-0">
-                <ListItem onClick={() => navigate("/dashboard")} className=" max-w-60   p-1 min-h-[20px] hover:bg-gray-200 transition-all duration-200">
+                <ListItem onClick={() => navigate("/dashboard")} className=" max-w-60   p-1 min-h-[50px] hover:bg-gray-200 transition-all duration-200">
                   <ListItemPrefix>
                     <FaChevronRight className="h-3 w-5" />
                   </ListItemPrefix>
@@ -111,36 +111,43 @@ const SideNavBar = () => {
                   </ListItemPrefix>
                   Admission Info
                 </ListItem>
-                <ListItem>
-                  <ListItemPrefix>
-                    <FaChevronRight className="h-3 w-5" />
-                  </ListItemPrefix>
-                  Overveiw Pannle
-                </ListItem>
-                <ListItem>
-                  <ListItemPrefix>
-                    <FaChevronRight className="h-3 w-5" />
-                  </ListItemPrefix>
-                  Academic Yearly Fee Management
-                </ListItem>
-                <ListItem>
+                <ListItem onClick={() => navigate("/all_students")}>
                   <ListItemPrefix>
                     <FaChevronRight className="h-3 w-5" />
                   </ListItemPrefix>
                   Students Management
                 </ListItem>
-                <ListItem>
+                <ListItem onClick={() => navigate("/all_teachers")}>
                   <ListItemPrefix>
                     <FaChevronRight className="h-3 w-5" />
                   </ListItemPrefix>
-                  Teacher Management
+                  Teachers Management
+                </ListItem>
+                <ListItem onClick={() => navigate("/classroom")}  className=" max-w-60 p-1 min-h-[50px] hover:bg-blue-gray-100 transition-all duration-200">
+                  <ListItemPrefix>
+                    <FaChevronRight className="h-3 w-5 " />
+                  </ListItemPrefix>
+                  <Link to=" /classroom ">Classroom Management</Link>
                 </ListItem>
                 <ListItem>
                   <ListItemPrefix>
                     <FaChevronRight className="h-3 w-5" />
                   </ListItemPrefix>
-                  Yearly Occantion Planning
+                  Subject / Division Assign 
                 </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <FaChevronRight className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Exam  Management
+                </ListItem>
+                    <ListItem>
+                  <ListItemPrefix>
+                    <FaChevronRight className="h-3 w-5" />
+                  </ListItemPrefix>
+                  All Result Management
+                </ListItem>
+                
                 <ListItem  onClick={() => navigate("/vacation")}>
                   <ListItemPrefix>
                     <FaChevronRight className="h-3 w-5" />
@@ -152,50 +159,7 @@ const SideNavBar = () => {
           )}
         </Accordion>
 
-        {/* Profile Setup Section */}
-        <Accordion
-          open={isExpanded && openAccordion === 2}
-          icon={
-            isExpanded && (
-              <FaChevronRight
-                className={`mx-auto h-4 w-4 transition-transform ${
-                  openAccordion === 2 ? "rotate-90" : ""
-                }`}
-              />
-            )
-          }
-        >
-          
-          <ListItem className="p-0" selected={openAccordion === 2}>
-            <AccordionHeader
-              onClick={() => handleAccordionToggle(2)}
-              className="border-b-0 p-3"
-            >
-              <ListItemPrefix>
-                <FaUserEdit className="h-5 w-5" />
-              </ListItemPrefix>
-              {isExpanded && (
-                <Typography color="black" className="mr-auto font-normal">
-                  Students
-                </Typography>
-              )}
-            </AccordionHeader>
-          </ListItem>
-          {isExpanded && openAccordion === 2 && (
-            <AccordionBody className="py-1">
-              <List className="p-0">
-                <ListItem onClick={() => navigate("/all_students")}>
-                  <ListItemPrefix>
-                    <FaChevronRight className="h-3 w-5"/>
-                     
-                  </ListItemPrefix>
-                 All Student
-                </ListItem>
-              
-              </List>
-            </AccordionBody>
-          )}
-        </Accordion>
+
 
         {/* Explore Teacher Section */}
 
@@ -230,42 +194,31 @@ const SideNavBar = () => {
   {isExpanded && openAccordion === 3 && (
     <AccordionBody className="py-1">
       <List className="p-0">
-        <ListItem onClick={() => navigate("/all_teachers")}>
+        <ListItem onClick={() => navigate("/attendace/:id")}>
           <ListItemPrefix>
-            <FaChalkboardTeacher className="h-4 w-4" />
+            <FaCalendarCheck className="h-4 w-4" />
           </ListItemPrefix>
-          All Teachers
+          Mark Attendance
         </ListItem>
-        <ListItem>
+                <ListItem>
           <ListItemPrefix>
             <FaUsers className="h-4 w-4" />
           </ListItemPrefix>
-          Departments
+          Class-Test Management
         </ListItem>
         <ListItem>
           <ListItemPrefix>
             <FaClipboardList className="h-4 w-4" />
           </ListItemPrefix>
-          Assign Subjects
+          Submit Class-Test Marks
         </ListItem>
         <ListItem>
           <ListItemPrefix>
             <FaUsers className="h-4 w-4" />
           </ListItemPrefix>
-          Students Performance & Report
+          Submit All Exam Result
         </ListItem>
-        <ListItem>
-          <ListItemPrefix>
-            <FaBookOpen className="h-4 w-4" />
-          </ListItemPrefix>
-          Students' Marks Management
-        </ListItem>
-        <ListItem onClick={() => navigate("/attendace/:id")}>
-          <ListItemPrefix>
-            <FaCalendarCheck className="h-4 w-4" />
-          </ListItemPrefix>
-          Students' Attendance
-        </ListItem>
+
       
         
       </List>
@@ -273,6 +226,123 @@ const SideNavBar = () => {
   )}
 </Accordion>
 
+        {/* Students Setup Section */}
+        <Accordion
+          open={isExpanded && openAccordion === 2}
+          icon={
+            isExpanded && (
+              <FaChevronRight
+                className={`mx-auto h-4 w-4 transition-transform ${
+                  openAccordion === 2 ? "rotate-90" : ""
+                }`}
+              />
+            )
+          }
+        >
+          
+          <ListItem className="p-0" selected={openAccordion === 2}>
+            <AccordionHeader
+              onClick={() => handleAccordionToggle(2)}
+              className="border-b-0 p-3"
+            >
+              <ListItemPrefix>
+                <FaUserEdit className="h-5 w-5" />
+              </ListItemPrefix>
+              {isExpanded && (
+                <Typography color="black" className="mr-auto font-normal">
+                  Students
+                </Typography>
+              )}
+            </AccordionHeader>
+          </ListItem>
+          {isExpanded && openAccordion === 2 && (
+            <AccordionBody className="py-1">
+              <List className="p-0">
+                <ListItem >
+                  <ListItemPrefix>
+                    <FaChevronRight className="h-3 w-5"/>
+                     
+                  </ListItemPrefix>
+                 Attendance Veiw
+                </ListItem>
+
+                                <ListItem >
+                  <ListItemPrefix>
+                    <FaChevronRight className="h-3 w-5"/>
+                     
+                  </ListItemPrefix>
+                 Result
+                </ListItem>
+              
+              </List>
+            </AccordionBody>
+          )}
+        </Accordion>
+
+                {/* Account Setup Section */}
+        <Accordion
+          open={isExpanded && openAccordion === 2}
+          icon={
+            isExpanded && (
+              <FaChevronRight
+                className={`mx-auto h-4 w-4 transition-transform ${
+                  openAccordion === 2 ? "rotate-90" : ""
+                }`}
+              />
+            )
+          }
+        >
+          
+          <ListItem className="p-0" selected={openAccordion === 2}>
+            <AccordionHeader
+              onClick={() => handleAccordionToggle(2)}
+              className="border-b-0 p-3"
+            >
+              <ListItemPrefix>
+                <FaUserEdit className="h-5 w-5" />
+              </ListItemPrefix>
+              {isExpanded && (
+                <Typography color="black" className="mr-auto font-normal">
+                  Account Management
+                </Typography>
+              )}
+            </AccordionHeader>
+          </ListItem>
+          {isExpanded && openAccordion === 2 && (
+            <AccordionBody className="py-1">
+              <List className="p-0">
+                <ListItem >
+                  <ListItemPrefix>
+                    <FaChevronRight className="h-3 w-5"/>
+                     
+                  </ListItemPrefix>
+                 Admit New Student
+                </ListItem>
+
+                                <ListItem >
+                  <ListItemPrefix>
+                    <FaChevronRight className="h-3 w-5"/>
+                     
+                  </ListItemPrefix>
+                 Admission Fee
+                </ListItem>
+                     <ListItem >
+                  <ListItemPrefix>
+                    <FaChevronRight className="h-3 w-5"/>
+                     
+                  </ListItemPrefix>
+                 Monthly Tution Fee
+                </ListItem>
+                   <ListItem >
+                  <ListItemPrefix>
+                    <FaChevronRight className="h-3 w-5"/>
+                  </ListItemPrefix>
+                 Exam's  Fee
+                </ListItem> 
+              </List>
+            </AccordionBody>
+          )}
+        </Accordion>
 
 
 

@@ -18,7 +18,7 @@ const All_Students = () => {
       }
     };
     fetchData();
-  }, []);
+  }, []);    
 
   const deleteStudent = async (studentId) => {
 

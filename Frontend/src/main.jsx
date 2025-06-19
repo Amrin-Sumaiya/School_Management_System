@@ -4,7 +4,8 @@ import './index.css'
 import App from './App.jsx'
 import { ThemeProvider } from '@material-tailwind/react'
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; //
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 

@@ -15,7 +15,7 @@ const Dashboard = () => {
       {/* Dashboard Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-full px-8">
         {/* Total Teachers */}
-        <div className="bg-orange-200 shadow-lg rounded-lg p-6 flex items-center text-black">
+        <div className="bg-orange-100 shadow-lg rounded-lg p-6 flex items-center text-black">
           <FaUser className="text-4xl mr-4 opacity-80" />
           <div>
             <p className="text-3xl font-bold">150</p>
@@ -24,7 +24,7 @@ const Dashboard = () => {
         </div>
 
         {/* Total Students */}
-        <div className="bg-green-200 shadow-lg rounded-lg p-6 flex items-center text-black">
+        <div className="bg-blue-100 shadow-lg rounded-lg p-6 flex items-center text-black">
 
 
           <FaUser className="text-4xl mr-4 opacity-80" />
@@ -35,7 +35,7 @@ const Dashboard = () => {
         </div>
 
         {/* Present Students */}
-        <div className="bg-blue-300 shadow-lg rounded-lg p-6 flex items-center text-black">
+        <div className="bg-green-100 shadow-lg rounded-lg p-6 flex items-center text-black">
           <FaUser className="text-4xl mr-4 opacity-80" />
           <div>
             <p className="text-3xl font-bold">8140</p>
@@ -44,7 +44,7 @@ const Dashboard = () => {
         </div>
 
         {/* Total Applying Users */}
-        <div className="bg-red-300 shadow-lg rounded-lg p-6 flex items-center text-black">
+        <div className="bg-red-200 shadow-lg rounded-lg p-6 flex items-center text-black">
           <FaUser className="text-4xl mr-4 opacity-80" />
           <div>
             <p className="text-3xl font-bold">530</p>

@@ -99,62 +99,69 @@ const SideNavBar = () => {
           {isExpanded && openAccordion === 1 && (
             <AccordionBody className="py-1">
               <List className="p-0">
-                <ListItem onClick={() => navigate("/dashboard")} className=" max-w-60   p-1 min-h-[50px] hover:bg-gray-200 transition-all duration-200">
-                  <ListItemPrefix>
-                    <FaChevronRight className="h-3 w-5" />
-                  </ListItemPrefix>
-                  <Link to="/dashboard">Dashboard</Link>
-                </ListItem>
-                         <ListItem>
-                  <ListItemPrefix>
-                    <FaChevronRight className="h-3 w-5" />
-                  </ListItemPrefix>
-                  Admission Info
-                </ListItem>
-                <ListItem onClick={() => navigate("/all_students")}>
-                  <ListItemPrefix>
-                    <FaChevronRight className="h-3 w-5" />
-                  </ListItemPrefix>
-                  Students Management
-                </ListItem>
-                <ListItem onClick={() => navigate("/all_teachers")}>
-                  <ListItemPrefix>
-                    <FaChevronRight className="h-3 w-5" />
-                  </ListItemPrefix>
-                  Teachers Management
-                </ListItem>
-                <ListItem onClick={() => navigate("/classroom")}  className=" max-w-60 p-1 min-h-[50px] hover:bg-blue-gray-100 transition-all duration-200">
-                  <ListItemPrefix>
-                    <FaChevronRight className="h-3 w-5 " />
-                  </ListItemPrefix>
-                  <Link to=" /classroom ">Classroom Management</Link>
-                </ListItem>
-                <ListItem>
-                  <ListItemPrefix>
-                    <FaChevronRight className="h-3 w-5" />
-                  </ListItemPrefix>
-                  Subject / Division Assign 
-                </ListItem>
-                <ListItem>
-                  <ListItemPrefix>
-                    <FaChevronRight className="h-3 w-5" />
-                  </ListItemPrefix>
-                  Exam  Management
-                </ListItem>
-                    <ListItem>
-                  <ListItemPrefix>
-                    <FaChevronRight className="h-3 w-5" />
-                  </ListItemPrefix>
-                  All Result Management
-                </ListItem>
-                
-                <ListItem  onClick={() => navigate("/vacation")}>
-                  <ListItemPrefix>
-                    <FaChevronRight className="h-3 w-5" />
-                  </ListItemPrefix>
-                  Holiday & Vacation
-                </ListItem>
-              </List>
+ <ListItem onClick={() => navigate("/dashboard")} className="max-w-60 p-1 min-h-[50px] hover:bg-gray-200 transition-all duration-200 pl-10">
+    <ListItemPrefix>
+      <FaChevronRight className="h-3 w-5" />
+    </ListItemPrefix>
+    <Link to="/dashboard">Dashboard</Link>
+  </ListItem>
+
+  <ListItem className="pl-10">
+    <ListItemPrefix>
+      <FaChevronRight className="h-3 w-5" />
+    </ListItemPrefix>
+    Admission Info
+  </ListItem>
+
+  <ListItem onClick={() => navigate("/all_students")} className="pl-10">
+    <ListItemPrefix>
+      <FaChevronRight className="h-3 w-5" />
+    </ListItemPrefix>
+    Students Management
+  </ListItem>
+
+  <ListItem onClick={() => navigate("/all_teachers")} className="pl-10">
+    <ListItemPrefix>
+      <FaChevronRight className="h-3 w-5" />
+    </ListItemPrefix>
+    Teachers Management
+  </ListItem>
+
+  <ListItem onClick={() => navigate("/classroom")} className="max-w-60 p-1 min-h-[50px] hover:bg-blue-gray-100 transition-all duration-200 pl-10">
+    <ListItemPrefix>
+      <FaChevronRight className="h-3 w-5" />
+    </ListItemPrefix>
+    <Link to="/classroom">Classroom Management</Link>
+  </ListItem>
+
+  <ListItem onClick={() => navigate("/subjects")} className="pl-10">
+    <ListItemPrefix>
+      <FaChevronRight className="h-3 w-5" />
+    </ListItemPrefix>
+    Subject / Division Assign
+  </ListItem>
+
+  <ListItem className="pl-10">
+    <ListItemPrefix>
+      <FaChevronRight className="h-3 w-5" />
+    </ListItemPrefix>
+    Exam Management
+  </ListItem>
+
+  <ListItem className="pl-10">
+    <ListItemPrefix>
+      <FaChevronRight className="h-3 w-5" />
+    </ListItemPrefix>
+    All Result Management
+  </ListItem>
+
+  <ListItem onClick={() => navigate("/vacation")} className="pl-10">
+    <ListItemPrefix>
+      <FaChevronRight className="h-3 w-5" />
+    </ListItemPrefix>
+    Holiday & Vacation
+  </ListItem>
+</List>
             </AccordionBody>
           )}
         </Accordion>
@@ -194,25 +201,25 @@ const SideNavBar = () => {
   {isExpanded && openAccordion === 3 && (
     <AccordionBody className="py-1">
       <List className="p-0">
-        <ListItem onClick={() => navigate("/attendace/:id")}>
+        <ListItem onClick={() => navigate("/attendace/:id")} className="max-w-60 p-1 min-h-[50px] hover:bg-gray-200 transition-all duration-200 pl-10" >
           <ListItemPrefix>
             <FaCalendarCheck className="h-4 w-4" />
           </ListItemPrefix>
           Mark Attendance
         </ListItem>
-                <ListItem>
+                <ListItem className="pl-10">
           <ListItemPrefix>
             <FaUsers className="h-4 w-4" />
           </ListItemPrefix>
           Class-Test Management
         </ListItem>
-        <ListItem>
+        <ListItem className="pl-10">
           <ListItemPrefix>
             <FaClipboardList className="h-4 w-4" />
           </ListItemPrefix>
           Submit Class-Test Marks
         </ListItem>
-        <ListItem>
+        <ListItem className="pl-10">
           <ListItemPrefix>
             <FaUsers className="h-4 w-4" />
           </ListItemPrefix>
@@ -258,7 +265,7 @@ const SideNavBar = () => {
           {isExpanded && openAccordion === 2 && (
             <AccordionBody className="py-1">
               <List className="p-0">
-                <ListItem >
+                <ListItem className="max-w-60 p-1 min-h-[50px] hover:bg-gray-200 transition-all duration-200 pl-10">
                   <ListItemPrefix>
                     <FaChevronRight className="h-3 w-5"/>
                      
@@ -266,7 +273,7 @@ const SideNavBar = () => {
                  Attendance Veiw
                 </ListItem>
 
-                                <ListItem >
+                                <ListItem className="max-w-60 p-1 min-h-[50px] hover:bg-gray-200 transition-all duration-200 pl-10" >
                   <ListItemPrefix>
                     <FaChevronRight className="h-3 w-5"/>
                      
@@ -311,7 +318,7 @@ const SideNavBar = () => {
           {isExpanded && openAccordion === 2 && (
             <AccordionBody className="py-1">
               <List className="p-0">
-                <ListItem >
+                <ListItem className="max-w-60 p-1 min-h-[50px] hover:bg-gray-200 transition-all duration-200 pl-10" >
                   <ListItemPrefix>
                     <FaChevronRight className="h-3 w-5"/>
                      
@@ -319,21 +326,21 @@ const SideNavBar = () => {
                  Admit New Student
                 </ListItem>
 
-                                <ListItem >
+                                <ListItem className="max-w-60 p-1 min-h-[50px] hover:bg-gray-200 transition-all duration-200 pl-10" >
                   <ListItemPrefix>
                     <FaChevronRight className="h-3 w-5"/>
                      
                   </ListItemPrefix>
                  Admission Fee
                 </ListItem>
-                     <ListItem >
+                     <ListItem className="max-w-60 p-1 min-h-[50px] hover:bg-gray-200 transition-all duration-200 pl-10" >
                   <ListItemPrefix>
                     <FaChevronRight className="h-3 w-5"/>
                      
                   </ListItemPrefix>
                  Monthly Tution Fee
                 </ListItem>
-                   <ListItem >
+                   <ListItem className="max-w-60 p-1 min-h-[50px] hover:bg-gray-200 transition-all duration-200 pl-10" >
                   <ListItemPrefix>
                     <FaChevronRight className="h-3 w-5"/>
                   </ListItemPrefix>

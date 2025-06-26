@@ -25,8 +25,9 @@ const Add_Teacher = () => {
     e.preventDefault();
     try {
       await axios.post("http://localhost:8000/api/teachers/teacher", teacher);
-     
-      navigate('/all_teachers' , { state: { successMessage: 'Teacher added successfully!' } });
+      navigate('/all_teachers', {
+        state: { successMessage: 'Teacher added successfully!' }
+      });
     } catch (error) {
       console.error('Error adding teacher: ', error);
       toast.error('Failed to add teacher');
@@ -34,15 +35,22 @@ const Add_Teacher = () => {
   };
 
   return (
-    <div className='max-w-2xl mx-auto mt-10 p-6 bg-gray-400 shadow-md rounded-lg'>
-      <button onClick={() => navigate('/all_teachers')} className='flex items-center gap-2 text-white bg-gray-800 hover:bg-blue-800 px-4 py-2 rounded-md font-semibold transition mb-4'>
-          <FaArrowLeft className="text-white" />
-  Back
-
+    <div className='max-w-4xl mx-auto mt-10 p-6 bg-blue-gray-100 shadow-md rounded-lg'>
+      {/* Back Button */}
+      <button
+        onClick={() => navigate('/all_teachers')}
+        className='flex items-center gap-2 text-white bg-gray-800 hover:bg-blue-800 px-4 py-2 rounded-md font-semibold transition mb-4'
+      >
+        <FaArrowLeft className="text-white" />
+        Back
       </button>
+
+      {/* Title */}
       <h2 className='text-2xl font-bold text-center mb-6'>ADD NEW TEACHER</h2>
-      <form onSubmit={handleOnSubmit} className='space-y-4'>
-        
+
+      {/* Form */}
+      <form onSubmit={handleOnSubmit} className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+
         {/* Name */}
         <div>
           <label className='block font-medium'>Full Name</label>
@@ -130,44 +138,48 @@ const Add_Teacher = () => {
           />
         </div>
 
-        {/* Join Date */}
-        <div>
+        {/* Join Date - Full width */}
+        <div className='md:col-span-2'>
           <label className='block font-medium'>Join Date</label>
           <input
             type="date"
             name="join_date"
             value={teacher.join_date}
             onChange={handleOnChange}
-            placeholder="Enter joining year"
             className='w-full border p-2 rounded-md border-blue-gray-500'
             required
           />
         </div>
 
-        {/* Submit */}
-        <div onClick={() => navigate('all_teachers')} className='flex justify-center space-x-14 mt-6'>
+        {/* Buttons */}
+        <div className='md:col-span-2 flex justify-between mt-4'>
           <button type='submit' className='bg-blue-500 hover:bg-blue-800 text-white px-6 py-2 rounded-md font-semibold transition'>
             Submit
           </button>
 
-          {/*  Reset Butoon */}
-          <button type='reset' onClick={() => setTeacher({
-            name: '',
-            email: '',
-            department: '',
-            sex: '',
-            join_date: '',
-            age: '',
-            contact: '',
-
-          })} className='bg-yellow-100 hover:bg-purple-900 text-black px-6 py-2 rounded-md font-semibold transition'>Reset
-            
+          <button
+            type='reset'
+            onClick={() => setTeacher({
+              name: '',
+              email: '',
+              department: '',
+              sex: '',
+              join_date: '',
+              age: '',
+              contact: '',
+            })}
+            className='bg-gray-600 hover:bg-purple-900 text-white px-6 py-2 rounded-md font-semibold transition'
+          >
+            Reset
           </button>
-           {/*  Cancel Butoon */}
-           <button onClick={() => navigate('/all_teachers') } className='bg-red-300 hover:bg-blue-gray-500 text-white px-6 py-2 rounded-md font-semibold transition'>Cancel</button>
 
-
-
+          <button
+            type='button'
+            onClick={() => navigate('/all_teachers')}
+            className='bg-red-900 hover:bg-blue-gray-500 text-white px-6 py-2 rounded-md font-semibold transition'
+          >
+            Cancel
+          </button>
         </div>
       </form>
     </div>

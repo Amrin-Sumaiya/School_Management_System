@@ -6,12 +6,12 @@ import { toast} from 'react-toastify'
 
 const Add_Subjects = () => {
 
-    const subjects = {
-    subject_code: '',
-    subject_name: '',
-    description: ''
+const subjects = {
+  subjectCode: '',
+  subjectName: '',
+  description: ''
+};
 
-    };
 
     const [ course, setCourse ] = useState(subjects)
 
@@ -35,9 +35,9 @@ const Add_Subjects = () => {
             toast.error("Failed to create subject")
         })
     }
-
-
     const navigate = useNavigate()
+
+
   return (
         <div className="min-h-screen flex items-center justify-center">
       <div className="w-full max-w-xl p-6 bg-indigo-50 rounded-xl shadow-md">

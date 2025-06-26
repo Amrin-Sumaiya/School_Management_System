@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import {toast} from 'react-toastify'
 import axios from 'axios';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
@@ -74,11 +75,22 @@ const openModal = (subject) => {
       //hanlde input change in modal
     const handleInputChange = (e) =>{
         const {name, value} = e.target;
-        setCurrentSubject({ ...currentSubject, [name]: value });
-
-
-        
+        setCurrentSubject({ ...currentSubject, [name]: value })      
     }
+
+    //delete subject 
+        const handleDelete = async (id) => {
+
+          try{
+            await axios.delete(`http://localhost:8000/api/subject/delete_subject/${id}`);
+            toast.success("Subject deleted Successfully");
+            fetchData();
+    
+          }catch (error){
+            console.error("Delete failed", error);
+            toast.error("Failed to delete subject");
+          }
+        }
   return (
     <div className='p-4'>
       <div className='bg-indigo-50 shadow-lg rounded-xl p-6'>
@@ -109,7 +121,7 @@ const openModal = (subject) => {
                 <button className='text-blue-600 hover:text-blue-800 ' onClick={() => openModal(subjects)}>  
                      <FaEdit /></button> </td>
                <td className='border border-gray-500 px-4 py-3'>
-                <button className='text-red-800 hover:text-red-300 '>  
+          <button className='text-red-800 hover:text-red-300 ' onClick={() => handleDelete(subjects.id || subjects._id)}>  
                      <FaTrash /></button> </td>
               
             </tr>

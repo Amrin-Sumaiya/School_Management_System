@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { FaEdit, FaTrash, FaUserPlus } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom';  // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { toast } from 'react-toastify';
 
 const All_Students = () => {
   const [students, setStudents] = useState([]);
-  const navigate = useNavigate();  // Define navigate function
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,32 +18,29 @@ const All_Students = () => {
       }
     };
     fetchData();
-  }, []);    
+  }, []);
 
   const deleteStudent = async (studentId) => {
-
     try {
       const response = await axios.delete(`http://localhost:8000/api/delete/student/${studentId}`);
-
       setStudents(prevStudents => prevStudents.filter(student => student._id !== studentId));
-
-      toast.success(response.data.message, { position: "top-right"});
-
-    }catch (error){
+      toast.success(response.data.message, { position: "top-right" });
+    } catch (error) {
       console.log("Error deleting student: ", error);
-      toast.error("Failed to delte student ");
+      toast.error("Failed to delete student");
     }
-
-
-  }
+  };
 
   return (
     <div className="p-4">
       {/* Title and Add Student Button */}
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-3xl font-semibold absolute left-1/2 transform -translate-x-1/2"> Student’s Records</h2>
+      <div className="flex items-center justify-between mb-4 relative">
+        <div className="flex-1" /> {/* left spacer */}
+        <h2 className="text-3xl font-semibold absolute left-1/2 transform -translate-x-1/2">
+          Student’s Records
+        </h2>
         <button 
-          onClick={() => navigate('/add_student')}  // Navigate to Add Student page
+          onClick={() => navigate('/add_student')} // navigate add student page 
           className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700 transition"
         >
           <FaUserPlus />
@@ -69,9 +66,9 @@ const All_Students = () => {
         </thead>
         <tbody>
           {students.map((student, index) => (
-            <tr key={student.id || index} className="text-center border">  
+            <tr key={student.id || index} className="text-center border">
               <td className="border p-4">{index + 1}</td>
-                <td className="border p-4">{student.studentId || "N/A"}</td>
+              <td className="border p-4">{student.studentId || "N/A"}</td>
               <td className="border p-4">{student.name}</td>
               <td className="border p-4">{student.class}</td>
               <td className="border p-4">{student.age}</td>
@@ -79,12 +76,18 @@ const All_Students = () => {
               <td className="border p-4">{student.sex}</td>
               <td className="border p-4">{student.email}</td>
               <td className="border p-4">
-                <button   onClick={() => navigate(`/update_student/`+student._id)} className="text-black px-2 py-1 rounded flex items-center gap-1">
+                <button
+                  onClick={() => navigate(`/update_student/${student._id}`)}
+                  className="text-black px-2 py-1 rounded flex items-center gap-1"
+                >
                   <FaEdit />
                 </button>
               </td>
               <td className="border p-4">
-                <button onClick={() =>deleteStudent(student._id)} className="text-red-600 hover:bg-orange-200 px-2 py-1 rounded flex items-center gap-1">
+                <button
+                  onClick={() => deleteStudent(student._id)}
+                  className="text-red-600 hover:bg-orange-200 px-2 py-1 rounded flex items-center gap-1"
+                >
                   <FaTrash />
                 </button>
               </td>

@@ -25,6 +25,10 @@ const examSchema = new mongoose.Schema({
     classLevel: {
         type: String,
         required: true, // "class 8"
+    },
+    examRoomNumber: {
+        type: String,
+        required: true,
     }
 
 }, { timestamps: true });

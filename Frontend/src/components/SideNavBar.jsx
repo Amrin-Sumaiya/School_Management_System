@@ -141,7 +141,7 @@ const SideNavBar = () => {
     Subject / Division Assign
   </ListItem>
 
-  <ListItem className="pl-10">
+  <ListItem onClick={() => navigate("/exam_info")}  className="pl-10">
     <ListItemPrefix>
       <FaChevronRight className="h-3 w-5" />
     </ListItemPrefix>

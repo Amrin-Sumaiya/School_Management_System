@@ -8,7 +8,7 @@ export const create = async(req, res) =>{
 
         const examExist = await ExamInfo.findOne({classLevel, examDate})
         if(examExist){
-            return res.status(400).json({ message: "An exam with this name and date already exists."})
+            return res.status(400).json({ message: "An exam with this class and date already exists."})
         }
 
         const savedData = await newExam.save();
@@ -65,7 +65,8 @@ export const updateExamData = async (req, res) =>{
         const UpdateData= await ExamInfo.findByIdAndUpdate(id, req.body, {
             new:true
         })
-        res.status(200).json(UpdateData)
+            return res.status(400).json({ message: "Update information successfully."})
+      
 
     } catch (error){
         res.status(500).json({ errorMessage: error.message });

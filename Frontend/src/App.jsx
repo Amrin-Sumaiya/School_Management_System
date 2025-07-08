@@ -14,6 +14,9 @@ import Holiday from './Holiday/Vacation.jsx'
 import Classroom from './screen/Classroom.jsx'
 import Subjects from './screen/All_Subject.jsx'
 import Add_Subject from './screen/Add_Subjects.jsx'
+import ExamManage from './screen/ExamManage.jsx';
+import Exam_Add from './screen/Exam_Add.jsx';
+import Exam_Update from './screen/Exam_Update.jsx';
 
 
 
@@ -37,6 +40,9 @@ const App = () => {
         <Route path="/classroom" element={<Classroom />} />
         <Route path="/subjects" element={<Subjects />} />
         <Route path="/add_subject" element={<Add_Subject />} />
+        <Route path="/exam_info" element= { <ExamManage />} />
+        <Route path="/exam_add" element= { <Exam_Add />} />
+        <Route path="/update_exam/:id" element= { <Exam_Update />} />
   
 
 

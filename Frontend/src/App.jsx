@@ -44,8 +44,6 @@ const App = () => {
         <Route path="/exam_add" element= { <Exam_Add />} />
         <Route path="/update_exam/:id" element= { <Exam_Update />} />
   
-
-
         </Routes>
         </WrapperScreen>
           <ToastContainer />

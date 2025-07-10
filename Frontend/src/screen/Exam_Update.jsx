@@ -17,15 +17,26 @@ const Exam_Update = () => {
     examRoomNumber: '',
   });
 
-useEffect (()=>{
-    axios.get(`http://localhost:8000/api/exam/all_exams/${id}`)
-    .then((response)=>{
-        setExamData(response.data)
-    })
-    .catch((error)=>{
-        console.log(error)
-    })
-}, [id])
+useEffect(() => {
+    axios.get(`http://localhost:8000/api/exam/specific_exam_Info/${id}`)
+        .then((response) => {
+            const data = response.data;
+            setExamData(prev => ({
+                ...prev,
+                ...data,
+                examDate: data.examDate ? new Date(data.examDate).toISOString().split('T')[0] : prev.examDate,
+                examName: data.examName ?? prev.examName,
+                examType: data.examType ?? prev.examType,
+                examMarks: data.examMarks ?? prev.examMarks,
+                classLevel: data.classLevel ?? prev.classLevel,
+                examRoomNumber: data.examRoomNumber ?? prev.examRoomNumber,
+            }));
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}, [id]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,20 +47,30 @@ useEffect (()=>{
   };
 
   // Handle form submission
-  const submitForm = (e) => {
+const submitForm = (e) => {
     e.preventDefault();
 
-    axios.put(`http://localhost:8000/api/exam/update/${id}`, examData)
-      .then((response) => {
-        toast.success("Exam information updated successfully!");
-        setTimeout(() => navigate('/exam_info'), 1500);
-      })
-      .catch((error) => {
-        console.error(error);
-        toast.error("Failed to update exam information.");
-      });
-  };
+    const updatedData = {
+        ...examData,
+        examDate: new Date(examData.examDate).toISOString(), // safer unless confirmed YYYY-MM-DD is required
+        examMarks: Number(examData.examMarks),
+        classLevel: examData.classLevel,
+    };
 
+    console.log("Updated Data Being Sent:", updatedData);
+
+    axios.put(`http://localhost:8000/api/exam/update/${id}`, updatedData)
+        .then((response) => {
+            toast.success("Exam information updated successfully!");
+            setTimeout(() => navigate('/exam_info'), 1500);
+        })
+        .catch((error) => {
+            console.error("Error Response Data:", error.response?.data);
+            console.error("Error Status:", error.response?.status);
+            console.error("Full Error:", error);
+            toast.error("Failed to update exam information.");
+        });
+};
 
 
   return (
@@ -71,7 +92,7 @@ useEffect (()=>{
         <div>
           <label className="block text-sm font-medium text-black">Exam Date</label>
           <input
-            type="date"
+            type="Date"
             name="examDate"
             value={examData.examDate}
             onChange={handleChange}

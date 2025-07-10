@@ -62,10 +62,11 @@ export const updateExamData = async (req, res) =>{
             return res.status(404).json({ message: "Exam Not Found"});
 
         }
-        const UpdateData= await ExamInfo.findByIdAndUpdate(id, req.body, {
+        const UpdatedData= await ExamInfo.findByIdAndUpdate(id, req.body, {
             new:true
         })
-            return res.status(400).json({ message: "Update information successfully."})
+          return res.status(200).json({ message: "Update information successfully.", UpdatedData })
+
       
 
     } catch (error){

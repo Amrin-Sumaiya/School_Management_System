@@ -52,7 +52,7 @@ const SideNavBar = () => {
     <Card
       className={`h-full flex flex-col justify-between ${
         isExpanded ? "w-72" : "w-16"
-      } min-h-screen p-2  shadow-blue-gray-900/5 bg-green-100  rounded-none transition-all duration-300`}
+      } min-h-screen p-2  shadow-blue-gray-900/5 bg-indigo-100  rounded-none transition-all duration-300`}
     >
       {/* Sidebar Toggle Button */}
       <div

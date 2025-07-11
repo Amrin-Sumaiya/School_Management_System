@@ -12,7 +12,7 @@ const Header = () => {
   };
 
   return (
-    <header className="p-3 px-10 bg-green-100 text-black  shadow-md">
+    <header className="p-3 px-10 bg-indigo-100 text-black  shadow-md">
       {/* Container for header content */}
       <div className="flex justify-between items-center">
         {/* Logo Section */}

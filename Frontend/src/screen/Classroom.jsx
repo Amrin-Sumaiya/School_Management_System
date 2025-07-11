@@ -116,16 +116,16 @@ const ClassManager = () => {
   }, []);
 
   return (
-    <Card className="bg-yellow-50 p-6 max-w-5xl mx-auto mt-10">
+    <Card className="bg-indigo-50 p-6 max-w-5xl mx-auto mt-10">
       <CardContent>
-        <h2 className="text-3xl text-center font-bold mb-4">Assign Classroom</h2>
+        <h2 className="text-3xl text-center font-bold mb-4">Assign Classroom Directory</h2>
 
         <div className="flex justify-end mb-4">
           <Button
             onClick={() => setModalIsOpen(true)}
             className="px-6 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-700 transition"
           >
-            Add Class
+           + Add Class
           </Button>
         </div>
 

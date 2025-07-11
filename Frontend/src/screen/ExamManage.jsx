@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 import { useNavigate } from 'react-router'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 
 const ExamManage = () => {
@@ -17,10 +18,23 @@ const ExamManage = () => {
         };
         fetchData()
     }, [])
+
+    const deleteExam = async (examId) =>{
+        await axios.delete(`http://localhost:8000/api/exam/delete/${examId}`)
+        .then((response)=>{
+            setExams((prevExam)=>prevExam.filter((exams)=>exams._id !==examId))
+            toast.success(response.data.message,{position:"top-right"})
+        })
+        
+        .catch((error)=>{
+            console.log(error);
+        })
+    }
+
     const navigate = useNavigate()
   return (
     <div className='p-4'>
-     <div className='bg-orange-50 shadow-lg rounded-xl p-6'>
+     <div className='bg-indigo-50 shadow-lg rounded-xl p-6'>
     <div className='mb-4 flex justify-between items-center'>
    <h2 className='text-3xl font-semibold text-black text-center w-full'>Exam Management Directory</h2>
 <button onClick={() => navigate('/exam_add')} className='bg-blue-600 hover:bg-blue-900 text-white font-medium text-center px-4 py-2 rounded-md shadow-md transition duration-200'>
@@ -56,7 +70,7 @@ const ExamManage = () => {
             <button onClick={() => navigate(`/update_exam/${exam._id}`)} className='text-blue-700 hover:text-blue-900'> <FaEdit /></button>
             </td>
             <td className='border border-gray-600 px-2 py-3'>
-            <button className='text-red-700 hover:text-red-900'> <FaTrash /></button>
+            <button onClick={()=> deleteExam(exam._id)} className='text-red-700 hover:text-red-900'> <FaTrash /></button>
             </td>
             </tr>
 

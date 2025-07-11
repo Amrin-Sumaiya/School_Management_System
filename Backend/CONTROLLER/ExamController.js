@@ -65,9 +65,7 @@ export const updateExamData = async (req, res) =>{
         const UpdatedData= await ExamInfo.findByIdAndUpdate(id, req.body, {
             new:true
         })
-          return res.status(200).json({ message: "Update information successfully.", UpdatedData })
-
-      
+          return res.status(200).json({ message: "Updated Exam data successfully.", UpdatedData })
 
     } catch (error){
         res.status(500).json({ errorMessage: error.message });
@@ -86,7 +84,7 @@ export const deleteExamData = async (req, res) =>{
 
         }
         await ExamInfo. findByIdAndDelete(id);
-        res.status(200).json({ messaqge: "Exam Data Deleted Successfully "})
+        res.status(200).json({ message: "Exam Data Deleted Successfully "})
 
     } catch (error){
         res.status(500).json({ errorMessage: error.message })

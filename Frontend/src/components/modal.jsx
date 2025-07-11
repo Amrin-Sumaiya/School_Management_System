@@ -17,7 +17,7 @@ const CustomModal = ({
     <Modal isOpen={isOpen}
     onRequestClose={onClose}
     contentLabel={isEditMode ? 'Edit Classroom' : 'Add Classroom'}
-    className="bg-yellow-50 p-16 max-w-md mt-40 rounded-xl shadow-lg outline-none"
+    className="bg-indigo-50 p-16 max-w-md mt-40 rounded-xl shadow-lg outline-none"
     overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
         <h2 className="text-2xl font-bold mb-4 text-center">{isEditMode ? "Update Classroom" : "Add New Classroom"}</h2>
       <form onSubmit={onSubmit} className="space-y-4">

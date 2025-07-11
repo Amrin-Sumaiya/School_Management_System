@@ -62,7 +62,7 @@ const submitForm = (e) => {
     axios.put(`http://localhost:8000/api/exam/update/${id}`, updatedData)
         .then((response) => {
             toast.success("Exam information updated successfully!");
-            setTimeout(() => navigate('/exam_info'), 1500);
+            setTimeout(() => navigate('/exam_info'), 3000);
         })
         .catch((error) => {
             console.error("Error Response Data:", error.response?.data);
@@ -74,7 +74,7 @@ const submitForm = (e) => {
 
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-orange-50 rounded-xl shadow-lg mt-10">
+    <div className="max-w-4xl mx-auto p-6 bg-indigo-50 rounded-xl shadow-lg mt-10">
       <ToastContainer position="top-left" />
 
       <button

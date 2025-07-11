@@ -1,104 +1,121 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { toast } from 'react-toastify'
+import { toast } from 'react-toastify';
 
 const Attendance = () => {
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState({}); // { studentId: "Present" | "Absent" }
+  const [loading, setLoading] = useState(false);
 
-
-
-  // Fetch and sort  students on mount
+  // Fetch and sort students on mount
   useEffect(() => {
-    axios.get("http://localhost:8000/api/oneclassteacher/attendancebyteacher/class/8/version/english")
-      .then(res => {
-        const sorted = res.data.sort((a,b) =>{
+    const fetchStudents = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:8000/api/oneclassteacher/attendancebyteacher/class/8/version/english"
+        );
+        const sorted = res.data.sort((a, b) => {
           const idA = parseInt(a.studentId, 10);
           const idB = parseInt(b.studentId, 10);
           return idA - idB;
         });
-        setStudents(sorted) 
-      })
-      .catch(err => console.error("Error fetching students:", err));
+        setStudents(sorted);
+      } catch (err) {
+        console.error("Error fetching students:", err);
+        toast.error("Failed to fetch students.");
+      }
+    };
+
+    fetchStudents();
   }, []);
 
-  // Handle checkbox toggle
+  // Toggle attendance status
   const handleToggle = (id) => {
-    setAttendance(prev => ({
+    setAttendance((prev) => ({
       ...prev,
-      [id]: prev[id] === "Present" ? "Absent" : "Present"
+      [id]: prev[id] === "Present" ? "Absent" : "Present",
     }));
   };
 
   // Submit attendance
   const handleSubmit = async () => {
     try {
+      setLoading(true);
+      const formattedData = students.map((student) => ({
+        id: student.id,
+        status: attendance[student.id] || "Absent",
+      }));
 
-    const formattedData = students.map(student => ({
-      id: student.id,
-      status: attendance[student.id] || "Absent"
-    }));
+      await axios.post("http://localhost:8000/api/attendance/student_attendance", {
+        studentId: formattedData,
+        date: new Date(),
+        remarks: "",
+      });
 
-      // if (formattedData.length === 0){
-      //   toast.warn("No students marked as Present ");
-      //   return;
-      // }
-      
-        await axios.post("http://localhost:8000/api/attendance/student_attendance", {
-          studentId: formattedData, 
-          date: new Date(),
-         
-          remarks: ""
-        });
-   
       toast.success("Attendance submitted successfully!");
     } catch (error) {
-     console.error(error)
+      console.error(error);
       toast.error("Failed to submit attendance.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg mt-10">
-      <h2 className="text-2xl font-bold mb-6 text-center text-green-900 ">Attendance Sheet (class: 8, Version: English)</h2>
+    <div className="max-w-4xl mx-auto p-6">
+      <div className="bg-indigo-50 shadow-lg rounded-xl p-6">
+        <h2 className="text-3xl font-semibold text-black text-center mb-6">
+          Attendance Sheet (Class: 8, Version: English)
+        </h2>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-300">
-          <thead className="bg-gray-800 text-white">
-            <tr>
-              <th className="py-3 px-4 border">Student ID</th>
-              <th className="py-3 px-4 border">Name</th>
-              <th className="py-3 px-4 border">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {students.map((student, index) => (
-              <tr key={student.id || index}>
-                <td className="py-2 px-4 border text-center">{student.studentId}</td>
-                <td className="py-2 px-4 border text-center">{student.name}</td>
-                <td className="py-2 px-4 border text-center w-36">
-                  <label className="inline-flex items-center justify-center w-full gap-2">
-                    <input
-                      type="checkbox"
-                      checked={attendance[student.id] === "Present"}
-                      onChange={() => handleToggle(student.id)}
-                    />
-                    <span className='inline-block w-16 text-center'>{attendance[student.id] || "Absent"}</span>
-                  </label>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="min-w-full table-fixed border-collapse border border-gray-300">
+            <thead>
+              <tr className="bg-gray-300 text-center text-black">
+                <th className="border border-gray-500 px-4 py-3 w-1/4">Student ID</th>
+                <th className="border border-gray-500 px-4 py-3 w-1/2">Name</th>
+                <th className="border border-gray-500 px-4 py-3 w-1/4">Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {students.map((student, index) => (
+                <tr key={student.id || index}>
+                  <td className="border border-gray-500 px-4 py-3 text-center">
+                    {student.studentId}
+                  </td>
+                  <td className="border border-gray-500 px-4 py-3 text-center">
+                    {student.name}
+                  </td>
+                  <td className="border border-gray-500 px-4 py-3 text-center">
+                    <label className="inline-flex items-center justify-center gap-2 w-full">
+                      <input
+                        type="checkbox"
+                        checked={attendance[student.id] === "Present"}
+                        onChange={() => handleToggle(student.id)}
+                        className="form-checkbox h-5 w-5 text-green-600"
+                      />
+                      <span className="inline-block w-16 text-center">
+                        {attendance[student.id] || "Absent"}
+                      </span>
+                    </label>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-      <div className="text-center mt-6">
-        <button
-          onClick={handleSubmit}
-          className="bg-blue-300 hover:bg-blue-600 text-black font-bold py-2 px-6 rounded"
-        >
-          Submit Attendance
-        </button>
+        <div className="text-center mt-6">
+          <button
+            onClick={handleSubmit}
+            disabled={loading}
+            className={`${
+              loading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-700"
+            } text-white font-bold py-2 px-6 rounded transition duration-200`}
+          >
+            {loading ? "Submitting..." : "Submit Attendance"}
+          </button>
+        </div>
       </div>
     </div>
   );

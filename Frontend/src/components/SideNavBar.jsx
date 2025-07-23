@@ -56,7 +56,7 @@ const SideNavBar = () => {
     >
       {/* Sidebar Toggle Button */}
       <div
-        className="absolute top-0 right-4 transform translate-x-1/2 flex items-center justify-center cursor-pointer  border-white  rounded-md bg-white shadow-md border-2  hover:bg-blue-gray-100 transition duration-300 w-9 h-9"
+        className="absolute top-0 right-3 transform translate-x-1/2 flex items-center justify-center cursor-pointer  border-white  rounded bg-white shadow-md border-2  hover:bg-blue-gray-100 transition duration-300 w-6 h-8"
         onClick={handleSidebarToggle}
       >
         {isExpanded ? (
@@ -207,7 +207,7 @@ const SideNavBar = () => {
           </ListItemPrefix>
           Mark Attendance
         </ListItem>
-                <ListItem className="pl-10">
+                {/* <ListItem className="pl-10">
           <ListItemPrefix>
             <FaUsers className="h-4 w-4" />
           </ListItemPrefix>
@@ -218,8 +218,8 @@ const SideNavBar = () => {
             <FaClipboardList className="h-4 w-4" />
           </ListItemPrefix>
           Submit Class-Test Marks
-        </ListItem>
-        <ListItem className="pl-10">
+        </ListItem> */}
+        <ListItem onClick={() => navigate("/all_result")} className="pl-10">
           <ListItemPrefix>
             <FaUsers className="h-4 w-4" />
           </ListItemPrefix>

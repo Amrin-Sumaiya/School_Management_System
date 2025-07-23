@@ -1,7 +1,13 @@
 import express from "express"
 
 
-import {create, getAllStudents, getStudentById ,update, deleteStudent} from "../CONTROLLER/userController.js"
+import {create, 
+    getAllStudents,
+    getStudentById ,
+    update,
+    deleteStudent,
+    getClassLevels,
+getClassLevelWithStudents} from "../CONTROLLER/userController.js"
 
 
 const route = express.Router()
@@ -9,6 +15,8 @@ const route = express.Router()
 route.post("/students", create);
 route.get("/student", getAllStudents);
 route.get("/student/:id", getStudentById);
+route.get("/classlevels", getClassLevels);
+route.get("/classlevels-with-students", getClassLevelWithStudents)
 route.put("/update/student/:id", update);
 route.delete("/delete/student/:id", deleteStudent)
 

@@ -109,3 +109,36 @@ export const create = async(req,res)=>{
     }
 
  }
+
+ // Get all uniqe class levels
+ export const getClassLevels = async (req, res) => {
+    try {
+        const classes = await Student.distinct("class");
+        if (!classes || classes.length === 0){
+            return res.status(404).json({ message: "No class levels found "});
+        }
+        res.status(200).json(classes);
+    } catch (error) {
+        res.status(500).json({ errorMessage: error.message });
+    }
+ }
+
+// get student by specific class
+export const getClassLevelWithStudents = async (req, res) => {
+    const selectedClass = parseInt(req.query.class);
+    try {
+        if (!selectedClass) {
+            return res.status(400).json({ message: "Class Parameted is required"})
+        }
+        const students = await Student.find({ class: selectedClass });
+
+        if (!students || students.length === 0){
+            return res.status(404).json({ message: `No student found for this class ${selectedClass}.` })
+        }
+
+        res.status(200).json(students);
+    }catch (error) {
+        res.status(500).json({ errorMessage: error.message});
+    }
+}
+

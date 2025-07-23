@@ -17,6 +17,7 @@ import Add_Subject from './screen/Add_Subjects.jsx'
 import ExamManage from './screen/ExamManage.jsx';
 import Exam_Add from './screen/Exam_Add.jsx';
 import Exam_Update from './screen/Exam_Update.jsx';
+import AllResult from './screen/All_Result.jsx';
 
 
 
@@ -43,6 +44,7 @@ const App = () => {
         <Route path="/exam_info" element= { <ExamManage />} />
         <Route path="/exam_add" element= { <Exam_Add />} />
         <Route path="/update_exam/:id" element= { <Exam_Update />} />
+        <Route path="/all_result" element={ <AllResult />} />
   
         </Routes>
         </WrapperScreen>

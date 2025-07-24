@@ -16,6 +16,15 @@ const Update_Student = () => {
     version: '',
     sex: '',
     email: '',
+    fatherName: '',
+    motherName: '',
+    gurdianContact: '',
+    gurdianProffesion: '',
+    religion: '',
+    caste: '',
+    bloodGroup: '',
+    dob: '',
+    address: '',
   });
 
   useEffect(() => {
@@ -44,7 +53,7 @@ const Update_Student = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-blue-gray-200 shadow-md rounded-lg mt-10">
+    <div className="max-w-2xl mx-auto p-6 bg-indigo-50 shadow-md rounded-lg mt-10">
       {/* Back Button & Title */}
       <div className="flex items-center gap-3 mb-6">
         <button
@@ -149,7 +158,7 @@ const Update_Student = () => {
         </div>
 
         {/* Email */}
-        <div className="md:col-span-2">
+        <div >
           <label className="block font-medium">Email</label>
           <input
             type="email"
@@ -159,6 +168,126 @@ const Update_Student = () => {
             required
             className="w-full border p-2 rounded-md border-blue-gray-500"
             placeholder="Enter email"
+          />
+        </div>
+        <br />
+              <h2 className="text-2xl font-semibold text-center mb-6 text-black drop-shadow-lg">UPDATE STUDENT</h2>
+              <br />
+    <div> 
+          <label className="block font-medium">Father's Name</label>
+          <input
+            type="text"
+            name="fatherName"
+            value={student.fatherName}
+            onChange={handleChange}
+            required
+             className="w-full border p-2 rounded-md border-blue-gray-500"
+            placeholder="Enter Name"
+          />
+        </div>
+            <div> 
+          <label className="block font-medium">Mother's Name</label>
+          <input
+            type="text"
+            name="motherName"
+            value={student.motherName}
+            onChange={handleChange}
+            required
+             className="w-full border p-2 rounded-md border-blue-gray-500"
+            placeholder="Enter Name"
+          />
+        </div>
+       <div> 
+          <label className="block font-medium">Gurdian's Contact</label>
+          <input
+            type="text"
+            name="gurdianContact"
+            value={student.gurdianContact}
+            onChange={handleChange}
+            required
+             className="w-full border p-2 rounded-md border-blue-gray-500"
+            placeholder="Enter Number"
+          />
+        </div>
+               <div> 
+          <label className="block font-medium">Gurdian's Profession</label>
+          <input
+            type="text"
+            name="gurdianProffesion"
+            value={student.gurdianProffesion}
+            onChange={handleChange}
+            required
+             className="w-full border p-2 rounded-md border-blue-gray-500"
+            placeholder="Enter Number"
+          />
+        </div>
+                <div>
+          <label className="block font-medium">Religion</label>
+          <select
+            name="religion"
+            value={student.religion}
+            onChange={handleChange}
+            required
+            className="w-full border p-2 rounded-md border-blue-gray-500"
+          >
+            <option value="">Select</option>
+            <option value="muslim">Muslim</option>
+            <option value="hindu">Hindu</option>
+            <option value="cristian">Cristian</option>
+            <option value="buddhist">Buddhist</option>
+          </select>
+        </div>
+
+    <div>
+          <label className="block font-medium">Caste</label>
+          <input
+            type="text"
+            name="caste"
+            value={student.caste}
+            onChange={handleChange}
+            className="w-full border p-2 rounded-md border-blue-gray-500"
+          />
+        </div>
+                <div>
+          <label className="block font-medium">Blood Group</label>
+          <select
+            name="blood group"
+            value={student.bloodGroup}
+            onChange={handleChange}
+            required
+            className="w-full border p-2 rounded-md border-blue-gray-500"
+          >
+            <option value="">Select</option>
+            <option value="A+">(A+)</option>
+            <option value="A-">(A-)</option>
+            <option value="B+">(B+)</option>
+            <option value="B-">(B-)</option>
+           <option value="O+">(O+)</option>
+            <option value="O-">(O-)</option>
+            <option value="AB+">(AB+)</option>
+            <option value="AB-">(AB-)</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block font-medium">Date of Birth</label>
+          <input
+            type="date"
+            name="dob"
+            value={student.dob}
+            onChange={handleChange}
+            className="w-full border p-2 rounded-md border-blue-gray-500"
+          />
+        </div>
+
+        <div className="md:col-span-2">
+          <label className="block font-medium">Address</label>
+          <textarea
+            name="address"
+            value={student.address}
+            onChange={handleChange}
+            rows={3}
+            className="w-full border p-2 rounded-md border-blue-gray-500"
           />
         </div>
 

@@ -103,10 +103,10 @@ const SideNavBar = () => {
     <ListItemPrefix>
       <FaChevronRight className="h-3 w-5" />
     </ListItemPrefix>
-    <Link to="/dashboard">Dashboard</Link>
+    Dashboard
   </ListItem>
 
-  <ListItem className="pl-10">
+  <ListItem onClick={() => navigate("/add_student")} className="pl-10">
     <ListItemPrefix>
       <FaChevronRight className="h-3 w-5" />
     </ListItemPrefix>
@@ -207,27 +207,14 @@ const SideNavBar = () => {
           </ListItemPrefix>
           Mark Attendance
         </ListItem>
-                {/* <ListItem className="pl-10">
-          <ListItemPrefix>
-            <FaUsers className="h-4 w-4" />
-          </ListItemPrefix>
-          Class-Test Management
-        </ListItem>
-        <ListItem className="pl-10">
-          <ListItemPrefix>
-            <FaClipboardList className="h-4 w-4" />
-          </ListItemPrefix>
-          Submit Class-Test Marks
-        </ListItem> */}
+
         <ListItem onClick={() => navigate("/all_result")} className="pl-10">
           <ListItemPrefix>
             <FaUsers className="h-4 w-4" />
           </ListItemPrefix>
           Submit All Exam Result
         </ListItem>
-
       
-        
       </List>
     </AccordionBody>
   )}

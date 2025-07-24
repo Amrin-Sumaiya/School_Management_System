@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { FaEdit, FaTrash, FaUserPlus } from "react-icons/fa";
+import { FaEdit, FaTrash, FaUserPlus, FaEye } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { toast } from 'react-toastify';
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');
 
 const All_Students = () => {
   const [students, setStudents] = useState([]);
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,6 +24,16 @@ const All_Students = () => {
     };
     fetchData();
   }, []);
+
+  const openModal = (student) => {
+    setSelectedStudent(student);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedStudent(null);
+  };
 
   const deleteStudent = async (studentId) => {
     try {
@@ -40,7 +55,7 @@ const All_Students = () => {
           Student’s Records
         </h2>
         <button 
-          onClick={() => navigate('/add_student')} // navigate add student page 
+          onClick={() => navigate('/add_student')} 
           className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700 transition"
         >
           <FaUserPlus />
@@ -52,33 +67,39 @@ const All_Students = () => {
       <table className='w-full border-collapse border-gray-800'>
         <thead>
           <tr className='bg-gray-300'>
-            <th className="border p-4">SI</th>
-            <th className="border p-4">Student ID</th>
+            <th className="border p-2">Student ID</th>
             <th className="border p-4">Name</th>
             <th className="border p-4">Class</th>
             <th className="border p-4">Age</th>
             <th className="border p-4">Version</th>
             <th className="border p-4">Sex</th>
+            <th className="border p-4">Religion</th>
             <th className="border p-4">Email</th>
-            <th className="border p-4">Update</th>
+            <th className="border p-4">View Details</th>
+            <th className="border p-2">Update</th>
             <th className="border p-4">Delete</th>
           </tr>
         </thead>
         <tbody>
-          {students.map((student, index) => (
-            <tr key={student.id || index} className="text-center border">
-              <td className="border p-4">{index + 1}</td>
-              <td className="border p-4">{student.studentId || "N/A"}</td>
+          {students.map((student) => (
+            <tr key={student._id} className="text-center border">
+              <td className="border p-2">{student.studentId || "N/A"}</td>
               <td className="border p-4">{student.name}</td>
               <td className="border p-4">{student.class}</td>
               <td className="border p-4">{student.age}</td>
               <td className="border p-4">{student.version}</td>
               <td className="border p-4">{student.sex}</td>
+              <td className="border p-4">{student.religion}</td>
               <td className="border p-4">{student.email}</td>
               <td className="border p-4">
+                <button onClick={() => openModal(student)} className="text-blue-600 hover:text-blue-800">
+                  <FaEye className="inline-block mr-1" />
+                </button>
+              </td>
+              <td className="border p-2">
                 <button
                   onClick={() => navigate(`/update_student/${student._id}`)}
-                  className="text-black px-2 py-1 rounded flex items-center gap-1"
+                  className="text-blue-600 hover:bg-green-200 px-2 py-1 rounded flex items-center gap-1"
                 >
                   <FaEdit />
                 </button>
@@ -95,6 +116,38 @@ const All_Students = () => {
           ))}
         </tbody>
       </table>
+
+      {/* Modal */}
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        contentLabel="Guardian and Others Information"
+        className="bg-white rounded-md p-6 max-w-md mx-auto mt-24 shadow-xl border border-gray-300"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+      >
+        <h3 className="text-xl font-bold mb-4 text-indigo-700 text-center">Guardian & Others Details</h3>
+        {selectedStudent && (
+          <div className="space-y-2 text-gray-700">
+            <p><strong>Father's Name:</strong> {selectedStudent.fatherName}</p>
+            <p><strong>Mother's Name:</strong> {selectedStudent.motherName}</p>
+            <p><strong>Guardian Profession:</strong> {selectedStudent.gurdianProffesion}</p>
+            <p><strong>Guardian Contact:</strong> {selectedStudent.gurdianContact}</p>
+            <p><strong>Address:</strong> {selectedStudent.address}</p>
+            <p><strong>Blood Group:</strong> {selectedStudent.bloodGroup}</p>
+            <p><strong>Bith-Date:</strong> {selectedStudent.dob}</p>
+            <p><strong>Caste:</strong> {selectedStudent.caste}</p>
+            
+          </div>
+        )}
+        <div className="mt-6 text-center">
+          <button
+            onClick={closeModal}
+            className="bg-gray-700 text-white px-6 py-2 rounded-md hover:bg-gray-800"
+          >
+            Close
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };

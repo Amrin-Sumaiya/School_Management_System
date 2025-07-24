@@ -8,15 +8,18 @@ export const create = async(req,res)=>{
     
     try{
         const newStudent = new Student(req.body);
-        const { email, studentId, class: studentClass } = newStudent;
+        const { email, gurdianContact, studentId, class: studentClass } = newStudent;
        // const data=await Student.find({});
        // console.log(data)
 
          const studentExist = await Student.findOne({   $or: [
     { email },
-    { studentId, class: studentClass }
+    {gurdianContact},
+    { studentId }
   ] });
-         if (studentExist) {
+
+  
+         if (false) {
              return res.status(400).json({ message: "Student already exists with this email or roll number in this class."})
          }
 

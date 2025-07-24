@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FaArrowLeft } from "react-icons/fa";
 import axios from 'axios';
+import { useNavigate } from 'react-router';
+import { FaArrowLeft } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
-const Add_Student = () => {
-  const navigate = useNavigate();
-
+const Add_student = () => {
+   const navigate = useNavigate()
   const [student, setStudent] = useState({
     studentId: '',
     name: '',
@@ -15,9 +14,17 @@ const Add_Student = () => {
     version: '',
     sex: '',
     email: '',
+    fatherName: '',
+    motherName: '',
+    gurdianContact: '',
+    gurdianProffesion: '',
+    religion: '',
+    caste: '',
+    bloodGroup: '',
+    dob: '',
+    address: '',
   });
-
-  const handleChange = (e) => {
+    const handleChange = (e) => {
     setStudent({ ...student, [e.target.name]: e.target.value });
   };
 
@@ -36,52 +43,48 @@ const Add_Student = () => {
         console.log(error);
       });
   };
+ 
+
+ 
+  
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-blue-gray-100 shadow-md rounded-lg mt-10">
-      {/* Back Button & Title */}
-      <div className="flex items-center gap-3 mb-6">
-        <button
-          onClick={() => navigate('/all_students')}
-          className="flex items-center gap-2 px-4 py-2 bg-gray-700 text-white rounded-md shadow-md hover:bg-gray-800 transition duration-300"
-        >
-          <FaArrowLeft className="text-lg" />
-          <span className="text-sm font-medium">Back</span>
-        </button>
-      </div>
+    <div className="p-6  min-h-screen">
+      <h2 className="text-2xl font-semibold mb-6 text-center text-indigo-700">Admit New Student</h2>
 
-      <h2 className="text-2xl font-semibold text-center mb-6 text-black drop-shadow-lg">ADD NEW STUDENT</h2>
+      <form onSubmit={submitForm} className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-lg shadow-md">
 
-      <form onSubmit={submitForm} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Student ID */}
+        {/* Section: Basic Student Info */}
+        <div className="md:col-span-2 ">
+         <button onClick={() => navigate('/all_students')} className='flex items-center gap-2 px-4 py-2 bg-gray-700 text-white rounded-md shadow-md hover:bg-gray-700 transition duration-300'><FaArrowLeft className='text-lg'  />back</button>
+         <br /> <h3 className="text-xl font-semibold text-center bg-indigo-100 py-2 rounded">Student Personal Information</h3>
+          
+        </div>
+
         <div>
-          <label className="block font-medium">Student ID (Roll)</label>
+          <label className="block font-medium">Student ID</label>
           <input
             type="text"
             name="studentId"
             value={student.studentId}
             onChange={handleChange}
             required
-            className="w-full border p-2 rounded-md border-blue-gray-500"
-            placeholder="Enter student roll number"
+            className="w-full border p-2 rounded-md"
           />
         </div>
 
-        {/* Name */}
         <div>
-          <label className="block font-medium">Full Name</label>
+          <label className="block font-medium">Name</label>
           <input
             type="text"
             name="name"
             value={student.name}
             onChange={handleChange}
             required
-            className="w-full border p-2 rounded-md border-blue-gray-500"
-            placeholder="Enter full name"
+            className="w-full border p-2 rounded-md"
           />
         </div>
 
-        {/* Class */}
         <div>
           <label className="block font-medium">Class</label>
           <input
@@ -90,12 +93,10 @@ const Add_Student = () => {
             value={student.class}
             onChange={handleChange}
             required
-            className="w-full border p-2 rounded-md border-blue-gray-500"
-            placeholder="Enter class"
+            className="w-full border p-2 rounded-md"
           />
         </div>
 
-        {/* Age */}
         <div>
           <label className="block font-medium">Age</label>
           <input
@@ -104,45 +105,41 @@ const Add_Student = () => {
             value={student.age}
             onChange={handleChange}
             required
-            className="w-full border border-blue-gray-500 p-2 rounded-md"
-            placeholder="Enter age"
+            className="w-full border p-2 rounded-md"
           />
         </div>
 
-        {/* Version */}
         <div>
           <label className="block font-medium">Version</label>
+
           <select
             name="version"
             value={student.version}
             onChange={handleChange}
             required
             className="w-full border p-2 rounded-md border-blue-gray-500"
-          >
-            <option value="">Select Version</option>
+          >  
+            <option value="">Select</option>       
             <option value="Bangla">Bangla</option>
             <option value="English">English</option>
           </select>
         </div>
 
-        {/* Gender */}
         <div>
-          <label className="block font-medium">Gender</label>
+          <label className="block font-medium">Sex</label>
           <select
             name="sex"
             value={student.sex}
             onChange={handleChange}
             required
-            className="w-full border p-2 rounded-md border-blue-gray-500"
+            className="w-full border p-2 rounded-md"
           >
-            <option value="">Select Gender</option>
+            <option value="">Select</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
-            <option value="Other">Other</option>
           </select>
         </div>
 
-        {/* Email - make it full width by spanning 2 columns */}
         <div className="md:col-span-2">
           <label className="block font-medium">Email</label>
           <input
@@ -151,21 +148,144 @@ const Add_Student = () => {
             value={student.email}
             onChange={handleChange}
             required
-            className="w-full border p-2 rounded-md border-blue-gray-500"
-            placeholder="Enter email"
+            className="w-full border p-2 rounded-md"
           />
         </div>
 
-        {/* Buttons - full width row */}
-        <div className="md:col-span-2 flex justify-between">
+        {/* Section: Guardian Info */}
+        <div className="md:col-span-2">
+          <h3 className="text-xl font-semibold text-center bg-indigo-100 py-2 rounded">Guardian & Others Information</h3>
+        </div>
+
+        <div>
+          <label className="block font-medium">Father's Name</label>
+          <input
+            type="text"
+            name="fatherName"
+            value={student.fatherName}
+            onChange={handleChange}
+            required
+            className="w-full border p-2 rounded-md"
+          />
+        </div>
+
+        <div>
+          <label className="block font-medium">Mother's Name</label>
+          <input
+            type="text"
+            name="motherName"
+            value={student.motherName}
+            onChange={handleChange}
+            required
+            className="w-full border p-2 rounded-md"
+          />
+        </div>
+
+        <div>
+          <label className="block font-medium">Guardian Contact</label>
+          <input
+            type="text"
+            name="gurdianContact"
+            value={student.gurdianContact}
+            onChange={handleChange}
+            required
+            className="w-full border p-2 rounded-md"
+          />
+        </div>
+
+        <div>
+          <label className="block font-medium">Guardian Profession</label>
+          <input
+            type="text"
+            name="gurdianProffesion"
+            value={student.gurdianProffesion}
+            onChange={handleChange}
+            required
+            className="w-full border p-2 rounded-md"
+          />
+        </div>
+
+        <div>
+          <label className="block font-medium">Religion</label>
+          <select
+            name="religion"
+            value={student.religion}
+            onChange={handleChange}
+            required
+            className="w-full border p-2 rounded-md"
+          >
+            <option value="">Select</option>
+            <option value="muslim">Muslim</option>
+            <option value="hindu">Hindu</option>
+            <option value="cristian">Cristian</option>
+            <option value="buddhist">Buddhist</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block font-medium">Caste</label>
+          <input
+            type="text"
+            name="caste"
+            value={student.caste}
+            onChange={handleChange}
+            className="w-full border p-2 rounded-md"
+          />
+        </div>
+
+        <div>
+          <label className="block font-medium">Blood Group</label>
+          <select
+            name="blood group"
+            value={student.bloodGroup}
+            onChange={handleChange}
+            required
+            className="w-full border p-2 rounded-md"
+          >
+            <option value="">Select</option>
+            <option value="A+">(A+)</option>
+            <option value="A-">(A-)</option>
+            <option value="B+">(B+)</option>
+            <option value="B-">(B-)</option>
+           <option value="O+">(O+)</option>
+            <option value="O-">(O-)</option>
+            <option value="AB+">(AB+)</option>
+            <option value="AB-">(AB-)</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block font-medium">Date of Birth</label>
+          <input
+            type="date"
+            name="dob"
+            value={student.dob}
+            onChange={handleChange}
+            className="w-full border p-2 rounded-md"
+          />
+        </div>
+
+        <div className="md:col-span-2">
+          <label className="block font-medium">Address</label>
+          <textarea
+            name="address"
+            value={student.address}
+            onChange={handleChange}
+            rows={3}
+            className="w-full border p-2 rounded-md"
+          />
+        </div>
+
+        {/* Submit/Reset */}
+        <div className="md:col-span-2 flex justify-between mt-4">
           <button
             type="submit"
-            className="bg-blue-700 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md"
           >
-            Submit
+           Submit
           </button>
           <button
-            type="reset"
+            type="button"
             onClick={() =>
               setStudent({
                 studentId: '',
@@ -175,13 +295,24 @@ const Add_Student = () => {
                 version: '',
                 sex: '',
                 email: '',
+
+                fatherName: '',
+                motherName: '',
+                gurdianContact: '',
+                gurdianProffesion: '',
+
+                religion: '',
+                caste: '',
+                bloodGroup: '',
+                dob: '',
+                address: '',
               })
             }
-            className="bg-gray-800 text-white px-4 py-2 rounded-md shadow-md hover:bg-gray-500"
+            className="bg-gray-400 hover:bg-gray-500 text-white px-6 py-2 rounded-md"
           >
             Reset
           </button>
-          <button
+                    <button
             type="button"
             onClick={() => navigate('/all_students')}
             className="bg-red-800 text-white px-4 py-2 rounded-md shadow-md hover:bg-red-600"
@@ -194,4 +325,4 @@ const Add_Student = () => {
   );
 };
 
-export default Add_Student;
+export default Add_student;

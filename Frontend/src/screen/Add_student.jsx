@@ -215,10 +215,10 @@ const Add_student = () => {
             className="w-full border p-2 rounded-md"
           >
             <option value="">Select</option>
-            <option value="muslim">Muslim</option>
-            <option value="hindu">Hindu</option>
-            <option value="cristian">Cristian</option>
-            <option value="buddhist">Buddhist</option>
+            <option value="Muslim">Muslim</option>
+            <option value="Hindu">Hindu</option>
+            <option value="Cristian">Cristian</option>
+            <option value="Buddhist">Buddhist</option>
           </select>
         </div>
 
@@ -236,7 +236,7 @@ const Add_student = () => {
         <div>
           <label className="block font-medium">Blood Group</label>
           <select
-            name="blood group"
+            name="bloodGroup"
             value={student.bloodGroup}
             onChange={handleChange}
             required

@@ -5,18 +5,18 @@ const All_studentsSchema = new mongoose.Schema({
 
     studentId: { type: String, required: true },
     name:{  type:String, required : true },
-    class:{ type:Number, required : true },
+    class:{ type:String, required : true },
     age:{ type:Number, required : true  },
     version:{  type:String,  required : true },
     sex:{ type:String, required : true },
     email:{  type:String,  required : true },
     
   //Additional Feild
-   religion: {type: String},
-   caste: {type: String },
-   bloodGroup: {type: String },
-   dob: { type: String },
-   address: { type: String},
+   religion: {type: String,  required : true },
+   caste: {type: String,  required : true  },
+   bloodGroup: {type: String,  required : true  },
+   dob: { type: String,  required : true  },
+   address: { type: String,  required : true },
    
 
    //Grudian Infromation

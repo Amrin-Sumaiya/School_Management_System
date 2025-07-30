@@ -2,12 +2,17 @@ import mongoose from "mongoose";
 
 const feesSchema = new mongoose.Schema({
 
-    student_id: {
+    studentId : {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
+    },
+
+    classLevel: {
         type: String,
         required: true
     },
 
-    payment_for: {
+    payment_type: {
         type: String,
         enum: ["Monthly Fee", "Exam Fee", "Picnic Fee", "Admission Fee", "Others"],
         required: true
@@ -22,22 +27,14 @@ const feesSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    paid_amount: {
+    due_ammount: {
+       
         type: Number,
-        required: true
-    },
-    due_amount: {
-        type: Number,
-        required: true
-    },
-    payment_status: {
-        type: String,
-        enum: ["Paid", "Partial", "Unpaid"],
-        default: "Unpaid"
+        required : true
     },
     payment_method: {
         type: String,
-        enum: ["Cash", "Card", "Online", "Bank Transfer"],
+        enum: ["Cash"],
         default: "Cash"
     },
     payment_date: {

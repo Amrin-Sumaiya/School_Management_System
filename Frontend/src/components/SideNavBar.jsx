@@ -205,7 +205,7 @@ const SideNavBar = () => {
           <ListItemPrefix>
             <FaCalendarCheck className="h-4 w-4" />
           </ListItemPrefix>
-          Mark Attendance
+           Attendance
         </ListItem>
 
         <ListItem onClick={() => navigate("/all_result")} className="pl-10">
@@ -232,8 +232,7 @@ const SideNavBar = () => {
               />
             )
           }
-        >
-          
+        >       
           <ListItem className="p-0" selected={openAccordion === 2}>
             <AccordionHeader
               onClick={() => handleAccordionToggle(2)}
@@ -259,8 +258,7 @@ const SideNavBar = () => {
                   </ListItemPrefix>
                  Attendance Veiw
                 </ListItem>
-
-                                <ListItem className="max-w-60 p-1 min-h-[50px] hover:bg-gray-200 transition-all duration-200 pl-10" >
+             <ListItem className="max-w-60 p-1 min-h-[50px] hover:bg-gray-200 transition-all duration-200 pl-10" >
                   <ListItemPrefix>
                     <FaChevronRight className="h-3 w-5"/>
                      
@@ -305,34 +303,12 @@ const SideNavBar = () => {
           {isExpanded && openAccordion === 2 && (
             <AccordionBody className="py-1">
               <List className="p-0">
-                <ListItem className="max-w-60 p-1 min-h-[50px] hover:bg-gray-200 transition-all duration-200 pl-10" >
+                <ListItem onClick={() => navigate("/account")} className="max-w-60 p-1 min-h-[50px] hover:bg-gray-200 transition-all duration-200 pl-10" >
                   <ListItemPrefix>
-                    <FaChevronRight className="h-3 w-5"/>
-                     
+                    <FaChevronRight className="h-3 w-5"/>       
                   </ListItemPrefix>
-                 Admit New Student
+                 Payment System
                 </ListItem>
-
-                                <ListItem className="max-w-60 p-1 min-h-[50px] hover:bg-gray-200 transition-all duration-200 pl-10" >
-                  <ListItemPrefix>
-                    <FaChevronRight className="h-3 w-5"/>
-                     
-                  </ListItemPrefix>
-                 Admission Fee
-                </ListItem>
-                     <ListItem className="max-w-60 p-1 min-h-[50px] hover:bg-gray-200 transition-all duration-200 pl-10" >
-                  <ListItemPrefix>
-                    <FaChevronRight className="h-3 w-5"/>
-                     
-                  </ListItemPrefix>
-                 Monthly Tution Fee
-                </ListItem>
-                   <ListItem className="max-w-60 p-1 min-h-[50px] hover:bg-gray-200 transition-all duration-200 pl-10" >
-                  <ListItemPrefix>
-                    <FaChevronRight className="h-3 w-5"/>
-                  </ListItemPrefix>
-                 Exam's  Fee
-                </ListItem> 
               </List>
             </AccordionBody>
           )}

@@ -18,6 +18,7 @@ import ExamManage from './screen/ExamManage.jsx';
 import Exam_Add from './screen/Exam_Add.jsx';
 import Exam_Update from './screen/Exam_Update.jsx';
 import AllResult from './screen/All_Result.jsx';
+import Payment from './screen/Payment.jsx';
 
 
 
@@ -45,6 +46,7 @@ const App = () => {
         <Route path="/exam_add" element= { <Exam_Add />} />
         <Route path="/update_exam/:id" element= { <Exam_Update />} />
         <Route path="/all_result" element={ <AllResult />} />
+        <Route path="/account" element={ <Payment />} />
   
         </Routes>
         </WrapperScreen>

@@ -65,10 +65,12 @@ const Update_Student = () => {
         </button>
       </div>
 
-      <h2 className="text-2xl font-semibold text-center mb-6 text-black drop-shadow-lg">UPDATE STUDENT</h2>
+      <h2 className="text-2xl font-semibold text-center mb-6 text-black drop-shadow-lg">
+        UPDATE STUDENT
+      </h2>
 
+      {/* First Section Form */}
       <form onSubmit={handleUpdate} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Student ID */}
         <div>
           <label className="block font-medium">Student ID (Roll)</label>
           <input
@@ -82,7 +84,6 @@ const Update_Student = () => {
           />
         </div>
 
-        {/* Name */}
         <div>
           <label className="block font-medium">Full Name</label>
           <input
@@ -96,9 +97,9 @@ const Update_Student = () => {
           />
         </div>
 
-        {/* Class */}
         <div>
           <label className="block font-medium">Class</label>
+          
           <input
             type="text"
             name="class"
@@ -110,7 +111,6 @@ const Update_Student = () => {
           />
         </div>
 
-        {/* Age */}
         <div>
           <label className="block font-medium">Age</label>
           <input
@@ -124,7 +124,6 @@ const Update_Student = () => {
           />
         </div>
 
-        {/* Version */}
         <div>
           <label className="block font-medium">Version</label>
           <select
@@ -140,7 +139,6 @@ const Update_Student = () => {
           </select>
         </div>
 
-        {/* Gender */}
         <div>
           <label className="block font-medium">Gender</label>
           <select
@@ -157,8 +155,7 @@ const Update_Student = () => {
           </select>
         </div>
 
-        {/* Email */}
-        <div >
+        <div>
           <label className="block font-medium">Email</label>
           <input
             type="email"
@@ -170,10 +167,16 @@ const Update_Student = () => {
             placeholder="Enter email"
           />
         </div>
-        <br />
-              <h2 className="text-2xl font-semibold text-center mb-6 text-black drop-shadow-lg">UPDATE STUDENT</h2>
-              <br />
-    <div> 
+      </form>
+
+      {/* Second Header */}
+      <h2 className="text-2xl font-semibold text-center my-6 text-black drop-shadow-lg">
+        Update Gurdian & Other's Information
+      </h2>
+
+      {/* Second Section Form */}
+      <form onSubmit={handleUpdate} className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+        <div>
           <label className="block font-medium">Father's Name</label>
           <input
             type="text"
@@ -181,11 +184,12 @@ const Update_Student = () => {
             value={student.fatherName}
             onChange={handleChange}
             required
-             className="w-full border p-2 rounded-md border-blue-gray-500"
+            className="w-full border p-2 rounded-md border-blue-gray-500"
             placeholder="Enter Name"
           />
         </div>
-            <div> 
+
+        <div>
           <label className="block font-medium">Mother's Name</label>
           <input
             type="text"
@@ -193,11 +197,12 @@ const Update_Student = () => {
             value={student.motherName}
             onChange={handleChange}
             required
-             className="w-full border p-2 rounded-md border-blue-gray-500"
+            className="w-full border p-2 rounded-md border-blue-gray-500"
             placeholder="Enter Name"
           />
         </div>
-       <div> 
+
+        <div>
           <label className="block font-medium">Gurdian's Contact</label>
           <input
             type="text"
@@ -205,11 +210,12 @@ const Update_Student = () => {
             value={student.gurdianContact}
             onChange={handleChange}
             required
-             className="w-full border p-2 rounded-md border-blue-gray-500"
+            className="w-full border p-2 rounded-md border-blue-gray-500"
             placeholder="Enter Number"
           />
         </div>
-               <div> 
+
+        <div>
           <label className="block font-medium">Gurdian's Profession</label>
           <input
             type="text"
@@ -217,11 +223,12 @@ const Update_Student = () => {
             value={student.gurdianProffesion}
             onChange={handleChange}
             required
-             className="w-full border p-2 rounded-md border-blue-gray-500"
-            placeholder="Enter Number"
+            className="w-full border p-2 rounded-md border-blue-gray-500"
+            placeholder="Enter Profession"
           />
         </div>
-                <div>
+
+        <div>
           <label className="block font-medium">Religion</label>
           <select
             name="religion"
@@ -231,14 +238,14 @@ const Update_Student = () => {
             className="w-full border p-2 rounded-md border-blue-gray-500"
           >
             <option value="">Select</option>
-            <option value="muslim">Muslim</option>
-            <option value="hindu">Hindu</option>
-            <option value="cristian">Cristian</option>
-            <option value="buddhist">Buddhist</option>
+            <option value="Muslim">Muslim</option>
+            <option value="Hindu">Hindu</option>
+            <option value="Cristian">Cristian</option>
+            <option value="Buddhist">Buddhist</option>
           </select>
         </div>
 
-    <div>
+        <div>
           <label className="block font-medium">Caste</label>
           <input
             type="text"
@@ -248,10 +255,11 @@ const Update_Student = () => {
             className="w-full border p-2 rounded-md border-blue-gray-500"
           />
         </div>
-                <div>
+
+        <div>
           <label className="block font-medium">Blood Group</label>
           <select
-            name="blood group"
+            name="bloodGroup"
             value={student.bloodGroup}
             onChange={handleChange}
             required
@@ -262,7 +270,7 @@ const Update_Student = () => {
             <option value="A-">(A-)</option>
             <option value="B+">(B+)</option>
             <option value="B-">(B-)</option>
-           <option value="O+">(O+)</option>
+            <option value="O+">(O+)</option>
             <option value="O-">(O-)</option>
             <option value="AB+">(AB+)</option>
             <option value="AB-">(AB-)</option>

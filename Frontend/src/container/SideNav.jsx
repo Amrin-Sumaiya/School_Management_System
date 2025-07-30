@@ -1,0 +1,17 @@
+import SideNavBar from '../container/SideNavBar';
+import { superAdminNav, teacherSideNav } from './SuderAdminSideNav';
+
+const SideNav = () => {
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  return (
+    <>
+      <SideNavBar
+        menuList={
+          userInfo?.role === 'SuperAdmin' ? superAdminNav : teacherSideNav
+        }
+      />
+    </>
+  );
+};
+
+export default SideNav;

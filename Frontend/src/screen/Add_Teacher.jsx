@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { FaArrowLeft } from 'react-icons/fa';
-import { toast } from 'react-toastify';
 import axios from 'axios';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Add_Teacher = () => {
   const navigate = useNavigate();
@@ -24,9 +23,9 @@ const Add_Teacher = () => {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:8000/api/teachers/teacher", teacher);
+      await axios.post('http://localhost:8000/api/teachers/teacher', teacher);
       navigate('/all_teachers', {
-        state: { successMessage: 'Teacher added successfully!' }
+        state: { successMessage: 'Teacher added successfully!' },
       });
     } catch (error) {
       console.error('Error adding teacher: ', error);
@@ -35,31 +34,24 @@ const Add_Teacher = () => {
   };
 
   return (
-    <div className='max-w-4xl mx-auto mt-10 p-6 bg-blue-gray-100 shadow-md rounded-lg'>
-      {/* Back Button */}
-      <button
-        onClick={() => navigate('/all_teachers')}
-        className='flex items-center gap-2 text-white bg-gray-800 hover:bg-blue-800 px-4 py-2 rounded-md font-semibold transition mb-4'
-      >
-        <FaArrowLeft className="text-white" />
-        Back
-      </button>
-
+    <div className=' mx-auto  '>
       {/* Title */}
-      <h2 className='text-2xl font-bold text-center mb-6'>ADD NEW TEACHER</h2>
+      <h2 className='text-2xl font-bold text-center py-3 '>ADD NEW TEACHER</h2>
 
       {/* Form */}
-      <form onSubmit={handleOnSubmit} className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-
+      <form
+        onSubmit={handleOnSubmit}
+        className='grid grid-cols-1 md:grid-cols-2 gap-6 p-10'
+      >
         {/* Name */}
         <div>
           <label className='block font-medium'>Full Name</label>
           <input
-            type="text"
-            name="name"
+            type='text'
+            name='name'
             value={teacher.name}
             onChange={handleOnChange}
-            placeholder="Enter full name"
+            placeholder='Enter full name'
             className='w-full border p-2 rounded-md border-blue-gray-500'
             required
           />
@@ -69,11 +61,11 @@ const Add_Teacher = () => {
         <div>
           <label className='block font-medium'>Age</label>
           <input
-            type="number"
-            name="age"
+            type='number'
+            name='age'
             value={teacher.age}
             onChange={handleOnChange}
-            placeholder="Enter age"
+            placeholder='Enter age'
             className='w-full border p-2 rounded-md border-blue-gray-500'
             required
           />
@@ -83,16 +75,16 @@ const Add_Teacher = () => {
         <div>
           <label className='block font-medium'>Sex</label>
           <select
-            name="sex"
+            name='sex'
             value={teacher.sex}
             onChange={handleOnChange}
             required
-            className="w-full border p-2 rounded-md border-blue-gray-500"
+            className='w-full border p-2 rounded-md border-blue-gray-500'
           >
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
+            <option value=''>Select Gender</option>
+            <option value='Male'>Male</option>
+            <option value='Female'>Female</option>
+            <option value='Other'>Other</option>
           </select>
         </div>
 
@@ -100,11 +92,11 @@ const Add_Teacher = () => {
         <div>
           <label className='block font-medium'>Department</label>
           <input
-            type="text"
-            name="department"
+            type='text'
+            name='department'
             value={teacher.department}
             onChange={handleOnChange}
-            placeholder="Enter department"
+            placeholder='Enter department'
             className='w-full border p-2 rounded-md border-blue-gray-500'
             required
           />
@@ -114,11 +106,11 @@ const Add_Teacher = () => {
         <div>
           <label className='block font-medium'>Contact</label>
           <input
-            type="text"
-            name="contact"
+            type='text'
+            name='contact'
             value={teacher.contact}
             onChange={handleOnChange}
-            placeholder="Enter phone number"
+            placeholder='Enter phone number'
             className='w-full border p-2 rounded-md border-blue-gray-500'
             required
           />
@@ -128,11 +120,11 @@ const Add_Teacher = () => {
         <div>
           <label className='block font-medium'>Email</label>
           <input
-            type="email"
-            name="email"
+            type='email'
+            name='email'
             value={teacher.email}
             onChange={handleOnChange}
-            placeholder="Enter email address"
+            placeholder='Enter email address'
             className='w-full border p-2 rounded-md border-blue-gray-500'
             required
           />
@@ -142,8 +134,8 @@ const Add_Teacher = () => {
         <div className='md:col-span-2'>
           <label className='block font-medium'>Join Date</label>
           <input
-            type="date"
-            name="join_date"
+            type='date'
+            name='join_date'
             value={teacher.join_date}
             onChange={handleOnChange}
             className='w-full border p-2 rounded-md border-blue-gray-500'
@@ -153,21 +145,26 @@ const Add_Teacher = () => {
 
         {/* Buttons */}
         <div className='md:col-span-2 flex justify-between mt-4'>
-          <button type='submit' className='bg-blue-500 hover:bg-blue-800 text-white px-6 py-2 rounded-md font-semibold transition'>
+          <button
+            type='submit'
+            className='bg-blue-500 hover:bg-blue-800 text-white px-6 py-2 rounded-md font-semibold transition'
+          >
             Submit
           </button>
 
           <button
             type='reset'
-            onClick={() => setTeacher({
-              name: '',
-              email: '',
-              department: '',
-              sex: '',
-              join_date: '',
-              age: '',
-              contact: '',
-            })}
+            onClick={() =>
+              setTeacher({
+                name: '',
+                email: '',
+                department: '',
+                sex: '',
+                join_date: '',
+                age: '',
+                contact: '',
+              })
+            }
             className='bg-gray-600 hover:bg-purple-900 text-white px-6 py-2 rounded-md font-semibold transition'
           >
             Reset

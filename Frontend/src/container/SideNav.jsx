@@ -7,7 +7,11 @@ const SideNav = () => {
     <>
       <SideNavBar
         menuList={
-          userInfo?.role === 'SuperAdmin' ? superAdminNav : teacherSideNav
+          userInfo?.role === 'SuperAdmin'
+            ? superAdminNav
+            : userInfo?.role === 'Teacher'
+            ? teacherSideNav
+            : null
         }
       />
     </>

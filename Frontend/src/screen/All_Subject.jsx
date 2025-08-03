@@ -96,7 +96,7 @@ const openModal = (subject) => {
       <div className='bg-indigo-50 shadow-lg rounded-xl p-6'>
         <div className=' mb-4 relative'>
           <h2 className='text-3xl text-center  font-semibold text-black'>Academic Subjects Directory</h2>
-          <button onClick={() => navigate("/add_subject")} className='bg-gray-800 hover:bg-purple-800 text-white font-semibold py-2 px-4 rounded-lg shadow'>
+          <button onClick={() => navigate("/add-subject")} className='bg-indigo-800 hover:bg-purple-800 text-white font-semibold py-2 px-4 rounded-lg shadow'>
             + Add Subject
           </button>
         </div>

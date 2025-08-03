@@ -39,17 +39,18 @@ const ExamListScreen = () => {
   return (
     <div className='p-4'>
       <div className='bg-indigo-50 shadow-lg rounded-xl p-6'>
-        <div className='mb-4 flex justify-between items-center'>
-          <h2 className='text-3xl font-semibold text-black text-center w-full'>
-            Exam Management Directory
-          </h2>
-          <button
-            onClick={() => navigate('/exam_add')}
-            className='bg-blue-600 hover:bg-blue-900 text-white font-medium text-center px-4 py-2 rounded-md shadow-md transition duration-200'
-          >
-            +Add Exam
-          </button>
-        </div>
+<div className="flex-1">
+  <h2 className='text-3xl font-semibold text-black text-center w-full'>
+    Exam Management Directory
+  </h2> <br />
+  <button
+    onClick={() => navigate('/exam_add')}
+    className='flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700 transition duration-500'
+  >
+    + Add Exam
+  </button> <br /> <br />
+</div>
+
         <table className='min-w-full border-collapse border border-gray-300'>
           <thead>
             <tr className='bg-gray-300 text-center text-black'>
@@ -87,7 +88,7 @@ const ExamListScreen = () => {
                   </td>
                   <td className='border border-gray-600 px-2 py-3'>
                     <button
-                      onClick={() => navigate(`/update_exam/${exam._id}`)}
+                      onClick={() => navigate(`/update-exam/${exam._id}`)}
                       className='text-blue-700 hover:text-blue-900'
                     >
                       {' '}

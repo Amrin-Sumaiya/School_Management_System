@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { FaArrowLeft } from 'react-icons/fa';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
@@ -41,10 +42,19 @@ const Add_Exam = () => {
   const navigate = useNavigate();
 
   return (
-    <div className='mx-auto '>
+    <div className='max-w-4xl mx-auto bg-indigo-50 p-6 rounded-md shadow-md '>
       <ToastContainer position='top-right' />
+            {/* Back Button */}
+            <div className="mb-4">
+              <button
+                onClick={() => navigate('/exam-list')}
+                className='flex items-center gap-2 px-4 py-2 bg-gray-700 text-white rounded-md shadow-md hover:bg-gray-700 transition duration-300'
+              >   <FaArrowLeft className='text-lg' />
+                Back
+              </button>
+              </div>
 
-      <h2 className='py-3 text-2xl font-semibold text-center text-black mb-6 '>
+      <h2 className='py-3 text-3xl font-bold text-center text-indigo-900 mb-6 '>
         Add Exam Information
       </h2>
       <form

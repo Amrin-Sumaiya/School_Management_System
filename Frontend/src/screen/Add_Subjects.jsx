@@ -44,7 +44,7 @@ const subjects = {
       <h2 className="text-3xl font-semibold text-center mb-6 text-black">
         Add New Subject
       </h2>
-      <button onClick={() => navigate('/subjects')} className='flex items-center gap-2 bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition mb-4'>
+      <button onClick={() => navigate('/subject-list')} className='flex items-center gap-2 bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition mb-4'>
         <FaArrowLeft /> back</button>
 
       <form className="space-y-5" onSubmit={submitForm}>

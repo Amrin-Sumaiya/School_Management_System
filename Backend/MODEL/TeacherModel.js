@@ -9,7 +9,7 @@ const All_TeachersSchema = new mongoose.Schema({
 
     email : {
         type: String,
-        required : true
+        required : true 
     },
     department : {
         type: String,

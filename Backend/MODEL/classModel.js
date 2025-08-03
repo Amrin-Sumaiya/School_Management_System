@@ -6,7 +6,7 @@ const classSchema = new mongoose.Schema({
      },
 
      RoomNo: {
-        type: Number,
+        type: String,
         required: true
      }
 })

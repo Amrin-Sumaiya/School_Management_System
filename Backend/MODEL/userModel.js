@@ -24,6 +24,8 @@ const All_studentsSchema = new mongoose.Schema({
    motherName: { type: String, required: true },
    gurdianContact: {type: String, required: true },
    gurdianProffesion: { type: String, required: true },
+
+   isPresent: {type: Boolean, default: true}, ///absent students dashboard pannel
    
 
 },

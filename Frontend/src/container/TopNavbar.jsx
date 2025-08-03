@@ -24,19 +24,18 @@ import {
 
 const TopNavbar = () => {
   const [open, setOpen] = useState(false);
-  const openDrawer = () => setOpen(true);
-  const closeDrawer = () => setOpen(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const language = useSelector(getLanguage);
-  const [active, setActive] = useState('');
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
   useEffect(() => {
     const localStorageLanguage = localStorage.getItem('language');
     if (localStorageLanguage) {
       dispatch(setLanguage(localStorageLanguage));
     }
   }, []);
+
   const handleLogOut = () => {
     navigate('/');
     dispatch(logOutAction());
@@ -46,161 +45,93 @@ const TopNavbar = () => {
   const handleToggle = (e) => {
     localStorage.setItem('language', e.target.value);
     dispatch(setLanguage(e.target.value));
-    setActive();
   };
 
   return (
-    <>
-      <nav className='top-0  z-50 py-2   bg-[#e1f5fe]   sticky shadow-md transition duration-500 '>
-        <div className='flex justify-around items-center  px-3'>
-          <div className='hidden lg:block '>
-            <Link
-              to='/'
-              className='flex justify-start gap-3 items-center pl-10'
-            >
-              <img
-                src='../../src/assets/edu.png'
-                className='cursor-pointer duration-500 z-10  lg:w-[10%] h-auto'
-              />
-              <h2 className='font-semibold text-lg'>EduNexus</h2>
-            </Link>
-          </div>
-          <div className='w-[40%]'>
-            <div className='flex items-center  gap-2'>
-              <div className='block lg:hidden'>
-                <AiOutlineMenuUnfold
-                  onClick={openDrawer}
-                  size='32'
-                  className='bold'
-                />
-                <Drawer
-                  open={open}
-                  onClose={closeDrawer}
-                >
-                  {/* <MobileSideNav
-                    menuList={
-                      userInfo?.role === 'SuperAdmin'
-                        ? superAdminNav
-                        : userInfo?.role === 'Admin'
-                        ? adminNav
-                        : userNav
-                    }
-                    onClose={closeDrawer}
-                  /> */}
-                </Drawer>
-              </div>
-            </div>
-          </div>
-          <div className='w-[58%] block lg:hidden'>
-            <Link
-              to='/'
-              className='flex justify-end pr-5'
-            >
-              <img
-                src='/assets/logo/logo.png'
-                className='cursor-pointer duration-500 z-10 w-[50%] h-auto lg:w-[8%] '
-              />
-            </Link>
-          </div>
-          <div className='w-[65%]'>
-            <div className='lg:flex items-center justify-end  space-x-5 '>
-              <Menu
-                animate={{
-                  mount: { y: 0 },
-                  unmount: { y: 25 },
-                }}
-              >
-                <span className='flex items-center justify-end'>
-                  <Menu
-                    animate={{
-                      mount: { y: 0 },
-                      unmount: { y: 25 },
-                    }}
-                  >
-                    <MenuHandler>
-                      <Button className='hover:shadow-none bg-transparent border-none shadow-none text-black'>
-                        <MdOutlineLanguage size={24} />
-                      </Button>
-                    </MenuHandler>
-                    <MenuList>
-                      <MenuItem
-                        onClick={handleToggle}
-                        value='english'
-                        className={`${
-                          language == 'english' ? 'text-light-blue-400 ' : ''
-                        }  `}
-                      >
-                        English
-                      </MenuItem>
-                      <MenuItem
-                        onClick={handleToggle}
-                        value='bangla'
-                        className={`${
-                          language == 'bangla' ? 'text-light-blue-400 ' : ''
-                        }  `}
-                      >
-                        বাংলা
-                      </MenuItem>
-                    </MenuList>
-                  </Menu>
-                  {/* <FaRegBell size={24} color="black" /> */}
-                  <MenuHandler>
-                    <button
-                      type='button'
-                      className='text-textPrimary  cursor-pointer'
-                      title='User'
-                    >
-                      <div className='flex items-center justify-between gap-2'>
-                        <span className='hidden lg:block text-base uppercase font-semibold'>
-                          {userInfo?.userName ? userInfo?.userName : 'User'}
-                        </span>
-                        <img
-                          className='w-10 h-10 p-[2px] rounded-full border-black text-sky-600 border-[1px]'
-                          src='../../src/assets/profile.png'
-                          alt='user photo'
-                        />
-                      </div>
-                    </button>
-                  </MenuHandler>
-                </span>
-
-                <MenuList className='w-[190px] border-none '>
-                  <Link to='/profile-details'>
-                    <MenuItem className='flex space-x-1 text-textPrimary  hover:bg-white hover:text-darkTextSecondary  transition ease-in-out delay-150 duration-300 '>
-                      <span>
-                        <BiUser size={16} />
-                      </span>
-                      <span className=''> My Profile</span>
-                    </MenuItem>
-                  </Link>
-
-                  <MenuItem className=''>
-                    <Link to='/change-password'>
-                      <span className='flex space-x-1 text-textPrimary  hover:bg-white  hover:text-darkTextSecondary  transition ease-in-out delay-150 duration-300 '>
-                        <MdPassword size={16} />
-                        Change Password
-                      </span>
-                    </Link>
-                  </MenuItem>
-
-                  <MenuItem className=' text-textPrimary  hover:bg-white  hover:text-darkTextSecondary transition ease-in-out delay-150 duration-300'>
-                    <button
-                      type='button'
-                      className='flex space-x-1'
-                      onClick={() => handleLogOut()}
-                    >
-                      <BiLogOutCircle size={16} />
-
-                      <span className='text-red-300'>Logout</span>
-                    </button>
-                  </MenuItem>
-                </MenuList>
-              </Menu>
-            </div>
-          </div>
+    <nav className='top-0 z-50 py-2 bg-indigo-100 sticky shadow-md'>
+      <div className='flex justify-between items-center px-4 lg:px-6'>
+        {/* Mobile Sidebar Icon */}
+        <div className='lg:hidden'>
+          <AiOutlineMenuUnfold
+            onClick={() => setOpen(true)}
+            size='28'
+            className='cursor-pointer'
+          />
+          <Drawer open={open} onClose={() => setOpen(false)}>
+            {/* You can place MobileSideNav here */}
+          </Drawer>
         </div>
-      </nav>
-    </>
+
+        {/* Logo and Title */}
+        <Link to='/' className='flex items-center gap-2'>
+          <img
+            src='../../src/assets/edu2.png'
+            alt='Logo'
+            className='w-10 h-auto lg:w-14'
+          />
+          <h2 className='font-bold text-lg hidden sm:block'>EduNexus</h2>
+        </Link>
+
+        {/* Language & Profile Section */}
+        <div className='flex items-center gap-4'>
+          {/* Language Toggle */}
+          <Menu>
+            <MenuHandler>
+              <Button className='bg-transparent text-black shadow-none p-2 min-w-0'>
+                <MdOutlineLanguage size={24} />
+              </Button>
+            </MenuHandler>
+            <MenuList>
+              <MenuItem
+                onClick={handleToggle}
+                value='english'
+                className={language === 'english' ? 'text-indigo-400' : ''}
+              >
+                English
+              </MenuItem>
+              <MenuItem
+                onClick={handleToggle}
+                value='bangla'
+                className={language === 'bangla' ? 'text-indigo-400' : ''}
+              >
+                বাংলা
+              </MenuItem>
+            </MenuList>
+          </Menu>
+
+          {/* Profile Dropdown */}
+          <Menu>
+            <MenuHandler>
+              <button title='User' className='flex items-center gap-2'>
+                <span className='hidden lg:block text-sm font-semibold uppercase'>
+                  {userInfo?.userName || 'User'}
+                </span>
+                <img
+                  src='../../src/assets/profile.png'
+                  alt='user'
+                  className='w-10 h-10 rounded-full border border-black'
+                />
+              </button>
+            </MenuHandler>
+            <MenuList className='w-48'>
+              <Link to='/profile-details'>
+                <MenuItem className='flex items-center gap-2'>
+                  <BiUser size={16} /> My Profile
+                </MenuItem>
+              </Link>
+              <Link to='/change-password'>
+                <MenuItem className='flex items-center gap-2'>
+                  <MdPassword size={16} /> Change Password
+                </MenuItem>
+              </Link>
+              <MenuItem onClick={handleLogOut} className='flex items-center gap-2 text-red-400'>
+                <BiLogOutCircle size={16} /> Logout
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </div>
+      </div>
+    </nav>
   );
 };
 

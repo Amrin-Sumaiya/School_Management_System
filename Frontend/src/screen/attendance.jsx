@@ -62,7 +62,7 @@ const Attendance = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="">
       <div className="bg-indigo-50 shadow-lg rounded-xl p-6">
         <h2 className="text-3xl font-semibold text-black text-center mb-6">
           Attendance Sheet (Class: 8, Version: English)

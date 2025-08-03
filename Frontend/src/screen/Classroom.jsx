@@ -75,6 +75,7 @@ const ClassManager = () => {
       if (isEditMode && editClassId) {
         await axios.put(`http://localhost:8000/api/class/update/class_info/${editClassId}`, classRoom);
         toast.success("Classroom updated successfully");
+         
       } else {
         await axios.post("http://localhost:8000/api/class/class_Info", classRoom);
         toast.success("ClassRoom added successfully");
@@ -84,9 +85,9 @@ const ClassManager = () => {
       resetFormAndModal(); //reset the model after fetching the data
       await fetchClassRooms();
 
-    } catch (error) {
-      toast.error("Error submitting classroom info");
+    } catch (error) {    
       console.log(error);
+      toast.error("Error submitting classroom info");
     }
   };
 

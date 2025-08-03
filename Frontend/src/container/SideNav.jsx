@@ -1,5 +1,5 @@
 import SideNavBar from '../container/SideNavBar';
-import { superAdminNav, teacherSideNav } from './SuderAdminSideNav';
+import { superAdminNav, teacherSideNav } from './SuperAdminSideNav';
 
 const SideNav = () => {
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -7,7 +7,11 @@ const SideNav = () => {
     <>
       <SideNavBar
         menuList={
-          userInfo?.role === 'SuperAdmin' ? superAdminNav : teacherSideNav
+          userInfo?.role === 'SuperAdmin'
+            ? superAdminNav
+            : userInfo?.role === 'Teacher'
+            ? teacherSideNav
+            : null
         }
       />
     </>

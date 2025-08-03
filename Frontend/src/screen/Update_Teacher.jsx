@@ -39,7 +39,8 @@ const Update_Teacher = () => {
     e.preventDefault();
     try {
       await axios.put(`http://localhost:8000/api/teachers/update/teacher/${id}`, teacher);
-      navigate('/all_teachers', { state: { successMessage: 'Teacher updated successfully!' } });
+      toast.success("Teacher updated Successfully", { position: "top-right" });
+      navigate('/all-teacher-list');
     } catch (error) {
       console.error('Error updating teacher:', error);
       toast.error('Failed to update teacher');
@@ -47,9 +48,9 @@ const Update_Teacher = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-6 bg-gray-400 shadow-md rounded-lg">
+    <div className="max-w-2xl mx-auto mt-10 p-6 bg-indigo-50 shadow-md rounded-lg">
       <button
-        onClick={() => navigate('/all_teachers')}
+        onClick={() => navigate('/all-teacher-list')}
         className="flex items-center gap-2 text-white bg-gray-700 hover:bg-blue-800 px-4 py-2 rounded-md font-semibold transition mb-4"
       >
         <FaArrowLeft /> Back
@@ -163,7 +164,7 @@ const Update_Teacher = () => {
 
           <button
             type="button"
-            onClick={() => navigate('/all_teachers')}
+            onClick={() => navigate('/all-teacher-list')}
             className="bg-red-800 hover:bg-red-700 text-white px-6 py-2 rounded-md font-semibold transition"
           >
             Cancel

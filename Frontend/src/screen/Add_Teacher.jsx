@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { FaArrowLeft } from 'react-icons/fa';
 
 const Add_Teacher = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const Add_Teacher = () => {
     e.preventDefault();
     try {
       await axios.post('http://localhost:8000/api/teachers/teacher', teacher);
-      navigate('/all_teachers', {
+      navigate('/all-teacher-list', {
         state: { successMessage: 'Teacher added successfully!' },
       });
     } catch (error) {
@@ -34,52 +35,64 @@ const Add_Teacher = () => {
   };
 
   return (
-    <div className=' mx-auto  '>
+    <div className='max-w-4xl mx-auto bg-indigo-50 p-6 rounded-md shadow-md'>
+      {/* Back Button */}
+      <div className="mb-4">
+        <button
+          onClick={() => navigate('/all-teacher-list')}
+          className='flex items-center gap-2 px-4 py-2 bg-gray-700 text-white rounded-md shadow-md hover:bg-gray-700 transition duration-300'
+        >   <FaArrowLeft className='text-lg' />
+          Back
+        </button>
+      </div>
+
       {/* Title */}
-      <h2 className='text-2xl font-bold text-center py-3 '>ADD NEW TEACHER</h2>
+      <h2 className='text-2xl font-bold text-center mb-6 text-indigo-900'>
+        ADD NEW TEACHER
+      </h2>
 
       {/* Form */}
       <form
         onSubmit={handleOnSubmit}
-        className='grid grid-cols-1 md:grid-cols-2 gap-6 p-10'
+        className='grid grid-cols-1 md:grid-cols-2 gap-6'
       >
         {/* Name */}
         <div>
-          <label className='block font-medium'>Full Name</label>
+          <label className='block font-medium mb-1'>Full Name</label>
           <input
             type='text'
             name='name'
             value={teacher.name}
             onChange={handleOnChange}
             placeholder='Enter full name'
-            className='w-full border p-2 rounded-md border-blue-gray-500'
+            className='w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400'
             required
           />
         </div>
 
         {/* Age */}
         <div>
-          <label className='block font-medium'>Age</label>
+          <label className='block font-medium mb-1'>Age</label>
           <input
             type='number'
             name='age'
             value={teacher.age}
             onChange={handleOnChange}
             placeholder='Enter age'
-            className='w-full border p-2 rounded-md border-blue-gray-500'
+            className='w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400'
             required
           />
         </div>
 
         {/* Sex */}
         <div>
-          <label className='block font-medium'>Sex</label>
+          <label className='block font-medium mb-1'>Sex</label>
           <select
             name='sex'
             value={teacher.sex}
             onChange={handleOnChange}
+            className='w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400'
             required
-            className='w-full border p-2 rounded-md border-blue-gray-500'
           >
             <option value=''>Select Gender</option>
             <option value='Male'>Male</option>
@@ -90,61 +103,61 @@ const Add_Teacher = () => {
 
         {/* Department */}
         <div>
-          <label className='block font-medium'>Department</label>
+          <label className='block font-medium mb-1'>Department</label>
           <input
             type='text'
             name='department'
             value={teacher.department}
             onChange={handleOnChange}
             placeholder='Enter department'
-            className='w-full border p-2 rounded-md border-blue-gray-500'
+            className='w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400'
             required
           />
         </div>
 
         {/* Contact */}
         <div>
-          <label className='block font-medium'>Contact</label>
+          <label className='block font-medium mb-1'>Contact</label>
           <input
             type='text'
             name='contact'
             value={teacher.contact}
             onChange={handleOnChange}
             placeholder='Enter phone number'
-            className='w-full border p-2 rounded-md border-blue-gray-500'
+            className='w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400'
             required
           />
         </div>
 
         {/* Email */}
         <div>
-          <label className='block font-medium'>Email</label>
+          <label className='block font-medium mb-1'>Email</label>
           <input
             type='email'
             name='email'
             value={teacher.email}
             onChange={handleOnChange}
             placeholder='Enter email address'
-            className='w-full border p-2 rounded-md border-blue-gray-500'
+            className='w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400'
             required
           />
         </div>
 
-        {/* Join Date - Full width */}
+        {/* Join Date */}
         <div className='md:col-span-2'>
-          <label className='block font-medium'>Join Date</label>
+          <label className='block font-medium mb-1'>Join Date</label>
           <input
             type='date'
             name='join_date'
             value={teacher.join_date}
             onChange={handleOnChange}
-            className='w-full border p-2 rounded-md border-blue-gray-500'
+            className='w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400'
             required
           />
         </div>
 
         {/* Buttons */}
-        <div className='md:col-span-2 flex justify-between mt-4'>
+        <div className='md:col-span-2 flex flex-wrap justify-between gap-4 mt-4'>
           <button
             type='submit'
             className='bg-blue-500 hover:bg-blue-800 text-white px-6 py-2 rounded-md font-semibold transition'

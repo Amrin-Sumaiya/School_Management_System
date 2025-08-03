@@ -12,12 +12,21 @@ const All_Students = () => {
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:8000/api/student");
-        setStudents(response.data);
+          // Sort class numerically
+      const sortedByClass = response.data.sort((a, b) => {
+        const classA = parseInt(a.class);
+        const classB = parseInt(b.class);
+        return classA - classB;
+      });
+
+      setStudents(sortedByClass);
       } catch (error) {
         console.log("Error while fetching data", error);
       }
@@ -46,11 +55,14 @@ const All_Students = () => {
     }
   };
 
+  console.log(" userInfo?.role=.",userInfo);
+  
   return (
     <div className="p-4">
       {/* Title and Add Student Button */}
-      <div className="flex items-center justify-between mb-4 relative">
-        <div className="flex-1" /> {/* left spacer */}
+      {
+        userInfo?.role=='SuperAdmin' ?   <div className="flex items-center justify-between mb-4 relative ">
+        <div className="flex-1" /> 
         <h2 className="text-3xl font-semibold absolute left-1/2 transform -translate-x-1/2">
           Student’s Records
         </h2>
@@ -61,15 +73,17 @@ const All_Students = () => {
           <FaUserPlus />
           Add Student
         </button>
-      </div>
+      </div> : ''
+      }
+    
 
       {/* Table */}
       <table className='w-full border-collapse border-gray-800'>
         <thead>
           <tr className='bg-gray-300'>
-            <th className="border p-2">Student ID</th>
+            <th className="border p-2">Class</th>
             <th className="border p-4">Name</th>
-            <th className="border p-4">Class</th>
+            <th className="border p-4">ID</th>
             <th className="border p-4">Age</th>
             <th className="border p-4">Version</th>
             <th className="border p-4">Sex</th>
@@ -83,9 +97,10 @@ const All_Students = () => {
         <tbody>
           {students.map((student) => (
             <tr key={student._id} className="text-center border">
-              <td className="border p-2">{student.studentId || "N/A"}</td>
-              <td className="border p-4">{student.name}</td>
+             
               <td className="border p-4">{student.class}</td>
+              <td className="border p-4">{student.name}</td>
+               <td className="border p-2">{student.studentId || "N/A"}</td>
               <td className="border p-4">{student.age}</td>
               <td className="border p-4">{student.version}</td>
               <td className="border p-4">{student.sex}</td>
@@ -98,7 +113,7 @@ const All_Students = () => {
               </td>
               <td className="border p-2">
                 <button
-                  onClick={() => navigate(`/update_student/${student._id}`)}
+                  onClick={() => navigate(`/update_student/` + student._id)}
                   className="text-blue-600 hover:bg-green-200 px-2 py-1 rounded flex items-center gap-1"
                 >
                   <FaEdit />

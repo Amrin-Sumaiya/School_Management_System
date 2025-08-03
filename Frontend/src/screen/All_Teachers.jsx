@@ -93,7 +93,7 @@ const All_Teachers = () => {
                 <td className="border p-4">{teacher.email}</td>
                 <td className="border p-4">{teacher.join_date}</td>
                 <td className="border p-4">
-                  <button onClick={() => navigate(`/update_teacher/`+teacher._id)}
+                  <button onClick={() => navigate(`/update-teacher/` + teacher._id)}
                   className='text-blue-600 px-2 py-1 rounded flex items-center justify-center hover:scale-110 transition'
 
                   >

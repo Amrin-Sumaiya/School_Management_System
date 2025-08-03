@@ -58,7 +58,7 @@ const Add_student = () => {
         {/* Section: Basic Student Info */}
         <div className='md:col-span-2 '>
           <button
-            onClick={() => navigate('/all_students')}
+            onClick={() => navigate('/student-list')}
             className='flex items-center gap-2 px-4 py-2 bg-gray-700 text-white rounded-md shadow-md hover:bg-gray-700 transition duration-300'
           >
             <FaArrowLeft className='text-lg' />
@@ -226,10 +226,10 @@ const Add_student = () => {
             className='w-full border p-2 rounded-md'
           >
             <option value=''>Select</option>
-            <option value='muslim'>Muslim</option>
-            <option value='hindu'>Hindu</option>
-            <option value='cristian'>Cristian</option>
-            <option value='buddhist'>Buddhist</option>
+            <option value='Muslim'>Muslim</option>
+            <option value='Hindu'>Hindu</option>
+            <option value='Cristian'>Cristian</option>
+            <option value='Buddhist'>Buddhist</option>
           </select>
         </div>
 
@@ -247,8 +247,8 @@ const Add_student = () => {
         <div>
           <label className='block font-medium'>Blood Group</label>
           <select
-            name='blood group'
-            // value={student.bloodGroup}
+            name='bloodGroup'
+            value={student.bloodGroup}
             onChange={handleChange}
             required
             className='w-full border p-2 rounded-md'

@@ -7,7 +7,7 @@ import {create,
     update,
     deleteStudent,
     getClassLevels,
-getClassLevelWithStudents} from "../CONTROLLER/userController.js"
+getClassLevelWithStudents, getAbsentStudents} from "../CONTROLLER/userController.js"
 
 
 const route = express.Router()
@@ -18,7 +18,8 @@ route.get("/student/:id", getStudentById);
 route.get("/classlevels", getClassLevels);
 route.get("/classlevels-with-students", getClassLevelWithStudents)
 route.put("/update/student/:id", update);
-route.delete("/delete/student/:id", deleteStudent)
+route.delete("/delete/student/:id", deleteStudent);
+route.get("/absent-students", getAbsentStudents);
 
 
 export default route;

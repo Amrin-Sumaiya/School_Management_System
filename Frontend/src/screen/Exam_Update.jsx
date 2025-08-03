@@ -57,19 +57,14 @@ const submitForm = (e) => {
         classLevel: examData.classLevel,
     };
 
-    console.log("Updated Data Being Sent:", updatedData);
-
-    axios.put(`http://localhost:8000/api/exam/update/${id}`, updatedData)
-        .then((response) => {
-            toast.success("Exam information updated successfully!");
-            setTimeout(() => navigate('/exam_info'), 3000);
-        })
-        .catch((error) => {
-            console.error("Error Response Data:", error.response?.data);
-            console.error("Error Status:", error.response?.status);
-            console.error("Full Error:", error);
-            toast.error("Failed to update exam information.");
-        });
+    try {
+       axios.put(`http://localhost:8000/api/exam/update/${id}`, student);
+      toast.success("Exam updated Successfully", { position: "top-right" });
+      navigate("/exam-list");
+    } catch (error) {
+      console.error(error);
+      toast.error("Update failed!", { position: "top-right" });
+    }
 };
 
 
@@ -174,7 +169,7 @@ const submitForm = (e) => {
         <div className="md:col-span-2 flex justify-between space-x-4">
           <button
             type="submit"
-            className="w-full bg-green-700 hover:bg-green-600 text-white font-semibold py-2 rounded-md shadow-md transition duration-200"
+            className="w-full bg-indigo-700 hover:bg-blue-400 text-white font-semibold py-2 rounded-md shadow-md transition duration-200"
           >
             Update
           </button>

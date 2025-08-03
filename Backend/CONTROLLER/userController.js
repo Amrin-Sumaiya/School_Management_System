@@ -83,10 +83,10 @@ export const create = async(req,res)=>{
        const updatedData = await Student.findByIdAndUpdate(id, req.body,{
             new:true
         })
-        res.status(200).json(updatedData)
+        // res.status(200).json(updatedData)
        
 
-
+     res.status(200).json({ message: "Student Updated Successfully."})
     } catch (error) {
         res.status(500).json({ errorMessage: error.message });
 
@@ -143,5 +143,24 @@ export const getClassLevelWithStudents = async (req, res) => {
     }catch (error) {
         res.status(500).json({ errorMessage: error.message});
     }
+}
+
+//get all absent student
+
+
+export const getAbsentStudents = async (req, res) => {
+    try {
+        const absentStudents = await Student.find({ isPresent: false });
+
+        if ( !absentStudents || absentStudents.length === 0){
+            return res.status(404).json({ message: "No absent students found" });
+
+        }
+
+        res.status(200).json(absentStudents)
+    }catch (error) {
+        res.status(500).json({ errorMessage: error.message})
+    }
+
 }
 

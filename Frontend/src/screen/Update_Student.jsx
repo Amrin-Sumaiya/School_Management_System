@@ -28,8 +28,8 @@ const Update_Student = () => {
   });
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/api//student/${id}`)
-      .then((res) => setStudent(res.data))
+    axios.get(`http://localhost:8000/api/student/${id}`)
+      .then((response) => setStudent(response.data))
       .catch((err) => {
         console.error(err);
         toast.error("Failed to fetch student data", { position: "top-right" });
@@ -44,20 +44,21 @@ const Update_Student = () => {
     e.preventDefault();
     try {
       await axios.put(`http://localhost:8000/api/update/student/${id}`, student);
-      toast.success("Student updated successfully!", { position: "top-right" });
-      navigate("/all_students");
+      toast.success("Student updated Successfully", { position: "top-right" });
+      navigate("/student-list");
     } catch (error) {
       console.error(error);
       toast.error("Update failed!", { position: "top-right" });
     }
   };
 
+
   return (
     <div className="max-w-2xl mx-auto p-6 bg-indigo-50 shadow-md rounded-lg mt-10">
       {/* Back Button & Title */}
       <div className="flex items-center gap-3 mb-6">
         <button
-          onClick={() => navigate('/all_students')}
+          onClick={() => navigate('/student-list')}
           className="flex items-center gap-2 px-4 py-2 bg-gray-700 text-white rounded-md shadow-md hover:bg-gray-800 transition duration-300"
         >
           <FaArrowLeft className="text-lg" />

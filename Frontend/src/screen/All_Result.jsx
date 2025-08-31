@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-
-
 
 const All_Result = () => {
   const [openSection, setOpenSection] = useState(null);
@@ -20,26 +18,32 @@ const All_Result = () => {
 
   //fetch classLevels
   useEffect(() => {
-    axios.get('http://localhost:8000/api/classlevels')
-      .then(res => {
+    axios
+      .get('http://localhost:8000/api/classlevels')
+      .then((res) => {
         setClassLevels(res.data);
       })
-      .catch(err => console.error('Error fetching classes:', err));
+      .catch((err) => console.error('Error fetching classes:', err));
   }, []);
-  
+
   //fetch class
   useEffect(() => {
     if (selectedClass) {
       setLoading(true);
-      axios.get(`http://localhost:8000/api/classlevels-with-students?class=${encodeURIComponent(selectedClass)}`)
-        .then(res => {
+      axios
+        .get(
+          `http://localhost:8000/api/classlevels-with-students?class=${encodeURIComponent(
+            selectedClass
+          )}`
+        )
+        .then((res) => {
           if (Array.isArray(res.data)) {
             setStudents(res.data);
           } else {
             setStudents([]);
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.error('Error fetching students:', err);
           setStudents([]);
         })
@@ -47,30 +51,30 @@ const All_Result = () => {
     }
   }, [selectedClass]);
 
-
   //fetch all exams
   useEffect(() => {
-    axios.get('http://localhost:8000/api/exam/all_exams')
-      .then(res => {
+    axios
+      .get('http://localhost:8000/api/exam/all_exams')
+      .then((res) => {
         const uniqueExamMap = new Map();
-        res.data.forEach(exam => {
+        res.data.forEach((exam) => {
           if (!uniqueExamMap.has(exam.examName)) {
             uniqueExamMap.set(exam.examName, exam);
           }
         });
         setExams(Array.from(uniqueExamMap.values()));
       })
-      .catch(err => console.error('Error fetching exams:', err));
+      .catch((err) => console.error('Error fetching exams:', err));
   }, []);
-  
 
   //fetch subjects
   useEffect(() => {
-    axios.get('http://localhost:8000/api/subject/all_subjects')
-      .then(res => {
+    axios
+      .get('http://localhost:8000/api/subject/all_subjects')
+      .then((res) => {
         setSubjects(res.data);
       })
-      .catch(err => console.error('Error fetching subjects:', err));
+      .catch((err) => console.error('Error fetching subjects:', err));
   }, []);
 
   const toggleSection = (section) => {
@@ -79,7 +83,7 @@ const All_Result = () => {
 
   const toggleSubject = (subjectCode) => {
     if (selectedSubjects.includes(subjectCode)) {
-      const updated = selectedSubjects.filter(s => s !== subjectCode);
+      const updated = selectedSubjects.filter((s) => s !== subjectCode);
       setSelectedSubjects(updated);
       const updatedMarks = { ...marks };
       delete updatedMarks[subjectCode];
@@ -100,7 +104,12 @@ const All_Result = () => {
   };
 
   const handleSubmit = async () => {
-    if (!selectedClass || !selectedStudent || !selectedExam || selectedSubjects.length === 0) {
+    if (
+      !selectedClass ||
+      !selectedStudent ||
+      !selectedExam ||
+      selectedSubjects.length === 0
+    ) {
       toast.error('Please complete all fields before submitting.');
       return;
     }
@@ -120,7 +129,10 @@ const All_Result = () => {
           remarks,
         };
 
-        await axios.post('http://localhost:8000/api/result/results', resultData); //result api
+        await axios.post(
+          'http://localhost:8000/api/result/results',
+          resultData
+        ); //result api
       }
 
       toast.success('Result Submitted Successfully!');
@@ -137,26 +149,28 @@ const All_Result = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      <div className="bg-white shadow-xl rounded-xl overflow-hidden">
-        <div className="bg-green-100 text-black text-2xl font-bold p-6 text-center">
+    <div className='max-w-3xl mx-auto p-6'>
+      <div className='bg-white shadow-xl rounded-xl overflow-hidden'>
+        <div className='bg-green-100 text-black text-2xl font-bold p-6 text-center'>
           📘 Assign Exam Results
         </div>
 
         <AccordionSection
-          title="1️⃣ Select Class"
+          title='1️⃣ Select Class'
           isOpen={openSection === 'class'}
           onClick={() => toggleSection('class')}
         >
           {loading ? (
             <p>Loading classes...</p>
           ) : (
-            <div className="grid grid-cols-3 gap-2">
+            <div className='grid grid-cols-3 gap-2'>
               {classLevels.map((cls, idx) => (
                 <button
                   key={idx}
                   className={`py-2 rounded text-sm font-medium ${
-                    selectedClass === cls ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-blue-50'
+                    selectedClass === cls
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-100 hover:bg-blue-50'
                   }`}
                   onClick={() => {
                     setSelectedClass(cls);
@@ -174,16 +188,18 @@ const All_Result = () => {
         </AccordionSection>
 
         <AccordionSection
-          title="2️⃣ Select Student"
+          title='2️⃣ Select Student'
           isOpen={openSection === 'student'}
           onClick={() => toggleSection('student')}
         >
           {!selectedClass ? (
-            <p className="text-red-500">Please select a class first.</p>
+            <p className='text-red-500'>Please select a class first.</p>
           ) : students.length === 0 ? (
-            <p className="text-gray-500">No students available for this class.</p>
+            <p className='text-gray-500'>
+              No students available for this class.
+            </p>
           ) : (
-            <div className="grid grid-cols-2 gap-2">
+            <div className='grid grid-cols-2 gap-2'>
               {students.map((student) => (
                 <button
                   key={student._id}
@@ -207,14 +223,14 @@ const All_Result = () => {
         </AccordionSection>
 
         <AccordionSection
-          title="3️⃣ Select Exam"
+          title='3️⃣ Select Exam'
           isOpen={openSection === 'exam'}
           onClick={() => toggleSection('exam')}
         >
           {!selectedStudent ? (
-            <p className="text-red-500">Please select a student first.</p>
+            <p className='text-red-500'>Please select a student first.</p>
           ) : (
-            <div className="grid grid-cols-2 gap-2">
+            <div className='grid grid-cols-2 gap-2'>
               {exams.map((exam) => (
                 <button
                   key={exam._id}
@@ -237,36 +253,39 @@ const All_Result = () => {
         </AccordionSection>
 
         <AccordionSection
-          title="4️⃣ Assign Subject Marks"
+          title='4️⃣ Assign Subject Marks'
           isOpen={openSection === 'subjects'}
           onClick={() => toggleSection('subjects')}
         >
           {!selectedExam ? (
-            <p className="text-red-500">Please select an exam first.</p>
+            <p className='text-red-500'>Please select an exam first.</p>
           ) : (
-            <div className="space-y-4">
+            <div className='space-y-4'>
               {subjects.map((subject) => {
                 const mark = Number(marks[subject.subjectCode]) || 0;
                 const { grade, remarks } = getGradeAndRemarks(mark);
 
                 return (
-                  <div key={subject._id} className="flex flex-col md:flex-row md:justify-between md:items-center border p-3 rounded-lg shadow-sm">
-                    <label className="flex items-center gap-2">
+                  <div
+                    key={subject._id}
+                    className='flex flex-col md:flex-row md:justify-between md:items-center border p-3 rounded-lg shadow-sm'
+                  >
+                    <label className='flex items-center gap-2'>
                       <input
-                        type="checkbox"
+                        type='checkbox'
                         checked={selectedSubjects.includes(subject.subjectCode)}
                         onChange={() => toggleSubject(subject.subjectCode)}
-                        className="accent-blue-gray-500 w-5 h-5"
+                        className='accent-blue-gray-500 w-5 h-5'
                       />
-                      <span className="font-medium">{subject.subjectCode}</span>
+                      <span className='font-medium'>{subject.subjectCode}</span>
                     </label>
 
                     {selectedSubjects.includes(subject.subjectCode) && (
-                      <div className="flex flex-col md:flex-row md:items-center gap-3 mt-2 md:mt-0 w-full md:w-auto">
+                      <div className='flex flex-col md:flex-row md:items-center gap-3 mt-2 md:mt-0 w-full md:w-auto'>
                         <input
-                          type="number"
-                          className="border-gray-300 border-2 px-3 py-1 rounded w-full md:w-28 focus:border-blue-400 focus:outline-none"
-                          placeholder="Marks"
+                          type='number'
+                          className='border-gray-300 border-2 px-3 py-1 rounded w-full md:w-28 focus:border-blue-400 focus:outline-none'
+                          placeholder='Marks'
                           value={marks[subject.subjectCode] || ''}
                           onChange={(e) =>
                             setMarks({
@@ -276,11 +295,11 @@ const All_Result = () => {
                           }
                         />
                         {marks[subject.subjectCode] && (
-                          <div className="flex flex-col md:flex-row md:items-center gap-2 text-sm text-gray-700">
-                            <span className="px-2 py-1 bg-green-100 rounded font-semibold">
+                          <div className='flex flex-col md:flex-row md:items-center gap-2 text-sm text-gray-700'>
+                            <span className='px-2 py-1 bg-green-100 rounded font-semibold'>
                               Grade: {grade}
                             </span>
-                            <span className="px-2 py-1 bg-yellow-100 rounded">
+                            <span className='px-2 py-1 bg-yellow-100 rounded'>
                               Remarks: {remarks}
                             </span>
                           </div>
@@ -294,10 +313,10 @@ const All_Result = () => {
           )}
         </AccordionSection>
 
-        <div className="p-6 text-center">
+        <div className='p-6 text-center'>
           <button
             onClick={handleSubmit}
-            className="bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 px-6 rounded"
+            className='bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 px-6 rounded'
           >
             Submit Result
           </button>
@@ -308,16 +327,66 @@ const All_Result = () => {
 };
 
 const AccordionSection = ({ title, isOpen, onClick, children }) => (
-  <div className="border-t">
+  <div className='border-t'>
     <div
-      className="flex justify-between items-center px-6 py-4 bg-gray-50 cursor-pointer hover:bg-gray-200"
+      className='flex justify-between items-center px-6 py-4 bg-gray-50 cursor-pointer hover:bg-gray-200'
       onClick={onClick}
     >
-      <h3 className="font-semibold text-lg">{title}</h3>
-      <span className="text-xl">{isOpen ? '−' : '+'}</span>
+      <h3 className='font-semibold text-lg'>{title}</h3>
+      <span className='text-xl'>{isOpen ? '−' : '+'}</span>
     </div>
-    {isOpen && <div className="px-6 py-4">{children}</div>}
+    {isOpen && <div className='px-6 py-4'>{children}</div>}
   </div>
 );
 
 export default All_Result;
+// import { useEffect } from 'react';
+// import { useForm } from 'react-hook-form';
+// import InputSelect from '../common/InputSelect';
+// import useAxios from '../common/useAxios';
+
+// const All_Result = () => {
+//   const getClassList = useAxios([]);
+//   const {
+//     register,
+//     formState: { errors },
+//     handleSubmit,
+//     reset,
+//   } = useForm();
+//   const handleGetClassList = () => {
+//     getClassList.fetcher({
+//       options: {
+//         method: 'GET',
+//         url: `/api/classlevels`,
+//       },
+//       callback: () => {},
+//     });
+//   };
+//   console.log('getClassList', getClassList.data);
+
+//   useEffect(() => {
+//     handleGetClassList();
+//   }, []);
+//   return (
+//     <div>
+//       <InputSelect
+//         isSelect
+//         isRequired
+//         title='Class List'
+//         inputRef={register}
+//         options={getClassList.data?.map((item) => {
+//           {
+//             return { label: item, value: item };
+//           }
+//         })}
+//         // label='Select Class'
+//         placeholder='Select Class'
+//         onChange={() => {handle}}
+//         name='class'
+//         error={errors}
+//       />
+//     </div>
+//   );
+// };
+
+// export default All_Result;

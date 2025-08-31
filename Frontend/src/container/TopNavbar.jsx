@@ -83,14 +83,14 @@ const TopNavbar = () => {
             </MenuHandler>
             <MenuList>
               <MenuItem
-                onClick={handleToggle}
+                // onClick={handleToggle}
                 value='english'
                 className={language === 'english' ? 'text-indigo-400' : ''}
               >
                 English
               </MenuItem>
               <MenuItem
-                onClick={handleToggle}
+                // onClick={handleToggle}
                 value='bangla'
                 className={language === 'bangla' ? 'text-indigo-400' : ''}
               >

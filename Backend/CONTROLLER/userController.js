@@ -150,7 +150,7 @@ export const getClassLevelWithStudents = async (req, res) => {
 
 export const getAbsentStudents = async (req, res) => {
     try {
-        const absentStudents = await Student.find({ isPresent: false });
+        const absentStudents = await Student.find({ status: false });
 
         if ( !absentStudents || absentStudents.length === 0){
             return res.status(404).json({ message: "No absent students found" });

@@ -97,3 +97,20 @@ export const deleteTeacher = async (req, res)=> {
 
     }
 };
+
+///get absent teachers
+
+export const getAbsetTeachers = async (req, res) => {
+    try {
+        const absentTeachers = await Teacher.find({ isPresent: false });
+
+        if (!absentTeachers || absentTeachers.length === 0) {
+            return res.status(400).json({ message: 'No Absent teacher found '});
+
+        }
+        res.status(200).json(absentTeachers);
+
+    } catch (error) {
+        res.status(500).json({ errorMessage: error.mesage });
+    }
+}

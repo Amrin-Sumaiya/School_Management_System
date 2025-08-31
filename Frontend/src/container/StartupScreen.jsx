@@ -6,6 +6,7 @@ import { getReloadAuthDataAction } from '../redux/slices/LoginSlice/authSlice';
 import LoginScreen from '../screen/LoginScreen';
 import TeacherApplication from './TeacherApplication';
 import WrapperLayout from './WrapperLayout';
+import AccountsApplication from './AccountsApplication';
 
 const SuperAdminApplication = lazy(() => import('./SuperAdminApplication'));
 const AdminApplication = lazy(() => import('./TeacherApplication'));
@@ -43,7 +44,10 @@ const StartupScreen = () => {
               <SuperAdminApplication />
             ) : userInfo?.role === 'Teacher' ? (
               <TeacherApplication />
-            ) : null}
+            ) :userInfo?.role === 'Accounts' ? (
+              <AccountsApplication />
+            ) :
+            null}
           </WrapperLayout>
         </Suspense>
       ) : (

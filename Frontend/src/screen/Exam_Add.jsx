@@ -65,7 +65,7 @@ const Add_Exam = () => {
           <label className='block text-sm font-sans text-black'>
             Exam Date
           </label>
-          <input
+          <input    
             type='date'
             name='examDate'
             onChange={handleChange}
@@ -141,7 +141,7 @@ const Add_Exam = () => {
             type='text'
             name='examRoomNumber'
             onChange={handleChange}
-            placeholder='601(A)'
+            placeholder='Room No'
             className='mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2'
             required
           />
@@ -158,8 +158,8 @@ const Add_Exam = () => {
             type='button'
             onClick={() => window.history.back()}
             className='w-full bg-red-300 hover:bg-red-500 text-white font-semibold py-2 rounded-md shadow-md transition duration-200'
-          >
-            Cancel
+          > 
+            Cancel 
           </button>
         </div>
       </form>

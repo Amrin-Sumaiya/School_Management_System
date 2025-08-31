@@ -86,6 +86,8 @@ export const superAdminNav = [
       },
     ],
   },
+    
+  
 
   {
     id: 10,
@@ -178,6 +180,45 @@ export const teacherSideNav = [
       },
     ],
   },
+];
+
+export const accountSideNav = [
+  {
+    id: 1,
+    sequenceNumber: 1.0,
+    englishDescription: 'Dashboard',
+    banglaDescription: 'ড্যাশবোর্ড',
+    iconValue: <LuLayoutDashboard />,
+    link: '/',
+  },
+
+  {
+    id: 13,
+    sequenceNumber: 5.0,
+    englishDescription: 'Student Management',
+    banglaDescription: `ছাত্র ব্যবস্থাপনা`,
+    iconValue: <HiOutlineClipboardDocumentList />,
+    link: '#',
+    childList: [
+      {
+        id: 14,
+        sequenceNumber: 5.1,
+        englishDescription: 'Student List',
+        banglaDescription: 'ছাত্র তালিকা',
+        // iconValue: <HiOutlineClipboardDocumentList />,
+        link: '/student-list',
+      },
+            {
+        id: 17,
+        sequenceNumber: 5.2,
+        englishDescription: 'Attendance List',
+        banglaDescription: 'শিক্ষার্থীদের উপস্থিতির তালিকা',
+        // iconValue: <HiOutlineClipboardDocumentList />,
+        link: '/attendance',
+      },
+    ],
+  },
+  
 ];
 
 export const userNav = [

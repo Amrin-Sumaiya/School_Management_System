@@ -1,5 +1,5 @@
 import SideNavBar from '../container/SideNavBar';
-import { superAdminNav, teacherSideNav } from './SuperAdminSideNav';
+import { accountSideNav, superAdminNav, teacherSideNav } from './SuperAdminSideNav';
 
 const SideNav = () => {
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -10,7 +10,9 @@ const SideNav = () => {
           userInfo?.role === 'SuperAdmin'
             ? superAdminNav
             : userInfo?.role === 'Teacher'
-            ? teacherSideNav
+            ? teacherSideNav 
+            : userInfo?.role === 'Accounts'
+            ? accountSideNav 
             : null
         }
       />

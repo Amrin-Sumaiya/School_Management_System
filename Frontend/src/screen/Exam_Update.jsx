@@ -58,7 +58,7 @@ const submitForm = (e) => {
     };
 
     try {
-       axios.put(`http://localhost:8000/api/exam/update/${id}`, student);
+       axios.put(`http://localhost:8000/api/exam/update/${id}`, updatedData);
       toast.success("Exam updated Successfully", { position: "top-right" });
       navigate("/exam-list");
     } catch (error) {
@@ -72,13 +72,6 @@ const submitForm = (e) => {
     <div className="max-w-4xl mx-auto p-6 bg-indigo-50 rounded-xl shadow-lg mt-10">
       <ToastContainer position="top-left" />
 
-      <button
-        type="button"
-        onClick={() => navigate('/exam_info')}
-        className="mb-4 bg-gray-500 hover:bg-gray-400 text-black font-semibold px-3 py-2 rounded-md shadow"
-      >
-        ← Back
-      </button>
 
       <h2 className="text-2xl font-semibold text-center text-black mb-6">Update Exam Information</h2>
 
@@ -175,7 +168,7 @@ const submitForm = (e) => {
           </button>
           <button
             type="button"
-            onClick={() => navigate('/exam_info')}
+            onClick={() => navigate('/exam-list')}
             className="w-full bg-red-300 hover:bg-red-500 text-white font-semibold py-2 rounded-md shadow-md transition duration-200"
           >
             Cancel

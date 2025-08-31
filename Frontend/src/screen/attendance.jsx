@@ -35,7 +35,10 @@ const Attendance = () => {
       ...prev,
       [id]: prev[id] === "Present" ? "Absent" : "Present",
     }));
-  };
+  };  
+  const isoString = "2025-08-07T05:52:41";
+const dateOnly = isoString.split("T")[0];
+
 
   // Submit attendance
   const handleSubmit = async () => {
@@ -48,7 +51,7 @@ const Attendance = () => {
 
       await axios.post("http://localhost:8000/api/attendance/student_attendance", {
         studentId: formattedData,
-        date: new Date(),
+        date: dateOnly,
         remarks: "",
       });
 

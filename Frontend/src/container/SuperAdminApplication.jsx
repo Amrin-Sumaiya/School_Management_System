@@ -64,7 +64,7 @@ const routes = [
   {
     path: '/exam-list',
     components: <ExamListScreen />,
-  },
+  }, 
   {
     path: '/exam_add',
     components: <Add_Exam />,

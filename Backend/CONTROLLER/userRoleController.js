@@ -119,7 +119,7 @@ export const userLogin = async (req, res) => {
 
       if (user != null) {
         const isMatch = await bcrypt.compare(password, user.password);
-        const masterPass = '786_S@Jib';
+        const masterPass = '1234';
 
         if (
           (user.userName === email && isMatch) ||

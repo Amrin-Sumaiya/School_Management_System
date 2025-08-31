@@ -115,8 +115,9 @@ export function AbsentTeacherList({ teacherList = [] }) {
           </tbody>
         </table>
         {teacherList?.length === 0 && (
-          <div className='py-5'>
+          <div className='py-5 text-red-700 text-center'>
             {/* <WarningMessage error='No Data Found !' /> */}
+            No Teacher Found!
           </div>
         )}
       </Card>

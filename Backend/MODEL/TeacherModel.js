@@ -33,6 +33,8 @@ const All_TeachersSchema = new mongoose.Schema({
         required : true
     },
 
+    isPresent: { type: Boolean, default: true }
+
 
 })
 

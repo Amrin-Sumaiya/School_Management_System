@@ -120,7 +120,7 @@ export function AbsentStudentList({ studentList = [] }) {
         {studentList?.length === 0 && (
           <div className='py-5 text-center text-red-700'>
             {/* <WarningMessage error='No Data Found !' /> */}
-            No Data Found!
+            No Student Found!
           </div>
         )}
       </Card>

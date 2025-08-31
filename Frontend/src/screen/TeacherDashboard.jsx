@@ -13,7 +13,7 @@ const TeacherDashboard = () => {
     {
       title: 'Present Students',
       count: 10,
-      colour: '#BF83FF',
+      colour: '#D0F0C0',
     },
   ];
   return (

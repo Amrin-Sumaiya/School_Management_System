@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 // import ErrorValidate from '../common/ErrorValidate';
 import { getAuthData } from '../redux/slices/LoginSlice/authSlice';
 // import bgImage from '/assets/loginPage.svg';
-import logo from '../../src/assets/edu.png';
+import logo from '../../src/assets/edu2.png';
 
 import { FaRegEye } from 'react-icons/fa6';
 import { ScaleLoader } from 'react-spinners';
@@ -89,7 +89,7 @@ const LoginScreen = () => {
                     <Input
                       autocomplete='off'
                       color='black'
-                      label='ব্যবহারকারীর নাম'
+                      label='User Name'
                       variant='standard'
                       autoComplete='off'
                       {...register('username', { required: true })}
@@ -111,7 +111,7 @@ const LoginScreen = () => {
                       color='black'
                       type={showPass == true ? 'text' : 'password'}
                       autoComplete='off'
-                      label='পাসওয়ার্ড'
+                      label='Password'
                       variant='standard'
                       {...register('password', { required: true })}
                       className='text-blue-gray-900 text-base font-semibold'
@@ -153,17 +153,17 @@ const LoginScreen = () => {
                         </h3>
                         <IoMdRefresh
                           size={20}
-                          className='cursor-pointer'
+                          className='cursor-pointer' 
                           onClick={() => refreshString()}
                         />
                       </div>
                       <p className='text-xs  text-sky-400 text-end '>
-                        {`পাসওয়ার্ড ভুলে গেছেন ? `}
+                        {`Forgot Password ? `}
                         <a
                           // onClick={() => setIsEmailPage(false)}
                           className='font-semibold leading-6 text-sky-500 hover:text-black cursor-pointer'
                         >
-                          ক্লিক করুন
+                        Click here 
                         </a>
                       </p>
                     </div>

@@ -25,14 +25,16 @@ export const getAllSubjects = async (req, res)=>{
     try{
 
         const subjectData = await Subject.find();
-        if (!subjectData || subjectData.length === 0){
+        if (subjectData.length === 0){
             return res.status(404).json({ message: "Subject Data not Found"});
 
+        }else{
+ res.status(200).json(subjectData)
         }
-        res.status(200).json(subjectData)
+       
 
     } catch ( error) {
-        res.status(500)({ errorMessage: error.message });
+        res.status(500).json({ errorMessage: error.message });
     }
 }
 

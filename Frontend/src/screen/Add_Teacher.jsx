@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { FaArrowLeft } from 'react-icons/fa';
@@ -10,12 +10,30 @@ const Add_Teacher = () => {
   const [teacher, setTeacher] = useState({
     name: '',
     email: '',
-    department: '',
+    subjectCode: '',
+    classTeacherOf: '',
     sex: '',
     join_date: '',
     age: '',
     contact: '',
   });
+
+  //store all subject data in state
+  const [subjects, setSubjects] = useState([]);
+
+  //fetch all subjects from backend
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      try {
+        const res = await axios.get('http://localhost:8000/api/subject/all_subjects');
+        setSubjects(res.data); //api returs an array of all subjects
+      } catch (error) {
+        console.error('Error fethching subjects:' , error);
+        toast.error('Failed to fetch subjects'); 
+      }
+    };
+    fetchSubjects();
+  }, []);
 
   const handleOnChange = (e) => {
     setTeacher({ ...teacher, [e.target.name]: e.target.value });
@@ -101,18 +119,39 @@ const Add_Teacher = () => {
           </select>
         </div>
 
-        {/* Department */}
+        {/* class teacher of */}
         <div>
-          <label className='block font-medium mb-1'>Department</label>
-          <input
+          <label className="'block font-medium mb-1">Class Teacher</label>
+          <input 
             type='text'
-            name='department'
-            value={teacher.department}
+            name='classTeacherOf'
+            value={teacher.classTeacherOf}
             onChange={handleOnChange}
-            placeholder='Enter department'
+            placeholder='Enter class (optional)'
             className='w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400'
-            required
-          />
+             />
+        </div>
+
+        {/* Assign Subject*/}
+        <div>
+          <label className='block font-medium mb-1'>Assigned Subject</label>
+          <select     
+            name='subjectCode'
+            value={teacher.subjectCode}
+            onChange={handleOnChange} 
+            className='w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400'
+            required >
+
+            <option value=''>Select Subject</option>
+            {subjects.map((sub) =>(
+              <option key={sub._id} value={sub.subjectCode}>
+                {sub.subjectCode} - {sub.subjectName}
+        
+              </option>
+            ))} 
+      
+            </select>
+          
         </div>
 
         {/* Contact */}

@@ -10,4 +10,4 @@ route.get("/specific_subject/:id", getSubjectById)
 route.put("/update/:id", update)
 route.delete("/delete_subject/:id", deleteSubjectData)
 
-export default route;
+export default route; 

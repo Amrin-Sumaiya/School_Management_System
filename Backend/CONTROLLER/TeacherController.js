@@ -1,31 +1,43 @@
-import Teacher from "../MODEL/TeacherModel.js"
+import Teacher from "../MODEL/TeacherModel.js";
+import Subject from "../MODEL/SubjectModel.js";
 
 
 export const create = async(req, res) => {
-    try{
+  try {
+    let { subjectCode, ...rest } = req.body;
 
-        const newTeacher = new Teacher(req.body)
-        const {email} = newTeacher;
-
-        const teacherExist = await Teacher.findOne({email})
-        if(teacherExist){
-        return res.status(400).json({message : "Teacher already exists."})
-        }
-
-        const savedData = await newTeacher.save();
-        res.status(200).json(savedData);
-
-
-    }catch (error){
-
-        res.status(500).json({errorMessage:error.message})
+    // find subject by subjectCode string and get _id
+    const subject = await Subject.findOne({ subjectCode });
+    if (!subject) {
+      return res.status(400).json({ message: "Invalid subjectCode" });
     }
+
+    const newTeacher = new Teacher({
+      ...rest,
+      subjectCode: subject._id, // save objecct 
+      classTeacherOf: rest.classTeacherOf || null, // optional
+    });
+
+    const teacherExist = await Teacher.findOne({ email: newTeacher.email });
+    if (teacherExist) {
+      return res.status(400).json({ message: "Teacher already exists." });
+    }
+
+    const savedData = await newTeacher.save();
+    const populatedTeacher = await savedData.populate("subjectCode", "subjectCode subjectName");
+
+    res.status(201).json(populatedTeacher);
+  } catch (error) {
+    res.status(500).json({ errorMessage: error.message });
+  }
 }
  //get all teacher list 
 export const getAllTeachers = async(req, res)=>{
     try{
 
-        const teacherData = await Teacher.find();
+        const teacherData = await Teacher.find()
+         .populate("subjectCode", "subjectCode subjectName");
+
         if(!teacherData || teacherData.length === 0){
             return res.status(404).json({ message: "Teacher data not found."})
         }
@@ -43,7 +55,9 @@ export const getAllTeachers = async(req, res)=>{
 export const getTeacherById = async (req, res)=> {
     try{
         const id = req.params.id;
-        const teacherExist = await Teacher.findById(id);
+        const teacherExist = await Teacher.findById(id)
+        .populate("subjectCode", "subjectCode subjectName");
+
         if(!teacherExist) {
             return res.status(404).json({ message: "Teacher not found."})
         }
@@ -70,6 +84,7 @@ export const update = async (req, res)=> {
         const updatedData = await Teacher.findByIdAndUpdate(id, req.body, {
             new:true
         })
+        .populate("subjectCode", "subjectCode subjectName");
         res.status(200).json(updatedData)
 
     }catch (error){
@@ -102,7 +117,8 @@ export const deleteTeacher = async (req, res)=> {
 
 export const getAbsetTeachers = async (req, res) => {
     try {
-        const absentTeachers = await Teacher.find({ isPresent: false });
+        const absentTeachers = await Teacher.find({ isPresent: false })
+        .populate("subjectCode", "subjectCode subjectName"); 
 
         if (!absentTeachers || absentTeachers.length === 0) {
             return res.status(400).json({ message: 'No Absent teacher found '});

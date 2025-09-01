@@ -12,22 +12,41 @@ const Update_Teacher = () => {
     name: '',
     age: '',
     sex: '',
-    department: '',
-    contact: '',
+   subjectCode: '',
+   classTeacherOf: '',
+   contact: '',
     email: '',
     join_date: '',
   });
+
+
+  //store all subjects in state 
+ const [subjects, setSubjects] = useState([]);
 
   useEffect(() => {
     const fetchTeacher = async () => {
       try {
         const res = await axios.get(`http://localhost:8000/api/teachers/teacher/${id}`);
-        setTeacher(res.data);
+        setTeacher({
+          ...res.data,
+          subjectCode: res.data.subjectCode?._id || res.data.subjectCode
+        });
       } catch (error) {
         toast.error('Failed to fetch teacher data');
         console.error(error);
       }
     };
+
+    const fetchSubjects = async () => {
+      try {
+        const res = await axios.get(`http://localhost:8000/api/subject/all_subjects`);
+        setSubjects(res.data);
+      } catch (error) {
+        toast.error('Failed to fetch subjects');
+        console.error(error);
+      }
+    };
+    fetchSubjects();
     fetchTeacher();
   }, [id]);
 
@@ -101,20 +120,40 @@ const Update_Teacher = () => {
           </select>
         </div>
 
-        {/* Department */}
+        {/* Assign Subject */}
         <div>
-          <label className="block font-medium">Department</label>
-          <input
-            type="text"
-            name="department"
-            value={teacher.department}
-            onChange={handleOnChange}
-            className="w-full border p-2 rounded-md"
-            required
-          />
+          <label className="block font-medium">Assigned Subject</label>
+          <select
+          name="subjectCode"
+          value={teacher.subjectCode}
+          onChange={handleOnChange}
+          className='w-full border p-2 rounded-md'
+          required>
+            <option value="">Select Subject</option>
+            {subjects.map((sub) => (
+              <option key={sub._id} value={sub._id}>
+                {sub.subjectCode}
+              </option>
+            ))}
+
+          </select>
         </div>
 
-        {/* Contact */}
+        {/* Class Teacher Of (Optional) */}
+<div>
+  <label className="block font-medium">Class Teacher Of</label>
+  <input
+    type="text"
+    name="classTeacherOf"
+    value={teacher. classTeacherOf || ""}
+    onChange={handleOnChange}
+    className="w-full border p-2 rounded-md"
+    placeholder="Enter class (optional)"
+  />
+</div>
+
+
+        {/* Contact */}   
         <div>
           <label className="block font-medium">Contact</label>
           <input

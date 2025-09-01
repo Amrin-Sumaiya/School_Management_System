@@ -73,7 +73,8 @@ const All_Teachers = () => {
               <th className="border p-4">Name</th>
               <th className="border p-4">Age</th>
               <th className="border p-4">Sex</th>
-              <th className="border p-4">Department</th>
+              <th className="border p-4">Assigned Subject</th>
+              <th className="border p-4">Class Teacher Of</th>
               <th className="border p-4">Contact</th>
               <th className="border p-4">Email</th>
               <th className="border p-4">Join-Date</th>
@@ -88,7 +89,11 @@ const All_Teachers = () => {
                 <td className="border p-4">{teacher.name}</td>
                 <td className="border p-4">{teacher.age}</td>
                 <td className="border p-4">{teacher.sex}</td>
-                <td className="border p-4">{teacher.department}</td>
+                <td className="border p-4">
+  {teacher.subjectCode?.subjectCode} ({teacher.subjectCode?.subjectName})
+</td>
+
+                <td className='border p-4'>{teacher.classTeacherOf || "N/A"}</td>
                 <td className="border p-4">{teacher.contact}</td>
                 <td className="border p-4">{teacher.email}</td>
                 <td className="border p-4">{teacher.join_date}</td>

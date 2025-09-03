@@ -10,7 +10,7 @@ const Add_Teacher = () => {
   const [teacher, setTeacher] = useState({
     name: '',
     email: '',
-    subjectCode: '',
+    subjects: '',
     classTeacherOf: '',
     sex: '',
     join_date: '',
@@ -20,6 +20,7 @@ const Add_Teacher = () => {
 
   //store all subject data in state
   const [subjects, setSubjects] = useState([]);
+  const [classes, setClasses] = useState([]);
 
   //fetch all subjects from backend
   useEffect(() => {
@@ -32,7 +33,19 @@ const Add_Teacher = () => {
         toast.error('Failed to fetch subjects'); 
       }
     };
+
+    const fetchClasses = async () => {
+      try {
+        const res = await axios.get("http://localhost:8000/api/class/all_classInfo");
+        setClasses(res.data);
+      } catch (error) {
+        console.error("Error fetching classes: ", error);
+        toast.error("Failed to fetch classes");
+      }
+    }
+
     fetchSubjects();
+    fetchClasses();
   }, []);
 
   const handleOnChange = (e) => {
@@ -122,37 +135,46 @@ const Add_Teacher = () => {
         {/* class teacher of */}
         <div>
           <label className="'block font-medium mb-1">Class Teacher</label>
-          <input 
-            type='text'
-            name='classTeacherOf'
-            value={teacher.classTeacherOf}
-            onChange={handleOnChange}
-            placeholder='Enter class (optional)'
-            className='w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400'
-             />
+<select 
+name="classTeacherOf"
+value={teacher.classTeacherOf}
+onChange={handleOnChange}
+className="w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+  <option value="">Select Class (optional)</option>
+  {classes.map((cls) => (
+<option key={cls._id} value={cls._id}>
+  {cls.Class}
+</option> 
+  ))}
+
+</select>
         </div>
 
-        {/* Assign Subject*/}
-        <div>
-          <label className='block font-medium mb-1'>Assigned Subject</label>
-          <select     
-            name='subjectCode'
-            value={teacher.subjectCode}
-            onChange={handleOnChange} 
-            className='w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400'
-            required >
+{/* Assign Subjects */}
+<div>
+  <label className='block font-medium mb-1'>Assigned Subjects</label>
+  <select
+    name="subjects"
+    multiple
+    value={teacher.subjects || []}
+    onChange={(e) =>
+      setTeacher({
+        ...teacher,
+        subjects: Array.from(e.target.selectedOptions, (opt) => opt.value),
+      })
+    }
+    className="w-full border p-2 rounded-md"
+    required
+  >
+    {subjects.map((sub) => (
+      <option key={sub._id} value={sub._id}>
+        {sub.subjectCode} - {sub.subjectName}
+      </option>
+    ))}
+  </select>
+  <small className="text-gray-500">Hold CTRL (Windows) or CMD (Mac) to select multiple</small>
+</div>
 
-            <option value=''>Select Subject</option>
-            {subjects.map((sub) =>(
-              <option key={sub._id} value={sub.subjectCode}>
-                {sub.subjectCode} - {sub.subjectName}
-        
-              </option>
-            ))} 
-      
-            </select>
-          
-        </div>
 
         {/* Contact */}
         <div>
@@ -210,7 +232,8 @@ const Add_Teacher = () => {
               setTeacher({
                 name: '',
                 email: '',
-                department: '',
+                subjectCode: '',
+                classTeacherOf: '',
                 sex: '',
                 join_date: '',
                 age: '',

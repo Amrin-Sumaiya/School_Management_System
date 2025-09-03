@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
 
 
+
 const All_studentsSchema = new mongoose.Schema({
 
     studentId: { 
@@ -12,7 +13,8 @@ const All_studentsSchema = new mongoose.Schema({
        required : true 
       },
     class:{
-       type:String,
+       type: mongoose.Schema.Types.ObjectId, //reference by object ID
+       ref: "Classes",   //model name as string 
         required : true 
       },
     age:{ type:Number, required : true  },

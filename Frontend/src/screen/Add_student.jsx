@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useEffect } from 'react';
 import { useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
@@ -9,7 +10,7 @@ const Add_student = () => {
   const [student, setStudent] = useState({
     studentId: '',
     name: '',
-    class: '',
+    class: '', //object id
     age: '',
     version: '',
     sex: '',
@@ -18,12 +19,30 @@ const Add_student = () => {
     motherName: '',
     gurdianContact: '',
     gurdianProffesion: '',
-    religion: '',
+    religion: '', 
     caste: '',
     bloodGroup: '',
     dob: '',
-    address: '',
+    address: '', 
+    isPresent: true,
   });
+ 
+  const [classOptions, setClassOptions] = useState([]);
+
+  useEffect(() => {
+    // Fetch class options from the backend API
+    const fetchClasses = async () => {
+      try {
+        const res = await axios.get("http://localhost:8000/api/class/all_classInfo");
+        setClassOptions(res.data);
+      } catch (error) {
+        console.error("Error fetching class options:" , error);
+      }
+    };
+    fetchClasses(); //call the api 
+  }, []);
+
+
   const handleChange = (e) => {
     setStudent({ ...student, [e.target.name]: e.target.value });
   };
@@ -96,14 +115,21 @@ const Add_student = () => {
 
         <div>
           <label className='block font-medium'>Class</label>
-          <input
-            type='text'
-            name='class'
-            value={student.class}
-            onChange={handleChange}
-            required
-            className='w-full border p-2 rounded-md'
-          />
+          <select 
+          name='class'
+          value={student.class}
+          onChange={handleChange}
+          className='w-full border p-2 rounded-md'>
+            <option value="">Select Class</option>
+            {classOptions.map((cls) => (
+<option key={cls._id} value={cls._id}>
+  {cls.Class}
+</option>
+
+            ))}
+
+          </select>
+
         </div>
 
         <div>
@@ -301,7 +327,7 @@ const Add_student = () => {
               setStudent({
                 studentId: '',
                 name: '',
-                class: '',
+                class: '', //object id
                 age: '',
                 version: '',
                 sex: '',

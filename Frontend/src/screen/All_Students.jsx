@@ -95,17 +95,17 @@ const userInfo = JSON.parse(localStorage.getItem('userInfo'));
           </tr>
         </thead>
         <tbody>
-          {students.map((student) => (
-            <tr key={student._id} className="text-center border">
+          {students?.map((student) => (
+            <tr key={student?._id} className="text-center border">
              
-              <td className="border p-4">{student.class}</td>
-              <td className="border p-4">{student.name}</td>
-               <td className="border p-2">{student.studentId || "N/A"}</td>
-              <td className="border p-4">{student.age}</td>
-              <td className="border p-4">{student.version}</td>
-              <td className="border p-4">{student.sex}</td>
-              <td className="border p-4">{student.religion}</td>
-              <td className="border p-4">{student.email}</td>
+              <td className="border p-4">{student?.class?.Class}</td>
+              <td className="border p-4">{student?.name}</td>
+               <td className="border p-2">{student?.studentId || "N/A"}</td>
+              <td className="border p-4">{student?.age}</td>
+              <td className="border p-4">{student?.version}</td>
+              <td className="border p-4">{student?.sex}</td>
+              <td className="border p-4">{student?.religion}</td>
+              <td className="border p-4">{student?.email}</td>
               <td className="border p-4">
                 <button onClick={() => openModal(student)} className="text-blue-600 hover:text-blue-800">
                   <FaEye className="inline-block mr-1" />

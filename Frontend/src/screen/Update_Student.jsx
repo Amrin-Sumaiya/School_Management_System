@@ -27,7 +27,15 @@ const Update_Student = () => {
     address: '',
   });
 
+  const [classOptions, setClassOptions] = useState([]);
+  
   useEffect(() => {
+
+    axios.get("http://localhost:8000/api/class/all_classInfo")
+    .then((res) => setClassOptions(res.data))
+    .catch((err) => console.error(err));
+
+
     axios.get(`http://localhost:8000/api/student/${id}`)
       .then((response) => setStudent(response.data))
       .catch((err) => {
@@ -100,16 +108,20 @@ const Update_Student = () => {
 
         <div>
           <label className="block font-medium">Class</label>
-          
-          <input
-            type="text"
-            name="class"
-            value={student.class}
-            onChange={handleChange}
-            required
-            className="w-full border p-2 rounded-md border-blue-gray-500"
-            placeholder="Enter class"
-          />
+          <select
+          name="class"
+          value={student.class?._id || student.class}
+          onChange={handleChange}
+          required
+          className='w-full border p-2 rounded-md border-blue-gray-500'>
+            <option value="">Select Class</option>
+            {classOptions.map((cls) => (
+              <option key={cls._id} value={cls._id}>
+                {cls.Class}</option>
+            ))}
+
+          </select>
+
         </div>
 
         <div>

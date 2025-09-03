@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-import Subject from "./SubjectModel.js"
+import Subject from "./SubjectModel.js";
+
 
 const All_TeachersSchema = new mongoose.Schema({
 
@@ -13,15 +14,19 @@ const All_TeachersSchema = new mongoose.Schema({
         required : true 
     },
     
-subjectCode: {
-    type: String,
-    required: true,
-    ref: Subject, // this must match your model name
-},
+  // multiple subjects assigned
+  subjects: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Subject",
+      required: true
+    }
+  ],
 
 //optional feilds
   classTeacherOf: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Classes", //reference to classs model 
     required: false, //optional
     default: null,
   },

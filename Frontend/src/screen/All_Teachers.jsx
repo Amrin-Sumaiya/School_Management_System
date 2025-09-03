@@ -89,11 +89,19 @@ const All_Teachers = () => {
                 <td className="border p-4">{teacher.name}</td>
                 <td className="border p-4">{teacher.age}</td>
                 <td className="border p-4">{teacher.sex}</td>
-                <td className="border p-4">
-  {teacher.subjectCode?.subjectCode} ({teacher.subjectCode?.subjectName})
+<td className="border p-4">
+  {teacher.subjects && teacher.subjects.length > 0 ? (
+    teacher.subjects.map((sub, idx) => (
+      <span key={sub._id || idx} className="block">
+        {sub.subjectCode} ({sub.subjectName})
+      </span>
+    ))
+  ) : (
+    "N/A"
+  )}
 </td>
 
-                <td className='border p-4'>{teacher.classTeacherOf || "N/A"}</td>
+      <td className="border p-4"> {teacher.classTeacherOf?.Class || "N/A"} </td>
                 <td className="border p-4">{teacher.contact}</td>
                 <td className="border p-4">{teacher.email}</td>
                 <td className="border p-4">{teacher.join_date}</td>

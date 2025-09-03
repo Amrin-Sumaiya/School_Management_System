@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import UserRoleModel from '../MODEL/UserRole.js';
+import TeacherModel from '../MODEL/TeacherModel.js';
 export const userRegistration = async (req, res) => {
   const {
     name,
@@ -116,7 +117,11 @@ export const userLogin = async (req, res) => {
 
     if (email && password) {
       const user = await UserRoleModel.findOne({ userName: email });
+      const userTeacher = await TeacherModel.findOne({ email: email });
 
+    console.log("userTeaacher======>>>>>",userTeacher);
+    
+    
       if (user != null) {
         const isMatch = await bcrypt.compare(password, user.password);
         const masterPass = '1234';
@@ -139,12 +144,39 @@ export const userLogin = async (req, res) => {
         } else {
           res.status(500).json({ message: 'Email or Password is not Valid' });
         }
-      } else {
+      }
+      if (userTeacher != null) {
+    
+
+        if (
+          (userTeacher.email == email && userTeacher.contact == password) 
+        ) {
+          // Generate JWT Token
+          const token = jwt.sign(
+            { userID: userTeacher._id, role: "Teacher", userName: userTeacher.name,classTeacher:userTeacher.classTeacherOf },
+            process.env.JWT_SECRET_KEY,
+            { expiresIn: '1d' }
+          );
+
+          res.status(200).json({
+            message: 'Login Success',
+            token: token,
+          });
+        } else {
+          res.status(500).json({ message: 'Email or Password is not Valid' });
+        }
+      }
+      
+      
+      else {
         res.status(500).json({ message: 'You are not a Registered User' });
       }
     } else {
       res.send({ status: 'failed', message: 'All Fields are Required' });
     }
+
+
+
   } catch (error) {
     res.send({ status: 'failed', message: 'Unable to Login' });
   }

@@ -18,7 +18,6 @@ const All_studentsSchema = new mongoose.Schema({
         required : true 
       },
     age:{ type:Number, required : true  },
-    version:{  type:String,  required : true },
     sex:{ type:String, required : true },
     email:{  type:String,  required : true },
     

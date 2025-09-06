@@ -1,7 +1,6 @@
 import express from "express"
 import {create, deleteClassInfo, getAllClassInfo, getClassroomById, update } from "../CONTROLLER/classController.js"
 
-
 const route = express.Router();
 
 route.post("/class_Info", create)

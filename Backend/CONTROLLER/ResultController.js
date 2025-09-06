@@ -1,6 +1,6 @@
 import Result from "../MODEL/ResultModel.js"
 
-export const create = async (req, res) =>{
+export const create = async (req, res) =>{ 
     try{ 
     const newResult = new Result(req.body);
     const {examId, studentId, subjectCode } = newResult;
@@ -15,6 +15,7 @@ export const create = async (req, res) =>{
 } catch (error){
     res.status(500).json({ errorMessage: error.message })
 }
+
 }
 
 //get All Exam Data from the database 

@@ -138,21 +138,6 @@ const Update_Student = () => {
         </div>
 
         <div>
-          <label className="block font-medium">Version</label>
-          <select
-            name="version"
-            value={student.version}
-            onChange={handleChange}
-            required
-            className="w-full border p-2 rounded-md border-blue-gray-500"
-          >
-            <option value="">Select Version</option>
-            <option value="Bangla">Bangla</option>
-            <option value="English">English</option>
-          </select>
-        </div>
-
-        <div>
           <label className="block font-medium">Gender</label>
           <select
             name="sex"

@@ -47,14 +47,11 @@ import Student from '../MODEL/userModel.js'
 
 export const getStudentsByClassAndVersion = async (req, res) =>{
   try{
-    const classNum = parseInt(req.params.class); //get classNumber from URL 
-    const version = req.params.version;  
+    // const classNum = parseInt(req.params.class); //get classNumber from URL 
 
-     console.log(" Searching for class:", classNum);
-     console.log(" Searching for version:", version);
+ 
 
-
-    const students = await Student.find({ class: classNum, version: { $regex: new RegExp(`^${version}$`, "i") } });
+    const students = await Student.find({ class: req.params.class,});
     
 
     if(!students.length){

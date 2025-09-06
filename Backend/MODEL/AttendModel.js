@@ -7,8 +7,6 @@ const attendenceSchema = new mongoose.Schema({
      ref: "student",
     required: true,
   },
-
-
     date: {
         type: String,
         required: true,

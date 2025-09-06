@@ -12,8 +12,6 @@ const subjectSchema = new mongoose.Schema({
         unique: true, //  "MATH-05"
     },
 
-
-
     description: {
         type: String,
         default: "", // Optional description

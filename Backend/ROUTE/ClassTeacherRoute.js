@@ -7,7 +7,7 @@ import {  getStudentsByClassAndVersion } from "../CONTROLLER/ClassTeacherControl
 const route = express.Router();
 
 // route.post("/classteacher", create);
-route.get("/attendancebyteacher/class/:class/version/:version", getStudentsByClassAndVersion)
+route.get("/attendancebyteacher/class/:class", getStudentsByClassAndVersion)
 
 
 export default route;

@@ -10,6 +10,4 @@ route.get("/specific_exam_Info/:id", getExamDataById)
 route.put("/update/:id", updateExamData)
 route.delete("/delete/:id", deleteExamData)
 
-
-
 export default route;

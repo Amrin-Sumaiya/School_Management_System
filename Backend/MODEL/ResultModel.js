@@ -24,8 +24,9 @@ const resultSchema = new mongoose.Schema({
   },
 
   
-subjectCode: {
-    type: String,
+subjectId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Subject",
     required: true,
 
 },

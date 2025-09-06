@@ -206,7 +206,7 @@ export const accountSideNav = [
         englishDescription: 'Student List',
         banglaDescription: 'ছাত্র তালিকা',
         // iconValue: <HiOutlineClipboardDocumentList />,
-        link: '/student-list',
+        link: '/student-list', 
       },
             {
         id: 17,

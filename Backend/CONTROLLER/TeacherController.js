@@ -84,8 +84,8 @@ export const getTeacherById = async (req, res)=> {
 
         if(!teacherExist) {
             return res.status(404).json({ message: "Teacher not found."})
-        }
-        res.status(200).json(teacherExist)
+        } 
+        res.status(200).json(teacherExist) ; 
 
 
     }catch (error){

@@ -14,14 +14,14 @@ export const create = async (req, res) =>{
     res.status(200).json(savedData)
 } catch (error){
     res.status(500).json({ errorMessage: error.message })
-}
+} 
 
-}
-
+} 
+       
 //get All Exam Data from the database 
 
 export const getAllResultsData = async (req, res) =>{
-    try{
+    try{  
 
         const resultsData = await Result.find();
         if(!resultsData || resultsData.length === 0){

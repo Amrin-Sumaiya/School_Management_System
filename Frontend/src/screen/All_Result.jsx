@@ -1,14 +1,17 @@
 import axios from "axios";
+import axiosAuthInstance from "../common/axiosAuthInstance";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 const All_Result = ({ teacherId }) => {
+
   const [openSection, setOpenSection] = useState(null);
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [selectedExam, setSelectedExam] = useState(null);
   const [selectedSubjects, setSelectedSubjects] = useState([]);
   const [marks, setMarks] = useState({});
+const [loadingSubjects, setLoadingSubjects] = useState(false);
 
   const [classLevels, setClassLevels] = useState([]);
   const [students, setStudents] = useState([]);
@@ -16,19 +19,28 @@ const All_Result = ({ teacherId }) => {
   const [subjects, setSubjects] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // ✅ fetch classes
+  // Fetch teacherId based on userId
   useEffect(() => {
-    axios
+    const userId = JSON.parse ( localStorage.getItem("userInfo")).userID;
+    if (userId) {
+      teacherId = userId;
+         
+    }
+  }, []);
+
+  // fetch classes
+  useEffect(() => {
+    axiosAuthInstance
       .get("http://localhost:8000/api/class/all_classInfo")
       .then((res) => setClassLevels(res.data))
       .catch((err) => console.error("Error fetching classes:", err));
   }, []);
 
-  // ✅ fetch students when class selected
+  // fetch students when class selected
   useEffect(() => {
     if (selectedClass) {
       setLoading(true);
-      axios
+     axiosAuthInstance
         .get(
           `http://localhost:8000/api/classlevels-with-students?class=${encodeURIComponent(
             selectedClass
@@ -36,7 +48,7 @@ const All_Result = ({ teacherId }) => {
         )
         .then((res) => {
           if (Array.isArray(res.data)) setStudents(res.data);
-          else setStudents([]);
+          else setStudents([]); 
         })
         .catch((err) => {
           console.error("Error fetching students:", err);
@@ -46,25 +58,37 @@ const All_Result = ({ teacherId }) => {
     }
   }, [selectedClass]);
 
-  // ✅ fetch exams
+  // fetch exams
   useEffect(() => {
-    axios 
+   axiosAuthInstance 
       .get("http://localhost:8000/api/exam/all_exams")
       .then((res) => setExams(res.data))
       .catch((err) => console.error("Error fetching exams:", err));
   }, []);
 
-  // ✅ fetch teacher's subjects
-  useEffect(() => {
-    if (teacherId) {
-      axios
-        .get(`http://localhost:8000/api/teacher/${teacherId}`)
-        .then((res) => {
-          if (res.data && res.data.subjects) setSubjects(res.data.subjects);
-        })
-        .catch((err) => console.error("Error fetching subjects:", err));
-    }
-  }, [teacherId]);
+  // fetch teacher's subjects
+useEffect(() => {
+
+  if (!teacherId) return;
+
+  setLoadingSubjects(true);
+  axiosAuthInstance
+    .get(`http://localhost:8000/api/teachers/teacher/${teacherId}`)
+    .then((res) => {
+     
+      if (res.data && Array.isArray(res.data.subjects)) {
+        setSubjects(res.data.subjects);
+      } else {
+        setSubjects([]);
+      }
+    })
+    .catch((err) => {
+      console.error("Error fetching subjects:", err);
+      setSubjects([]);
+    })
+    .finally(() => setLoadingSubjects(false));
+}, [teacherId]);
+
 
   const toggleSection = (section) => {
     setOpenSection(openSection === section ? null : section);
@@ -113,7 +137,7 @@ const All_Result = ({ teacherId }) => {
           remarks,
         };
 
-        await axios.post("http://localhost:8000/api/result/results", resultData);
+        await axiosAuthInstance.post("http://localhost:8000/api/result/results", resultData);
       }
 
       toast.success("Result Submitted Successfully!");
@@ -233,58 +257,62 @@ const All_Result = ({ teacherId }) => {
             </div>
           )}
         </AccordionSection>
+  {/* subjects  */}
+      <AccordionSection
+  title="4️⃣ Assign Subject Marks"
+  isOpen={openSection === "subjects"}
+  onClick={() => toggleSection("subjects")}
+>
+  {!selectedExam ? (
+    <p className="text-red-500">Please select an exam first.</p>
+  ) : loadingSubjects ? (
+    <p>Loading subjects...</p>
+  ) : subjects.length === 0 ? (
+    <p className="text-gray-500">No subjects assigned to this teacher.</p>
+  ) : (
+    <div className="space-y-4">
+      {subjects.map((subject) => {
+        const mark = Number(marks[subject._id]) || 0;
+        const { grade, remarks } = getGradeAndRemarks(mark);
 
-        {/* 4️⃣ Assign Subject Marks */}
-   <AccordionSection
-          title="4️⃣ Assign Subject Marks"
-          isOpen={openSection === "subjects"}
-          onClick={() => toggleSection("subjects")}
-        >
-          {!selectedExam ? (
-            <p className="text-red-500">Please select an exam first.</p>
-          ) : (
-            <div className="space-y-4">
-              {subjects.map((subject) => {
-                const mark = Number(marks[subject._id]) || 0;
-                const { grade, remarks } = getGradeAndRemarks(mark);
+        return (
+          <div key={subject._id} className="flex flex-col md:flex-row md:justify-between md:items-center border p-3 rounded-lg shadow-sm">
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={selectedSubjects.includes(subject._id)}
+                onChange={() => toggleSubject(subject._id)}
+                className="accent-blue-gray-500 w-5 h-5"
+              />
+              <span className="font-medium">
+                {subject.subjectCode} - {subject.subjectName}
+              </span>
+            </label>
 
-                return (
-                  <div key={subject._id} className="flex flex-col md:flex-row md:justify-between md:items-center border p-3 rounded-lg shadow-sm">
-                    <label className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        checked={selectedSubjects.includes(subject._id)}
-                        onChange={() => toggleSubject(subject._id)}
-                        className="accent-blue-gray-500 w-5 h-5"
-                      />
-                      <span className="font-medium">
-                        {subject.subjectCode} - {subject.subjectName}
-                      </span>
-                    </label>
-
-                    {selectedSubjects.includes(subject._id) && (
-                      <div className="flex flex-col md:flex-row md:items-center gap-3 mt-2 md:mt-0 w-full md:w-auto">
-                        <input
-                          type="number"
-                          className="border-gray-300 border-2 px-3 py-1 rounded w-full md:w-28 focus:border-blue-400 focus:outline-none"
-                          placeholder="Marks"
-                          value={marks[subject._id] || ""}
-                          onChange={(e) => setMarks({ ...marks, [subject._id]: e.target.value })}
-                        />
-                        {marks[subject._id] && (
-                          <div className="flex flex-col md:flex-row md:items-center gap-2 text-sm text-gray-700">
-                            <span className="px-2 py-1 bg-green-100 rounded font-semibold">Grade: {grade}</span>
-                            <span className="px-2 py-1 bg-yellow-100 rounded">Remarks: {remarks}</span>
-                          </div>
-                        )}
-                      </div>
-                    )}
+            {selectedSubjects.includes(subject._id) && (
+              <div className="flex flex-col md:flex-row md:items-center gap-3 mt-2 md:mt-0 w-full md:w-auto">
+                <input
+                  type="number"
+                  className="border-gray-300 border-2 px-3 py-1 rounded w-full md:w-28 focus:border-blue-400 focus:outline-none"
+                  placeholder="Marks"
+                  value={marks[subject._id] || ""}
+                  onChange={(e) => setMarks({ ...marks, [subject._id]: e.target.value })}
+                />
+                {marks[subject._id] && (
+                  <div className="flex flex-col md:flex-row md:items-center gap-2 text-sm text-gray-700">
+                    <span className="px-2 py-1 bg-green-100 rounded font-semibold">Grade: {grade}</span>
+                    <span className="px-2 py-1 bg-yellow-100 rounded">Remarks: {remarks}</span>
                   </div>
-                );
-              })}
-            </div>
-          )}
-        </AccordionSection>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  )}
+</AccordionSection>
+
 
 
         <div className="p-6 text-center">

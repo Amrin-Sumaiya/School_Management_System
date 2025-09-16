@@ -21,7 +21,7 @@ const All_TeachersSchema = new mongoose.Schema({
       ref: "Subject",
       required: true
     }
-  ],
+  ],  
 
 //optional feilds
   classTeacherOf: {

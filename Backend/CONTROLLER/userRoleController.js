@@ -164,6 +164,7 @@ export const userLogin = async (req, res) => {
           res.status(200).json({
             message: 'Login Success',
             token: token,
+         
           });
         } else {
           res.status(500).json({ message: 'Email or Password is not Valid' });

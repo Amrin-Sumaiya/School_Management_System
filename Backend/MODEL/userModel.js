@@ -1,7 +1,5 @@
 import mongoose from "mongoose"
 
-
-
 const All_studentsSchema = new mongoose.Schema({
 
     studentId: { 

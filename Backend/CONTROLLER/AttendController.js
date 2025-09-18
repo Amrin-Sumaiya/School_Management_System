@@ -1,9 +1,10 @@
 import Attendance from '../MODEL/AttendModel.js';
+import TeacherModel from '../MODEL/TeacherModel.js';
 
 // Create Attendance
 export const create = async (req, res) => {
   try {
-    const { studentId, date, status, remarks } = req.body;
+    const { studentId, date, remarks } = req.body;
 
     const createdRecords = [];
     const skippedRecords = [];
@@ -15,9 +16,9 @@ export const create = async (req, res) => {
     }
 
     for (const student of studentId) {
-      const { id, status } = student;
+      const { id, status: studentStatus } = student;
 
-      if (!id || !status) {
+      if (!id || !studentStatus) {
         skippedRecords.push({ id, reason: 'Missing student ID or status' });
         continue;
       }
@@ -43,7 +44,7 @@ export const create = async (req, res) => {
         const newAttendance = new Attendance({
           studentId: id,
           date,
-          status,
+          status: studentStatus,
           remarks: remarks || '',
         });
 
@@ -102,25 +103,28 @@ export const UpdateAttendanceById = async (req, res) => {
   }
 };
 
-//get absent students per day/today
-
+// Get absent students per day/today
 export const getAbsentStudentsForDay = async (req, res) => {
   try {
-    const isoString = '2025-08-08T05:52:41';
-    const dateOnly = isoString.split('T')[0];
+    const dateOnly = req.query.date || new Date().toISOString().split('T')[0];
 
-    // const Date = new Date('2025-08-06T18:31:08.404+00:00')
     const absentAttendances = await Attendance.find({
       date: dateOnly,
       status: 'Absent',
-    }).populate('studentId'); //students details
-    console.log('absentAttendances=============>>>>', absentAttendances);
-    //Extract and map students data
+    }).populate({
+      path: 'studentId',
+      populate: {
+        path: 'class',
+        model: 'Classes',
+        select: 'Class',
+      },
+    });
+
     const absentStudents = absentAttendances.map((record) => {
       const student = record.studentId;
       return {
         name: student.name,
-        class: student['class'],
+        class: student.class?.Class || '',
         roll: student.studentId,
         contact: student.gurdianContact,
       };
@@ -132,3 +136,126 @@ export const getAbsentStudentsForDay = async (req, res) => {
     res.status(500).json({ errorMessage: error.message });
   }
 };
+
+// Get all present students per day  for superadmin
+export const getPresentStudentsForDay = async (req, res) => {
+  try {
+    const dateOnly =req.query.date || new Date().toISOString().split('T')[0];
+
+    const presentAttendances = await Attendance.find({
+      date: dateOnly,
+      status: 'Present',
+    }).populate({
+      path: 'studentId',
+      populate: {
+        path: 'class',
+        model: 'Classes',
+        select: 'Class',
+      },
+    });
+
+    const presentStudents = presentAttendances.map((record) => {
+      const student = record.studentId;
+      return {
+        name: student.name,
+        class: student.class?.Class || '',
+        roll: student.studentId,
+        contact: student.gurdianContact,
+      };
+    });
+    res.status(200).json(presentStudents);
+  } catch(error){
+    console.error('Error fetching present students: ', error);
+    res.status(500).json({ errorMessage: error.message });
+  }
+}
+
+// Get absent students per class per day under each class teacher
+export const getAbsentStudentsForDayByTeacher = async (req, res) => {
+  try {
+    const dateOnly = req.query.date || new Date().toISOString().split('T')[0];
+    const teacherId = req.query.teacherId;
+
+    if (!teacherId) {
+      return res.status(400).json({ message: 'Teacher ID is required' });
+    }
+
+    // Find the class assigned to this teacher
+    const teacher = await TeacherModel.findById(teacherId).select('classTeacherOf');
+    if (!teacher) {
+      return res.status(404).json({ message: 'Teacher Not Found' });
+    }
+
+    const absentAttendances = await Attendance.find({
+      date: dateOnly,
+      status: 'Absent',
+    }).populate({
+      path: 'studentId',
+      match: { class: teacher.classTeacherOf }, // Filter by teacher's class
+      populate: { path: 'class', model: 'Classes', select: 'Class' },
+    });
+
+    const absentStudents = absentAttendances
+      .filter((record) => record.studentId) // Ensure student exists
+      .map((record) => {
+        const student = record.studentId;
+        return {
+          name: student.name,
+          class: student.class?.Class || '',
+          roll: student.studentId,
+          contact: student.gurdianContact,
+        };
+      });
+
+    res.status(200).json(absentStudents);
+  } catch (error) {
+    console.error('Error fetching absent students: ', error);
+    res.status(500).json({ errorMessage: error.message });
+  }
+};
+
+// Get present students per class per day under each class teacher
+export const getPresentStudentsForDayByTeacher = async (req, res) => {
+  try {
+    const dateOnly = req.query.date || new Date().toISOString().split('T')[0];
+    const teacherId = req.query.teacherId;
+
+    if (!teacherId) {
+      return res.status(400).json({ message: 'Teacher ID is required' });
+    }
+
+    // find the class assigned to this teacher
+    const teacherClass = await TeacherModel.findById(teacherId).select('classTeacherOf');
+
+    if (!teacherClass?.classTeacherOf) {
+      return res.status(404).json({ message: 'No class assigned to this teacher' });
+    }
+
+    const presentAttendances = await Attendance.find({
+      date: dateOnly,
+      status: 'Present',
+    }).populate({
+      path: 'studentId',
+      match: { class: teacherClass.classTeacherOf }, // filter by teacher's class
+      populate: { path: 'class', model: 'Classes', select: 'Class' },
+    });
+
+    const presentStudents = presentAttendances
+      .filter(record => record.studentId)
+      .map(record => {
+        const student = record.studentId;
+        return {
+          name: student.name,
+          class: student.class?.Class || '',
+          roll: student.studentId,
+          contact: student.gurdianContact,
+        };
+      });
+
+    res.status(200).json(presentStudents);
+  } catch (error) {
+    console.error('Error fetching present students: ', error);
+    res.status(500).json({ errorMessage: error.message });
+  }
+};
+

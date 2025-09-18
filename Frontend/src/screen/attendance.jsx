@@ -24,7 +24,7 @@ const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         console.error('Error fetching students:', err);
         toast.error('Failed to fetch students.');
       }
-    };
+    }; 
 
     fetchStudents();
   }, []);

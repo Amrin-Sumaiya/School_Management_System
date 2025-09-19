@@ -5,12 +5,16 @@ import axios from "axios";
 import { toast } from 'react-toastify';
 import Modal from 'react-modal';
 
+
 Modal.setAppElement('#root');
 
 const All_Students = () => {
   const [students, setStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [filteredStudents, setFilteredStudents] = useState([]); // for filtered classes results
+  const [classFilter, setClassFilter] = useState('All'); //filter state
+  const [classes, setClasses] = useState([]); //to store uniqe class list
   const navigate = useNavigate();
 const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
@@ -27,12 +31,27 @@ const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       });
 
       setStudents(sortedByClass);
-      } catch (error) {
-        console.log("Error while fetching data", error);
-      }
+
+      // Extract unique classes
+      const uniqueClasses = [...new Set(sortedByClass.map(s => s.class?.Class))];
+      setClasses(uniqueClasses);
+
+    } catch (error) {
+      console.log("Error while fetching data", error);
+    }
     };
     fetchData();
   }, []);
+
+  //filtered students when classes changes
+  useEffect(() => {
+    if (classFilter === 'All') {
+      setFilteredStudents(students);
+    } else {
+      const filtered = students.filter(student => student.class?.Class === classFilter);
+      setFilteredStudents(filtered);
+    }
+  }, [classFilter, students]);
 
   const openModal = (student) => {
     setSelectedStudent(student);
@@ -75,6 +94,21 @@ const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         </button>
       </div> : ''
       }
+
+            {/* Class Filter Dropdown */}
+      <div className="mb-4 bg-indigo-100 p-3 rounded flex items-center ">
+        <label className="mr-4 font-semibold">Filter by Class:</label>
+        <select
+          value={classFilter}
+          onChange={(e) => setClassFilter(e.target.value)}
+          className="border-gray-600 p-2  rounded-md"
+        >
+          <option value="All">All</option>
+          {classes.map(cls => (
+            <option key={cls} value={cls}>{cls}</option>
+          ))}
+        </select>
+      </div>
     
 
       {/* Table */}
@@ -94,7 +128,7 @@ const userInfo = JSON.parse(localStorage.getItem('userInfo'));
           </tr>
         </thead>
         <tbody>
-          {students?.map((student) => (
+          {filteredStudents?.map((student) => (
             <tr key={student?._id} className="text-center border">
              
               <td className="border p-4">{student?.class?.Class}</td>

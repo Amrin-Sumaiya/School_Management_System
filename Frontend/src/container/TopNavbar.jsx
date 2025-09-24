@@ -74,30 +74,7 @@ const TopNavbar = () => {
 
         {/* Language & Profile Section */}
         <div className='flex items-center gap-4'>
-          {/* Language Toggle */}
-          <Menu>
-            <MenuHandler>
-              <Button className='bg-transparent text-black shadow-none p-2 min-w-0'>
-                <MdOutlineLanguage size={24} />
-              </Button>
-            </MenuHandler>
-            <MenuList>
-              <MenuItem
-                // onClick={handleToggle}
-                value='english'
-                className={language === 'english' ? 'text-indigo-400' : ''}
-              >
-                English
-              </MenuItem>
-              <MenuItem
-                // onClick={handleToggle}
-                value='bangla'
-                className={language === 'bangla' ? 'text-indigo-400' : ''}
-              >
-                বাংলা
-              </MenuItem>
-            </MenuList>
-          </Menu>
+
 
           {/* Profile Dropdown */}
           <Menu>

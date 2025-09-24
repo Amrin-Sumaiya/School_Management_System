@@ -10,9 +10,9 @@ import {
 } from "recharts";
 
 const data = [
-  { name: "Present", value: 52.8, color: "#9FE2BF" },   // blue
-  { name: "Absent", value: 26.8, color: "#F18C6F" }, // teal
-  { name: "late", value: 20.4, color: "#D8B3F5" }, // purple
+  { name: "Present", value: 52.8, color: "#8BC809" },   // blue
+  { name: "Absent", value: 26.8, color: "#FA8F91" }, // teal
+ // purple
 ];
 
 const PieChart = () => {

@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 const TeacherDashboard = () => {
 
 
-  // Student data
+  // Student data  
   const [ absentStudents , setAbsentStudents ] =  useState([]);
   const [presentStudents, setPresentStudents] = useState([]);
   const [totalStudents, setTotalStudents] = useState(0);

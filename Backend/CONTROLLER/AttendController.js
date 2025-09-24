@@ -259,3 +259,72 @@ export const getPresentStudentsForDayByTeacher = async (req, res) => {
   }
 };
 
+//get daily summury for present and absent updating the coulumn grapgh
+export const getDailySummaryByTeacher = async (req, res) => {
+  try {
+    const teacherId = req.query.teacherId;
+
+    if (!teacherId) {
+      return res.status(400).json({ message: "Teacher ID is required "});
+
+    }
+    //find class assinged teacher
+    const teacher = await TeacherModel.findById(teacherId).select("classTeacherOf");
+    if (!teacher?.classTeacherOf) {
+      return res.status(404).json({ messsage: "No class assigned to this teacher" });
+    }
+    
+    //Group attendance by date & status for this teacher's class
+    const summary = await Attendance.aggregate([
+      {
+        $lookup: {
+          from: "students", //student model collecction name
+          localField: "studentId",
+          foreignField: "_id",
+          as: "student",
+        },
+      },
+      { $unwind: "$student" },
+      {
+        $match: {
+          "student.class": teacher.classTeacherOf,
+        },
+      },
+
+      {
+        $group: {
+          _id: { date: "$date", status: "$status" },
+          count: { $sum: 1},
+        },
+      },
+      {
+        $group: {
+                    _id: "$_id.date",
+          present: {
+            $sum: { $cond: [{ $eq: ["$_id.status", "Present"] }, "$count", 0] },
+          },
+          absent: {
+            $sum: { $cond: [{ $eq: ["$_id.status", "Absent"] }, "$count", 0] },
+          },
+        },
+      }  ,
+       { $sort: { _id: 1 } },
+
+    ]);
+
+   // Format for frontend
+    const formatted = summary.map((item) => ({
+      date: item._id,
+      present: item.present,
+      absent: item.absent,
+    }));
+
+    res.status(200).json(formatted);
+  } catch (error) {
+    console.error("Error fetching daily summary:", error);
+    res.status(500).json({ errorMessage: error.message });
+
+  }
+}
+
+

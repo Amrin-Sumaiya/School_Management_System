@@ -182,3 +182,4 @@ export const getAbsetTeachers = async (req, res) => {
         res.status(500).json({ errorMessage: error.mesage });
     }
 }
+

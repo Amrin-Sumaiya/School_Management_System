@@ -1,6 +1,6 @@
 import express from "express"
 
-import { create, getAllAttendanceRecord, UpdateAttendanceById, getAbsentStudentsForDay, getAbsentStudentsForDayByTeacher, getPresentStudentsForDayByTeacher, getPresentStudentsForDay, getDailySummaryByTeacher } from "../CONTROLLER/AttendController.js"
+import { create, getAllAttendanceRecord, UpdateAttendanceById, getAbsentStudentsForDay, getAbsentStudentsForDayByTeacher, getPresentStudentsForDayByTeacher, getPresentStudentsForDay, getDailySummaryByTeacher, getAttendancePercentageForDay } from "../CONTROLLER/AttendController.js"
 
 const route = express.Router()
 
@@ -13,6 +13,9 @@ route.get("/absent-students-today-by-teacherwise", getAbsentStudentsForDayByTeac
 route.get("/present-students-today", getPresentStudentsForDay);
 route.get("/present-students-today-by-teacherwise", getPresentStudentsForDayByTeacher); 
 route.get("/daily_summary", getDailySummaryByTeacher);
+
+route.get("/attendance-percentage", getAttendancePercentageForDay);
+
 
 
 export default route;  

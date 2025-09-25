@@ -327,4 +327,45 @@ export const getDailySummaryByTeacher = async (req, res) => {
   }
 }
 
+//Get all students attendace performance By percentage way
+
+export const getAttendancePercentageForDay = async (req, res) => {
+  try {
+    const dateOnly = req.query.date || new Date().toISOString().split("T")[0];
+
+    const totalAttendances = await Attendance.countDocuments({ date: dateOnly })
+    const presentCount = await Attendance.countDocuments({
+      date: dateOnly,
+      status: "Present",
+    });
+
+    const absentCount = await Attendance.countDocuments({
+      date: dateOnly,
+      status: "Absent",
+    });
+
+    if (totalAttendances === 0) {
+      return res.status(200).json({
+        date: dateOnly,
+        presentPercentage: 0,
+        absentPercentage: 0,
+      });
+    }
+
+    const presentPercentage = ((presentCount / totalAttendances) * 100).toFixed(2);
+    const absentPercentage = (( absentCount / totalAttendances ) * 100).toFixed(2);
+
+    res.status(200).json({
+      date: dateOnly,
+      presentPercentage: parseFloat(presentPercentage),
+      absentPercentage: parseFloat(absentPercentage),
+    });
+  } catch (error){
+    console.error("Error calculating attendance in percentage: ", error);
+    res.status(500).json({ errorMessage: error.message });
+  }
+}
+
+
+
 

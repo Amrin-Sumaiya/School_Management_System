@@ -116,11 +116,8 @@ export const userLogin = async (req, res) => {
     const { email, password } = req.body;
 
     if (email && password) {
-      const user = await UserRoleModel.findOne({ userName: email });
-      const userTeacher = await TeacherModel.findOne({ email: email });
-
-    console.log("userTeaacher======>>>>>",userTeacher);
-    
+      const user = await UserRoleModel?.findOne({ userName: email });
+      const userTeacher = await TeacherModel?.findOne({ email: email });
     
       if (user != null) {
         const isMatch = await bcrypt.compare(password, user.password);
@@ -145,7 +142,7 @@ export const userLogin = async (req, res) => {
           res.status(500).json({ message: 'Email or Password is not Valid' });
         }
       }
-      if (userTeacher != null) {
+      else if (userTeacher != null) {
     
 
         if (
@@ -176,12 +173,14 @@ export const userLogin = async (req, res) => {
         res.status(500).json({ message: 'You are not a Registered User' });
       }
     } else {
-      res.send({ status: 'failed', message: 'All Fields are Required' });
+      res.status(500).json({ message: 'All Fields are Required' });
     }
 
 
 
   } catch (error) {
-    res.send({ status: 'failed', message: 'Unable to Login' });
+    res.status(500).json({ message: 'Unable to Login' });
   }
 };
+
+

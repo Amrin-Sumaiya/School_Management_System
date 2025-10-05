@@ -17,6 +17,14 @@ const Exam_Update = () => {
     examRoomNumber: '',
   });
 
+  const [classList, setClassList] = useState([]); //fetch all classlist
+  useEffect(() => {
+    axios 
+    .get('http://localhost:8000/api/class/all_classInfo')
+    .then((res) => setClassList(res.data))
+    .catch((error) => console.error('Error fetching classes: '))
+  }, []);
+
 useEffect(() => {
     axios.get(`http://localhost:8000/api/exam/specific_exam_Info/${id}`)
         .then((response) => {
@@ -89,18 +97,23 @@ const submitForm = (e) => {
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-black">Exam Name</label>
-          <input
-            type="text"
-            name="examName"
-            value={examData.examName}
-            onChange={handleChange}
-            placeholder="Half-yearly / Final"
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-            required
-          />
-        </div>
+<div>
+  <label className='block text-sm font-medium text-black'>
+    Exam Name
+  </label>
+  <select
+    name='examName'
+    onChange={handleChange}
+    className='mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2'
+    required
+  >
+    <option value=''>Select Exam</option>
+    <option value='1st Term'>1st Term</option>
+    <option value='2nd Term'>2nd Term</option>
+    <option value='3rd Term'>3rd Term</option>
+  </select>
+</div>
+
 
         {/* Column 2 */}
         <div>
@@ -134,15 +147,20 @@ const submitForm = (e) => {
 
         <div>
           <label className="block text-sm font-medium text-black">Class Level</label>
-          <input
-            type="text"
+          <select
             name="classLevel"
             value={examData.classLevel}
             onChange={handleChange}
-            placeholder="8"
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
             required
-          />
+          >
+            <option value="">Select Class</option>
+            {classList.map((cls) => (
+              <option key={cls._id} value={cls.Class}>
+                {cls.Class}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>

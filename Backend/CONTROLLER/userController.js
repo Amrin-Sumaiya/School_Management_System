@@ -153,7 +153,6 @@ export const getAbsentStudents = async (req, res) => {
 
         if ( !absentStudents || absentStudents.length === 0){
             return res.status(404).json({ message: "No absent students found" });
-
         }
 
         res.status(200).json(absentStudents)

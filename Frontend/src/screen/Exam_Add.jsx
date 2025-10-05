@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { FaArrowLeft } from 'react-icons/fa';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -16,10 +16,18 @@ const Add_Exam = () => {
   };
   const [examData, setExamData] = useState(exams);
 
+  const [classList, setClassList] = useState([]); //fetch class ist from class model
+  useEffect(() => {
+    axios
+    .get('http://localhost:8000/api/class/all_classInfo')
+    .then((res) => setClassList(res.data))
+    .catch((error) => console.error('Error fetching classes: ', error));
+
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     console.log(name, value);
-
     setExamData({ ...examData, [name]: value });
   };
 
@@ -74,19 +82,23 @@ const Add_Exam = () => {
           />
         </div>
 
-        <div>
-          <label className='block text-sm font-medium text-black'>
-            Exam Name
-          </label>
-          <input
-            type='text'
-            name='examName'
-            onChange={handleChange}
-            placeholder='Half-yearly / Final'
-            className='mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2'
-            required
-          />
-        </div>
+<div>
+  <label className='block text-sm font-medium text-black'>
+    Exam Name
+  </label>
+  <select
+    name='examName'
+    onChange={handleChange}
+    className='mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2'
+    required
+  >
+    <option value=''>Select Exam</option>
+    <option value='1st Term'>1st Term</option>
+    <option value='2nd Term'>2nd Term</option>
+    <option value='3rd Term'>3rd Term</option>
+  </select>
+</div>
+
 
         <div>
           <label className='block text-sm font-medium text-black'>
@@ -123,14 +135,16 @@ const Add_Exam = () => {
           <label className='block text-sm font-medium text-black'>
             Class Level
           </label>
-          <input
-            type='text'
-            name='classLevel'
-            onChange={handleChange}
-            placeholder='8'
-            className='mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2'
-            required
-          />
+<select name='classLevel' onChange={handleChange} value={examData.classLevel}
+className='mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2' required>
+  <option value=''>Select Class</option>
+  {classList.map((cls) => (
+    <option key={cls._id} value={cls.Class}>
+      {cls.Class}
+    </option>
+  ))}
+
+</select>
         </div>
 
         <div>

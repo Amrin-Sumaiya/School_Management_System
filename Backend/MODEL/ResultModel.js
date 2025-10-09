@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Exam from "./ExamModel.js"
 import student from "./userModel.js"
+import Subject from "./SubjectModel.js"
 
 
 const resultSchema = new mongoose.Schema({
@@ -8,7 +9,7 @@ const resultSchema = new mongoose.Schema({
 
   studentId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref:student,
+    ref: "student",
     required: true,
   },
 
@@ -26,7 +27,7 @@ const resultSchema = new mongoose.Schema({
   
 subjectId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Subject",
+    ref: Subject,
     required: true,
 
 },

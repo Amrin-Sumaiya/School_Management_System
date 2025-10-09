@@ -1,12 +1,47 @@
 import { Card, Typography } from '@material-tailwind/react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
-const TABLE_HEAD = [ 'Roll Number', 'Name',  'Class',  'Exam',  'Subject', 'Contact'];
+const TABLE_HEAD = [
+  'Roll Number',
+  'Name',
+  'Class',
+  'Exam',
+  'Subject',
+  'Contact',
+];
 
-export function AbsentTeacherList({ teacherList = [] }) {
+export function AbsentTeacherList() {
+  const [failedStudents, setFailedStudents] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const currentYear = new Date().getFullYear();
+
+  // ✅ Fetch failed students directly (no need to load class list separately)
+  useEffect(() => {
+    const fetchFailedStudents = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get(
+          `http://localhost:8000/api/result/failed_students/${currentYear}`
+        );
+
+        // The backend now already sends class name as "class"
+        setFailedStudents(res.data || []);
+      } catch (error) {
+        console.error('Error fetching failed students:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFailedStudents();
+  }, [currentYear]);
+
   return (
     <div className="pb-3 md:pb-0">
       <th className="flex justify-center bg-[#f38b8b98] py-1 rounded-t-md">
-        List of Failed Students
+        List of Failed Students ({currentYear})
       </th>
 
       <Card className="max-h-[16rem] min-h-[16rem] w-full overflow-scroll rounded-none">
@@ -31,45 +66,33 @@ export function AbsentTeacherList({ teacherList = [] }) {
           </thead>
 
           <tbody className="text-center">
-            {teacherList?.map(
-              ({ name, subject, ID, contact: phoneNumber }, index) => (
-                <tr key={index} className="even:bg-blue-gray-50/50">
-                  <td>
-                    <Typography variant="small" color="blue-gray" className="font-normal">
-                      {index + 1}
-                    </Typography>
-                  </td>
-                  <td>
-                    <Typography variant="small" color="blue-gray" className="font-normal">
-                      {name}
-                    </Typography>
-                  </td>
-                  <td>
-                    <Typography variant="small" color="blue-gray" className="font-normal">
-                      {subject}
-                    </Typography>
-                  </td>
-                  <td className="p-4">
-                    <Typography variant="small" color="blue-gray" className="font-normal">
-                      {ID}
-                    </Typography>
-                  </td>
-                  <td className="p-4">
-                    <Typography variant="small" color="blue-gray" className="font-normal">
-                      {phoneNumber}
-                    </Typography>
-                  </td>
+            {loading ? (
+              <tr>
+                <td colSpan={6} className="py-5 text-blue-600">
+                  Loading...
+                </td>
+              </tr>
+            ) : failedStudents?.length > 0 ? (
+              failedStudents.map((student) => (
+                <tr key={student.studentId}  className="even:bg-blue-gray-50/50">
+                  <td>{student.rollNumber}</td>
+                  <td>{student.name}</td>
+                 <td>{student.class?.Class || 'N/A'}</td>
+
+                  <td>{student.exam}</td>
+                  <td>{student.subject}</td>
+                  <td>{student.gurdianContact}</td>
                 </tr>
-              )
+              ))
+            ) : (
+              <tr>
+                <td colSpan={6} className="py-5 text-red-700 text-center">
+                  No Failed Students Found!
+                </td>
+              </tr>
             )}
           </tbody>
         </table>
-
-        {teacherList?.length === 0 && (
-          <div className="py-5 text-red-700 text-center">
-            No Teacher Found!
-          </div>
-        )}
       </Card>
     </div>
   );

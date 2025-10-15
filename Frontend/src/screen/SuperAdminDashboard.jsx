@@ -102,7 +102,7 @@ const fetchPresentStudents = async () => {
 
       {/* Charts */}
       <div className="grid grid-cols-2 justify-between gap-3 p-3">
-        <ChartBar />
+        <ChartBar  />
         <DashboardStatsCard />
       </div>
     </div>

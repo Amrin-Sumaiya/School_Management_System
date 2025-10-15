@@ -89,41 +89,41 @@ export const superAdminNav = [
     
   
 
-  {
-    id: 10,
-    sequenceNumber: 10.0,
-    englishDescription: 'Exam Management',
-    banglaDescription: `পরীক্ষা ব্যবস্থাপনা`,
-    iconValue: <HiOutlineClipboardDocumentList />,
-    link: '#',
-    childList: [
-      {
-        id: 11,
-        sequenceNumber: 10.1,
-        englishDescription: 'Exam List',
-        banglaDescription: 'পরীক্ষা তালিকা',
-        link: '/exam-list',
-      },
-    ],
-  },
-  {
-    id: 12,
-    sequenceNumber: 12.0,
-    englishDescription: 'Report',
-    banglaDescription: `রিপোর্ট`,
-    iconValue: <TbReportSearch />,
-    link: '#',
-    childList: [
-      {
-        id: 13,
-        sequenceNumber: 12.1,
-        englishDescription: 'Exam Report',
-        banglaDescription: 'পরীক্ষার রিপোর্ট',
-        iconValue: <TbReportSearch />,
-        link: '/exam-report',
-      },
-    ],
-  },
+  // {
+  //   id: 10,
+  //   sequenceNumber: 10.0,
+  //   englishDescription: 'Exam Management',
+  //   banglaDescription: `পরীক্ষা ব্যবস্থাপনা`,
+  //   iconValue: <HiOutlineClipboardDocumentList />,
+  //   link: '#',
+  //   childList: [
+  //     {
+  //       id: 11,
+  //       sequenceNumber: 10.1,
+  //       englishDescription: 'Exam List',
+  //       banglaDescription: 'পরীক্ষা তালিকা',
+  //       link: '/exam-list',
+  //     },
+  //   ],
+  // },
+  // {
+  //   id: 12,
+  //   sequenceNumber: 12.0,
+  //   englishDescription: 'Report',
+  //   banglaDescription: `রিপোর্ট`,
+  //   iconValue: <TbReportSearch />,
+  //   link: '#',
+  //   childList: [
+  //     {
+  //       id: 13,
+  //       sequenceNumber: 12.1,
+  //       englishDescription: 'Exam Report',
+  //       banglaDescription: 'পরীক্ষার রিপোর্ট',
+  //       iconValue: <TbReportSearch />,
+  //       link: '/exam-report',
+  //     },
+  //   ],
+  // },
 ];
 
 export const teacherSideNav = [

@@ -8,7 +8,13 @@ export const create = async(req,res)=>{
     
     try{
 
-        const newStudent = new Student(req.body);
+
+    const currentYear = new Date().getFullYear();
+
+    const newStudent = new Student({
+      ...req.body,
+      admissionYear: currentYear, // ✅ set it explicitly
+    });
         const { email, gurdianContact, studentId, class: studentClass } = newStudent;
        // const data=await Student.find({});
        // console.log(data)
@@ -161,5 +167,24 @@ export const getAbsentStudents = async (req, res) => {
     }
 
 }
+
+//get students count by admission year
+
+export const getStudentsCountByYear = async (req, res) => {
+    try {
+        const yearlyData = await Student.aggregate([
+   {
+                $group: {
+                    _id: "$admissionYear",
+                    totalStudents: { $sum: 1 }
+                }
+            },
+            { $sort: { _id: 1 } } //sort yearly assending order
+        ]);
+        res.status(200).json(yearlyData);
+    } catch (error) {
+        res.status(500).json({ errorMessage: error.message });
+    }
+};
 
 

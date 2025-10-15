@@ -34,9 +34,17 @@ const All_studentsSchema = new mongoose.Schema({
    gurdianProffesion: { type: String, required: true },
 
    isPresent: {type: Boolean, default: true}, ///absent students dashboard pannel
+ 
    
+//admission year chartbar feild
+admissionYear: { 
+  type: Number, 
+  required: true,
+  default: new Date().getFullYear() 
+}
 
 },
+
 { collection: "students" } );
 
 All_studentsSchema.index({ studentId: 1, class: 1 }, { unique: true });

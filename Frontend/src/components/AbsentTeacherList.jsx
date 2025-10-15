@@ -75,13 +75,13 @@ export function AbsentTeacherList() {
             ) : failedStudents?.length > 0 ? (
               failedStudents.map((student) => (
                 <tr key={student.studentId}  className="even:bg-blue-gray-50/50">
-                  <td>{student.rollNumber}</td>
-                  <td>{student.name}</td>
-                 <td>{student.class?.Class || 'N/A'}</td>
+                  <td className="p-4">{student.rollNumber}</td>
+                  <td className="p-4">{student.name}</td>
+                 <td className="p-4">{student.class?.Class || 'N/A'}</td>
 
-                  <td>{student.exam}</td>
-                  <td>{student.subject}</td>
-                  <td>{student.gurdianContact}</td>
+                  <td className="p-4">{student.exam}</td>
+                  <td className="p-4">{student.subject}</td>
+                  <td className="p-4">{student.gurdianContact}</td>
                 </tr>
               ))
             ) : (

@@ -6,7 +6,7 @@ const ChartBar = () => {
   const [series, setSeries] = useState([]);
   const [categories, setCategories] = useState([]);
 
-  // 🧩 Fetch data from backend
+  //  Fetch data from backend
   const fetchYearlyData = async () => {
     try {
       const res = await axios.get("http://localhost:8000/api/admission-yearly_count");
@@ -31,14 +31,14 @@ const ChartBar = () => {
     }
   };
 
-  // 🕒 Auto-refresh chart every 10 seconds
+  //  Auto-refresh chart every 10 seconds
   useEffect(() => {
     fetchYearlyData(); // first run
     const interval = setInterval(fetchYearlyData, 10000); // every 10s
     return () => clearInterval(interval);
   }, []);
 
-  // ⚙️ Chart options with animation
+  //  Chart options with animation
   const options = {
     chart: {
       id: "students-bar",

@@ -17,6 +17,10 @@ const Update_Teacher = () => {
    contact: '',
     email: '',
     join_date: '',
+     university : '', 
+    passingYear: '',
+    department: '',
+    experience: '',
   });
 
 
@@ -117,24 +121,7 @@ setTeacher({
           />
         </div>
 
-        {/* Sex */}
-        <div>
-          <label className="block font-medium">Sex</label>
-          <select
-            name="sex"
-            value={teacher.sex}
-            onChange={handleOnChange}
-            className="w-full border p-2 rounded-md"
-            required
-          >
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-
-{/* Assign Subjects */}
+        {/* Assign Subjects */}
 <div>
   <label className="block font-medium">Assigned Subjects</label>
   <select
@@ -158,6 +145,25 @@ setTeacher({
   </select>
   
 </div>
+
+        {/* Sex */}
+        <div>
+          <label className="block font-medium">Sex</label>
+          <select
+            name="sex"
+            value={teacher.sex}
+            onChange={handleOnChange}
+            className="w-full border p-2 rounded-md"
+            required
+          >
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+
 
 
         {/* Class Teacher Of (Optional) */}
@@ -206,7 +212,7 @@ className="w-full border p-2 rounded-md">
         </div>
 
         {/* Join Date */}
-        <div className="md:col-span-2">
+        <div >
           <label className="block font-medium">Join Date</label>
           <input
             type="date"
@@ -216,6 +222,53 @@ className="w-full border p-2 rounded-md">
             className="w-full border p-2 rounded-md"
             required
           />
+        </div>
+                {/* University */}
+        <div>
+          <label className='block font-medium mb-1 '>Degree Form</label>
+            <input
+            type='text'
+            name= 'university'
+            value={ teacher.university}
+            onChange={handleOnChange}  
+            placeholder='Enter University name'
+            className='w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400'     
+            >
+            </input>
+        </div>
+        {/* Department name */}
+        <div>
+          <label className='block font-medium mb-1'>Department of Education</label>
+          <input
+          type='text'
+          name='department'
+          value={ teacher.department}
+          onChange={handleOnChange}
+          placeholder='Enter Department name'
+          className='w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400'>
+          </input>
+        </div>
+        {/* Passing Year */}
+        <div>
+          <label className='block font-medium mb-1'>Passing Year</label>
+          <input type='text'
+          name='passingYear'
+          value={ teacher.passingYear}
+          onChange={handleOnChange}
+          placeholder='Enter passing year'
+          className='w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400'>
+          </input>
+        </div>
+         {/* Experience */}
+        <div>
+          <label className='block font-medium mb-1'>Teaching Experience</label>
+          <input type='text'
+          name='experience'
+          value={ teacher.experience}
+          onChange={handleOnChange}
+          placeholder='Enter Experience in years'
+          className='w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400'>
+          </input>
         </div>
 
         {/* Buttons */}

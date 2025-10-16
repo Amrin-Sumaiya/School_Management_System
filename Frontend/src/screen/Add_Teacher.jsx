@@ -16,6 +16,10 @@ const Add_Teacher = () => {
     join_date: '',
     age: '',
     contact: '',
+    university : '', 
+    passingYear: '',
+    department: '',
+    experience: '',
   });
 
   //store all subject data in state
@@ -205,7 +209,7 @@ className="w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none 
         </div>
 
         {/* Join Date */}
-        <div className='md:col-span-2'>
+        <div >
           <label className='block font-medium mb-1'>Join Date</label>
           <input
             type='date'
@@ -215,6 +219,54 @@ className="w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none 
             className='w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400'
             required
           />
+        </div>
+
+        {/* University */}
+        <div>
+          <label className='block font-medium mb-1'>Degree Form</label>
+            <input
+            type='text'
+            name= 'university'
+            value={ teacher.university}
+            onChange={handleOnChange}  
+            placeholder='Enter University name'
+            className='w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400'     
+            >
+            </input>
+        </div>
+        {/* Department name */}
+        <div>
+          <label className='block font-medium mb-1'>Department of Education</label>
+          <input
+          type='text'
+          name='department'
+          value={ teacher.department}
+          onChange={handleOnChange}
+          placeholder='Enter Department name'
+          className='w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400'>
+          </input>
+        </div>
+        {/* Passing Year */}
+        <div>
+          <label className='block font-medium mb-1'>Passing Year</label>
+          <input type='text'
+          name='passingYear'
+          value={ teacher.passingYear}
+          onChange={handleOnChange}
+          placeholder='Enter passing year'
+          className='w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400'>
+          </input>
+        </div>
+         {/* Experience */}
+        <div>
+          <label className='block font-medium mb-1'>Teaching Experience</label>
+          <input type='text'
+          name='experience'
+          value={ teacher.experience}
+          onChange={handleOnChange}
+          placeholder='Enter Experience in years'
+          className='w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400'>
+          </input>
         </div>
 
         {/* Buttons */}
@@ -238,6 +290,10 @@ className="w-full border p-2 rounded-md border-blue-gray-500 focus:outline-none 
                 join_date: '',
                 age: '',
                 contact: '',
+    university : '', 
+    passingYear: '',
+    department: '',
+    experience: '',
               })
             }
             className='bg-gray-600 hover:bg-purple-900 text-white px-6 py-2 rounded-md font-semibold transition'

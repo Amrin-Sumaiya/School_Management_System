@@ -49,6 +49,25 @@ const All_TeachersSchema = new mongoose.Schema({
         required : true
     },
 
+    // teacher details
+
+    university : {
+      type: String,
+      required: false
+    },
+    passingYear: {
+      type: String,
+      required: false
+    },
+    department: {
+      type: String,
+      required: false
+    },
+    experience: {
+      type: String,
+      required: false
+    },
+
     isPresent: { type: Boolean, default: true }
 
 

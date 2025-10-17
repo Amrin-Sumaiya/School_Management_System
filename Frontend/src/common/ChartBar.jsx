@@ -9,7 +9,7 @@ const ChartBar = () => {
   //  Fetch data from backend
   const fetchYearlyData = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/admission-yearly_count");
+      const res = await axios.get("school-virid-iota.vercel.app/api/admission-yearly_count");
       const data = res.data;
 
       const currentYear = new Date().getFullYear();

@@ -20,13 +20,13 @@ const Exam_Update = () => {
   const [classList, setClassList] = useState([]); //fetch all classlist
   useEffect(() => {
     axios 
-    .get('http://localhost:8000/api/class/all_classInfo')
+    .get('school-virid-iota.vercel.app/api/class/all_classInfo')
     .then((res) => setClassList(res.data))
     .catch((error) => console.error('Error fetching classes: '))
   }, []);
 
 useEffect(() => {
-    axios.get(`http://localhost:8000/api/exam/specific_exam_Info/${id}`)
+    axios.get(`school-virid-iota.vercel.app/api/exam/specific_exam_Info/${id}`)
         .then((response) => {
             const data = response.data;
             setExamData(prev => ({
@@ -66,7 +66,7 @@ const submitForm = (e) => {
     };
 
     try {
-       axios.put(`http://localhost:8000/api/exam/update/${id}`, updatedData);
+       axios.put(`school-virid-iota.vercel.app/api/exam/update/${id}`, updatedData);
       toast.success("Exam updated Successfully", { position: "top-right" });
       navigate("/exam-list");
     } catch (error) {

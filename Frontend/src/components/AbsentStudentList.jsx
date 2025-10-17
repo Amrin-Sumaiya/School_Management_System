@@ -20,7 +20,7 @@ export function AbsentStudentList() {
     const fetchAbsentStudents = async () => {
       try {
         setLoading(true);
-        const res = await axios.get( `http://localhost:8000/api/attendance/absent-students-today?date=${today}`);
+        const res = await axios.get( `school-virid-iota.vercel.app/api/attendance/absent-students-today?date=${today}`);
         setStudentList(res.data || []);
       } catch (error){
         console.error('error fetching absent students:', error);

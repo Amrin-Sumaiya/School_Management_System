@@ -57,7 +57,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Test route
-app.get('/', (req, res) => {
+app.get('/test', (req, res) => {
   res.status(200).send({
     message: 'Everything is Fine!! ✅',
   });

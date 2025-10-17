@@ -31,12 +31,12 @@ const Update_Student = () => {
   
   useEffect(() => {
 
-    axios.get("http://localhost:8000/api/class/all_classInfo")
+    axios.get("school-virid-iota.vercel.app/api/class/all_classInfo")
     .then((res) => setClassOptions(res.data))
     .catch((err) => console.error(err));
 
 
-    axios.get(`http://localhost:8000/api/student/${id}`)
+    axios.get(`school-virid-iota.vercel.app/api/student/${id}`)
       .then((response) => setStudent(response.data))
       .catch((err) => {
         console.error(err);
@@ -51,7 +51,7 @@ const Update_Student = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:8000/api/update/student/${id}`, student);
+      await axios.put(`school-virid-iota.vercel.app/api/update/student/${id}`, student);
       toast.success("Student updated Successfully", { position: "top-right" });
       navigate("/student-list");
     } catch (error) {

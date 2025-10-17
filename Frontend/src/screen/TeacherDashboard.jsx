@@ -22,7 +22,7 @@ const TeacherDashboard = () => {
     const fetchAbsentStudents = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8000/api/attendance/absent-students-today-by-teacherwise?date=${new Date().toISOString().split('T')[0]}&teacherId=${teacherId}`
+          `school-virid-iota.vercel.app/api/attendance/absent-students-today-by-teacherwise?date=${new Date().toISOString().split('T')[0]}&teacherId=${teacherId}`
 
         );
         setAbsentStudents(res.data);
@@ -34,7 +34,7 @@ const TeacherDashboard = () => {
     const fetchPresentStudents = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8000/api/attendance/present-students-today-by-teacherwise?date=${new Date().toISOString().split('T')[0]}&teacherId=${teacherId}`
+          `school-virid-iota.vercel.app/api/attendance/present-students-today-by-teacherwise?date=${new Date().toISOString().split('T')[0]}&teacherId=${teacherId}`
         );
         setPresentStudents(res.data);
       } catch (err) {
@@ -45,7 +45,7 @@ const TeacherDashboard = () => {
    const fetchTotalStudents = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8000/api/oneclassteacher/attendancebyteacher/class/${classId}`
+        `school-virid-iota.vercel.app/api/oneclassteacher/attendancebyteacher/class/${classId}`
       );
       setTotalStudents(res.data.length);
     } catch (err){

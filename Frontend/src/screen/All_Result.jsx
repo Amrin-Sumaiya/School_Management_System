@@ -31,7 +31,7 @@ const [loadingSubjects, setLoadingSubjects] = useState(false);
   // fetch classes
   useEffect(() => {
     axiosAuthInstance
-      .get("http://localhost:8000/api/class/all_classInfo")
+      .get("school-virid-iota.vercel.app/api/class/all_classInfo")
       .then((res) => setClassLevels(res.data))
       .catch((err) => console.error("Error fetching classes:", err));
   }, []);
@@ -42,7 +42,7 @@ const [loadingSubjects, setLoadingSubjects] = useState(false);
       setLoading(true);
      axiosAuthInstance
         .get(
-          `http://localhost:8000/api/classlevels-with-students?class=${encodeURIComponent(
+          `school-virid-iota.vercel.app/api/classlevels-with-students?class=${encodeURIComponent(
             selectedClass
           )}`
         )
@@ -61,7 +61,7 @@ const [loadingSubjects, setLoadingSubjects] = useState(false);
   // fetch exams
   useEffect(() => {
    axiosAuthInstance 
-      .get("http://localhost:8000/api/exam/all_exams")
+      .get("school-virid-iota.vercel.app/api/exam/all_exams")
       .then((res) => setExams(res.data))
       .catch((err) => console.error("Error fetching exams:", err));
   }, []);
@@ -73,7 +73,7 @@ useEffect(() => {
 
   setLoadingSubjects(true);
   axiosAuthInstance
-    .get(`http://localhost:8000/api/teachers/teacher/${teacherId}`)
+    .get(`school-virid-iota.vercel.app/api/teachers/teacher/${teacherId}`)
     .then((res) => {
      
       if (res.data && Array.isArray(res.data.subjects)) {
@@ -137,7 +137,7 @@ useEffect(() => {
           remarks,
         };
 
-        await axiosAuthInstance.post("http://localhost:8000/api/result/results", resultData);
+        await axiosAuthInstance.post("school-virid-iota.vercel.app/api/result/results", resultData);
       }
 
       toast.success("Result Submitted Successfully!");

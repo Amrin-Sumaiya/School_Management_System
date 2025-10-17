@@ -27,7 +27,7 @@ const All_Teachers = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get('http://localhost:8000/api/teachers/all_teachers');
+        const res = await axios.get('school-virid-iota.vercel.app/api/teachers/all_teachers');
         setTeachers(res.data);
       } catch (error) {
         console.log('Error fetching teachers:', error);
@@ -40,7 +40,7 @@ const All_Teachers = () => {
   const deleteTeacher = async (teacherId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8000/api/teachers/delete/teacher/${teacherId}`
+        `school-virid-iota.vercel.app/api/teachers/delete/teacher/${teacherId}`
       );
       setTeachers((prevTeachers) =>
         prevTeachers.filter((teacher) => teacher._id !== teacherId)

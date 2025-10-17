@@ -38,7 +38,7 @@ useEffect(() => {
       setLoading(true);
 
       const res = await axios.get(
-        `http://localhost:8000/api/attendance/attendance-percentage?date=${new Date().toISOString().split("T")[0]}`
+        `school-virid-iota.vercel.app/api/attendance/attendance-percentage?date=${new Date().toISOString().split("T")[0]}`
       );
 
       if (res.data) {

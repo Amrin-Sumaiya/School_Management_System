@@ -27,7 +27,7 @@ const ClassManager = () => {
 
   const fetchClassRooms = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/class/all_classInfo");
+      const response = await axios.get("school-virid-iota.vercel.app/api/class/all_classInfo");
       setClassrooms(response.data);
     } catch (error) {
       console.error("Error while fetching data ", error);
@@ -73,11 +73,11 @@ const ClassManager = () => {
 
     try {
       if (isEditMode && editClassId) {
-        await axios.put(`http://localhost:8000/api/class/update/class_info/${editClassId}`, classRoom);
+        await axios.put(`school-virid-iota.vercel.app/api/class/update/class_info/${editClassId}`, classRoom);
         toast.success("Classroom updated successfully");
          
       } else {
-        await axios.post("http://localhost:8000/api/class/class_Info", classRoom);
+        await axios.post("school-virid-iota.vercel.app/api/class/class_Info", classRoom);
         toast.success("ClassRoom added successfully");
       }
 
@@ -103,7 +103,7 @@ const ClassManager = () => {
 
   const handleOnDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/class/delete/class_info/${id}`);
+      await axios.delete(`school-virid-iota.vercel.app/api/class/delete/class_info/${id}`);
       toast.success("Classroom deleted successfully");
       fetchClassRooms();
     } catch (error) {

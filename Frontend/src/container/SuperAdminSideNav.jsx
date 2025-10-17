@@ -89,23 +89,23 @@ export const superAdminNav = [
     
   
 
-  // {
-  //   id: 10,
-  //   sequenceNumber: 10.0,
-  //   englishDescription: 'Exam Management',
-  //   banglaDescription: `পরীক্ষা ব্যবস্থাপনা`,
-  //   iconValue: <HiOutlineClipboardDocumentList />,
-  //   link: '#',
-  //   childList: [
-  //     {
-  //       id: 11,
-  //       sequenceNumber: 10.1,
-  //       englishDescription: 'Exam List',
-  //       banglaDescription: 'পরীক্ষা তালিকা',
-  //       link: '/exam-list',
-  //     },
-  //   ],
-  // },
+  {
+    id: 10,
+    sequenceNumber: 10.0,
+    englishDescription: 'Exam Management',
+    banglaDescription: `পরীক্ষা ব্যবস্থাপনা`,
+    iconValue: <HiOutlineClipboardDocumentList />,
+    link: '#',
+    childList: [
+      {
+        id: 11,
+        sequenceNumber: 10.1,
+        englishDescription: 'Exam List',
+        banglaDescription: 'পরীক্ষা তালিকা',
+        link: '/exam-list',
+      },
+    ],
+  },
   // {
   //   id: 12,
   //   sequenceNumber: 12.0,

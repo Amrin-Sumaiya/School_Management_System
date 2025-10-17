@@ -33,7 +33,7 @@ const Add_student = () => {
     // Fetch class options from the backend API
     const fetchClasses = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/api/class/all_classInfo");
+        const res = await axios.get("school-virid-iota.vercel.app/api/class/all_classInfo");
         setClassOptions(res.data);
       } catch (error) {
         console.error("Error fetching class options:" , error);
@@ -50,7 +50,7 @@ const Add_student = () => {
   const submitForm = async (e) => {
     e.preventDefault();
     await axios
-      .post('http://localhost:8000/api/students', student)
+      .post('school-virid-iota.vercel.app/api/students', student)
       .then((response) => {
         console.log('Student Add Successfully');
         toast.success(response.data.message, {

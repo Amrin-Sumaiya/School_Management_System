@@ -22,7 +22,7 @@ const All_Subject = () => {
             const fetchData = async()=>{
             try {
 
-              const response =  await axios.get("http://localhost:8000/api/subject/all_subjects");
+              const response =  await axios.get("school-virid-iota.vercel.app/api/subject/all_subjects");
               setSubject(response.data)
 
             } catch (error){
@@ -65,7 +65,7 @@ const openModal = (subject) => {
             e.preventDefault();
 
             try{
-                await axios.put(`http://localhost:8000/api/subject/update/${currentSubject.id}`, currentSubject);
+                await axios.put(`school-virid-iota.vercel.app/api/subject/update/${currentSubject.id}`, currentSubject);
                 closeModal();
                 fetchData()
             } catch ( error){
@@ -82,7 +82,7 @@ const openModal = (subject) => {
         const handleDelete = async (id) => {
 
           try{
-            await axios.delete(`http://localhost:8000/api/subject/delete_subject/${id}`);
+            await axios.delete(`school-virid-iota.vercel.app/api/subject/delete_subject/${id}`);
             toast.success("Subject deleted Successfully");
             fetchData();
     

@@ -12,7 +12,7 @@ const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const fetchStudents = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8000/api/oneclassteacher/attendancebyteacher/class/${userInfo?.classTeacher}`
+          `school-virid-iota.vercel.app/api/oneclassteacher/attendancebyteacher/class/${userInfo?.classTeacher}`
         );
         const sorted = res.data.sort((a, b) => {
           const idA = parseInt(a.studentId, 10);
@@ -50,7 +50,7 @@ const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       }));
 
       await axios.post(
-        'http://localhost:8000/api/attendance/student_attendance',
+        'school-virid-iota.vercel.app/api/attendance/student_attendance',
         {
           studentId: formattedData,
           date: formatted,

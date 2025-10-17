@@ -22,7 +22,7 @@ const userInfo = JSON.parse(localStorage.getItem('userInfo'));
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/student");
+        const response = await axios.get("school-virid-iota.vercel.app/api/student");
           // Sort class numerically
       const sortedByClass = response.data.sort((a, b) => {
         const classA = parseInt(a.class);
@@ -65,7 +65,7 @@ const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
   const deleteStudent = async (studentId) => {
     try {
-      const response = await axios.delete(`http://localhost:8000/api/delete/student/${studentId}`);
+      const response = await axios.delete(`school-virid-iota.vercel.app/api/delete/student/${studentId}`);
       setStudents(prevStudents => prevStudents.filter(student => student._id !== studentId));
       toast.success(response.data.message, { position: "top-right" });
     } catch (error) {

@@ -31,7 +31,7 @@ const Update_Teacher = () => {
   useEffect(() => {
     const fetchTeacher = async () => {
       try {
-        const res = await axios.get(`http://localhost:8000/api/teachers/teacher/${id}`);
+        const res = await axios.get(`school-virid-iota.vercel.app/api/teachers/teacher/${id}`);
 setTeacher({
   ...res.data,
   subjects: res.data.subjects?.map((sub) => sub._id) || []
@@ -45,7 +45,7 @@ setTeacher({
 
     const fetchSubjects = async () => {
       try {
-        const res = await axios.get(`http://localhost:8000/api/subject/all_subjects`);
+        const res = await axios.get(`school-virid-iota.vercel.app/api/subject/all_subjects`);
         setSubjects(res.data);
       } catch (error) {
         toast.error('Failed to fetch subjects');
@@ -55,7 +55,7 @@ setTeacher({
 
     const fetchClasses = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/api/class/all_classInfo");
+        const res = await axios.get("school-virid-iota.vercel.app/api/class/all_classInfo");
         setClasses(res.data);
       } catch (error) {
         toast.error("Failed to fetch classes");
@@ -75,7 +75,7 @@ setTeacher({
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:8000/api/teachers/update/teacher/${id}`, teacher);
+      await axios.put(`school-virid-iota.vercel.app/api/teachers/update/teacher/${id}`, teacher);
       toast.success("Teacher updated Successfully", { position: "top-right" });
       navigate('/all-teacher-list');
     } catch (error) {

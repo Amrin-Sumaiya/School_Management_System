@@ -19,7 +19,7 @@ const Add_Exam = () => {
   const [classList, setClassList] = useState([]); //fetch class ist from class model
   useEffect(() => {
     axios
-    .get('http://localhost:8000/api/class/all_classInfo')
+    .get('school-virid-iota.vercel.app/api/class/all_classInfo')
     .then((res) => setClassList(res.data))
     .catch((error) => console.error('Error fetching classes: ', error));
 
@@ -34,7 +34,7 @@ const Add_Exam = () => {
   const submitForm = async (e) => {
     e.preventDefault();
     await axios
-      .post('http://localhost:8000/api/exam/exams', examData)
+      .post('school-virid-iota.vercel.app/api/exam/exams', examData)
       .then((response) => {
         toast.success('Exam information uploaded successfully');
         setTimeout(() => {

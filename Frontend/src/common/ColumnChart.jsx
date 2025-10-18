@@ -21,7 +21,7 @@ const ColumnChart = () => {
       try {
 
         const res = await axios.get(
-          `school-virid-iota.vercel.app/api/attendance/daily_summary?teacherId=${teacherId}`
+          `https://backend-just.onrender.com/api/attendance/daily_summary?teacherId=${teacherId}`
         );
         setAttendanceData(res.data);
       } catch (err) {

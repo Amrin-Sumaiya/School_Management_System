@@ -23,7 +23,7 @@ export function AbsentTeacherList() {
       try {
         setLoading(true);
         const res = await axios.get(
-          `school-virid-iota.vercel.app/api/result/failed_students/${currentYear}`
+          `https://backend-just.onrender.com/api/result/failed_students/${currentYear}`
         );
 
         // The backend now already sends class name as "class"

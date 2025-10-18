@@ -25,7 +25,7 @@ const subjects = {
 
     const submitForm = async(e)=>{
         e.preventDefault();
-        await axios.post("school-virid-iota.vercel.app/api/subject/subjects", course)
+        await axios.post("https://backend-just.onrender.com/api/subject/subjects", course)
         .then((response)=>{
             toast.success("Subject created successfully ")
             navigate("/subjects")

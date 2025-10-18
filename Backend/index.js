@@ -7,8 +7,8 @@ import connectDB from './config/connectdb.js';
 
 // Import routes
 import AttendanceRoute from './ROUTE/AttendRoute.js';
-import ClassRoute from './ROUTE/classRoutes.js';
-import ClassTeacherRoute from './ROUTE/ClassTeacherRoute.js';
+import ClassRoute from './ROUTE/classRoutes.js'; 
+import ClassTeacherRoute from './ROUTE/ClassTeacherRoute.js'; 
 import ExamRoute from './ROUTE/ExamRoute.js';
 import PaymentRoute from './ROUTE/FeesRoute.js';
 import ResultRoute from './ROUTE/ResultRoute.js';
@@ -29,7 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Dynamic CORS configuration (Fix)
 const allowedOrigins = [
-  'https://snazzy-yeot-e38aa1.netlify.app', // production frontend
+  'https://defense2323.netlify.app', // production frontend
   'http://localhost:5051', // local development
   'http://localhost:3000', // alternative local dev port (optional)
 ];

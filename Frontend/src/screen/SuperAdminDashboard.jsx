@@ -17,7 +17,7 @@ const SuperAdminDashboard = () => {
     // Fetch all students
     const fetchAllStudents = async () => {
       try {
-        const res = await axios.get('school-virid-iota.vercel.app/api/student');
+        const res = await axios.get('https://backend-just.onrender.com/api/student');
         setAllStudents(res.data.length);
       } catch (error) {
         console.error('Error fetching all students: ', error);
@@ -27,7 +27,7 @@ const SuperAdminDashboard = () => {
     // Fetch all teachers
     const fetchAllTeachers = async () => {
       try {
-        const res = await axios.get('school-virid-iota.vercel.app/api/teachers/all_teachers');
+        const res = await axios.get('https://backend-just.onrender.com/api/teachers/all_teachers');
         setAllTeachers(res.data.length);
       } catch (error) {
         console.error('Error fetching all teachers: ', error);
@@ -37,7 +37,7 @@ const SuperAdminDashboard = () => {
     // Fetch absent students
     const fetchAbsentStudents = async () => {
       try {
-        const response = await axios.get('school-virid-iota.vercel.app/api/attendance/absent-students-today');
+        const response = await axios.get('https://backend-just.onrender.com/api/attendance/absent-students-today');
         setAbsentStudents(response.data);
       } catch (error) {
         console.error('Error fetching absent students: ', error);
@@ -48,7 +48,7 @@ const SuperAdminDashboard = () => {
 const fetchPresentStudents = async () => {
   try {
     const response = await axios.get(
-      `school-virid-iota.vercel.app/api/attendance/present-students-today?date=${
+      `https://backend-just.onrender.com/api/attendance/present-students-today?date=${
         new Date().toISOString().split('T')[0]
       }`
     );

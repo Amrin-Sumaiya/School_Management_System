@@ -10,7 +10,7 @@ const ExamListScreen = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          'school-virid-iota.vercel.app/api/exam/all_exams'
+          'https://backend-just.onrender.com/api/exam/all_exams'
         );
         setExams(response.data);
       } catch (error) {
@@ -22,7 +22,7 @@ const ExamListScreen = () => {
 
   const deleteExam = async (examId) => {
     await axios
-      .delete(`school-virid-iota.vercel.app/api/exam/delete/${examId}`)
+      .delete(`https://backend-just.onrender.com/api/exam/delete/${examId}`)
       .then((response) => {
         setExams((prevExam) =>
           prevExam.filter((exams) => exams._id !== examId)

@@ -30,7 +30,7 @@ const Add_Teacher = () => {
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
-        const res = await axios.get('school-virid-iota.vercel.app/api/subject/all_subjects');
+        const res = await axios.get('https://backend-just.onrender.com/api/subject/all_subjects');
         setSubjects(res.data); //api returs an array of all subjects
       } catch (error) {
         console.error('Error fethching subjects:' , error);
@@ -40,7 +40,7 @@ const Add_Teacher = () => {
 
     const fetchClasses = async () => {
       try {
-        const res = await axios.get("school-virid-iota.vercel.app/api/class/all_classInfo");
+        const res = await axios.get("https://backend-just.onrender.com/api/class/all_classInfo");
         setClasses(res.data);
       } catch (error) {
         console.error("Error fetching classes: ", error);
@@ -59,7 +59,7 @@ const Add_Teacher = () => {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('school-virid-iota.vercel.app/api/teachers/teacher', teacher);
+      await axios.post('https://backend-just.onrender.com/api/teachers/teacher', teacher);
       navigate('/all-teacher-list', {
         state: { successMessage: 'Teacher added successfully!' },
       });

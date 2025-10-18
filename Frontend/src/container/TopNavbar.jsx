@@ -65,7 +65,7 @@ const TopNavbar = () => {
         {/* Logo and Title */}
         <Link to='/' className='flex items-center gap-2'>
           <img
-            src='../../src/assets/edu2.png'
+            src='/edu2.png'
             alt='Logo'
             className='w-10 h-auto lg:w-14'
           />
@@ -84,7 +84,7 @@ const TopNavbar = () => {
                   {userInfo?.userName || 'User'}
                 </span>
                 <img
-                  src='../../src/assets/profile.png'
+                  src='https://cdn-icons-png.flaticon.com/512/3781/3781986.png'
                   alt='user'
                   className='w-10 h-10 rounded-full border border-black'
                 />

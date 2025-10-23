@@ -13,6 +13,8 @@ import UpdateExam from '../screen/Exam_Update';
 import Attendance from '../screen/attendance';
 import NotFoundScreen from '../screen/NotFoundScreen';
 import SuperAdminDashboard from '../screen/SuperAdminDashboard';
+import ClasswisePresent from '../screen/ClasswisePresent';
+import ClasswiseAbsent from '../screen/ClasswiseAbsent';
 import AssignRoutes from './AssignRoutes';
 
 
@@ -72,6 +74,15 @@ const routes = [
   {
     path: '/update-exam/:id',
     components: <UpdateExam />,
+  },
+
+  {
+   path: '/classwise-present-students',
+   components: <ClasswisePresent />,
+  },
+    {
+   path: '/classwise-absent-students',
+   components: <ClasswiseAbsent />,
   },
 
 

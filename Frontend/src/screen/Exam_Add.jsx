@@ -38,7 +38,7 @@ const Add_Exam = () => {
       .then((response) => {
         toast.success('Exam information uploaded successfully');
         setTimeout(() => {
-          navigate('/exam_info');
+          navigate('/exam-list');
         }, 3000);
       })
       .catch((error) => {

@@ -5,6 +5,8 @@ import DashboardStatsCard from '../common/Linechart.jsx';
 import axios from 'axios';
 import { AbsentStudentList } from '../components/AbsentStudentList.jsx';
 import { AbsentTeacherList } from '../components/AbsentTeacherList.jsx';
+import { useNavigate } from 'react-router';
+
 
 const SuperAdminDashboard = () => {
   const [absentStudents, setAbsentStudents] = useState([]);
@@ -12,6 +14,8 @@ const SuperAdminDashboard = () => {
   const [allStudents, setAllStudents] = useState(0);
   const [allTeachers, setAllTeachers] = useState(0);
   const [absentTeachers, setAbsentTeachers] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch all students
@@ -74,15 +78,22 @@ const fetchPresentStudents = async () => {
     { title: 'Absent Students', count: absentStudents.length, bgColor: 'bg-red-100' },
   ];
 
+  const pageRoutes = {
+    'All Teachers': '/all-teacher-list',
+    'All Students': '/student-list',
+    'Present Students': '/classwise-present-students',
+    'Absent Students': '/classwise-absent-students',
+  }
+
   return (
     <div>
       <div className="flex flex-col items-center p-3">
         {/* Dashboard Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 w-full ">
           {dashboardData?.map((item, index) => (
             <div
-              key={index}
-              className={`${item.bgColor} shadow-lg rounded-lg text-black p-3 flex flex-col gap-3`}
+              key={index} onClick={() =>{ const route = pageRoutes[item.title]; if (route) navigate(route)}}
+              className={`${item.bgColor} shadow-lg rounded-lg text-black p-3 flex flex-col gap-3 transition transform hover:scale-105 hover:shadow-2xl cursor-pointer`}
             >
               <div className="flex justify-between items-center">
                 <p className="text-lg font-bold">{item.title}</p>

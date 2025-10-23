@@ -28,7 +28,7 @@ const subjects = {
         await axios.post("https://backend-just.onrender.com/api/subject/subjects", course)
         .then((response)=>{
             toast.success("Subject created successfully ")
-            navigate("/subjects")
+            navigate("/subject-list")
         }, 1000)
         .catch((error)=>{
             console.log(error);
@@ -97,8 +97,8 @@ const subjects = {
 
         {/* Submit Button */}
         <div className="text-center">
-          <button onClick={()=> navigate('/subject-list' )}
-            type="submit"
+          <button 
+            type='submit'
             className="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 transition"
           >
             Submit Subject

@@ -160,7 +160,7 @@ const All_Teachers = () => {
         </table>
       </div>
 
-      {/* ✅ Modal */}
+      {/* Modal */}
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}

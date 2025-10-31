@@ -29,9 +29,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Dynamic CORS configuration (Fix)
 const allowedOrigins = [
-  'https://defense2323.netlify.app', // production frontend
+  // 'https://defense2323.netlify.app', // production frontend
   'http://localhost:5051', // local development
-  'http://localhost:3000', // alternative local dev port (optional)
+  // 'http://localhost:3000', // alternative local dev port (optional)
 ];
 
 const corsOptions = {

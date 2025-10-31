@@ -2,131 +2,152 @@ import React, { useState, useEffect } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { Card, CardContent } from "../components/card.jsx";
 import { Button } from "../components/button.jsx";
-import { toast } from 'react-toastify';
 import axios from "axios";
 import CustomModal from "../components/modal.jsx";
-import Modal from 'react-modal';
+import Modal from "react-modal";
+import { baseUrl } from "../common/baseUrl.jsx";
+import { ToastContainer, toast} from "react-toastify"
+import "react-toastify/ReactToastify.css";
 
-Modal.setAppElement('#root');
+Modal.setAppElement("#root");
 
 const ClassManager = () => {
   const [classrooms, setClassrooms] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [editClassId, setIsEditClassId] = useState(null);
+  const [editClassId, setEditClassId] = useState(null);
+  const [subjects, setSubjects] = useState([]);
+  const [errors, setErrors] = useState({});
 
   const [classRoom, setClassRoom] = useState({
     Class: "",
-    RoomNo: ""
+    RoomNo: "",
+    ClassRoomSubjectPlan: [],
   });
 
+  // Input Handlers
   const inputHandler = (e) => {
     const { name, value } = e.target;
     setClassRoom({ ...classRoom, [name]: value });
   };
 
+  const handleSubjectSelection = (e) => {
+    const selectedValues = Array.from(e.target.selectedOptions, (opt) => opt.value);
+    setClassRoom({ ...classRoom, ClassRoomSubjectPlan: selectedValues });
+  };
+
+  // Fetch Data
   const fetchClassRooms = async () => {
     try {
-      const response = await axios.get("https://backend-just.onrender.com/api/class/all_classInfo");
+      const response = await axios.get(`${baseUrl}/api/class/all_classInfo`);
       setClassrooms(response.data);
+      console.log("Fetched classrooms:", response.data);
     } catch (error) {
-      console.error("Error while fetching data ", error);
+      console.error("Error fetching classrooms:", error);
     }
   };
 
+  const fetchSubjects = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/api/subject/all_subjects`);
+      console.log("Fetched subjects:", response.data);
+      setSubjects(response.data);
+    } catch (error) {
+      console.error("Error fetching subjects:", error);
+    }
+  };
+  
+
+  useEffect(() => {
+    fetchClassRooms();
+    fetchSubjects();
+  }, []);
+
+  // Reset Form
   const resetFormAndModal = () => {
-    setClassRoom({ Class: "", RoomNo: "" });
+    setClassRoom({ Class: "", RoomNo: "", ClassRoomSubjectPlan: [] });
     setModalIsOpen(false);
     setIsEditMode(false);
-    setIsEditClassId(null);
+    setEditClassId(null);
+    setErrors({});
   };
 
+  // Submit Handler
   const SubmitClassInfo = async (e) => {
     e.preventDefault();
+    const newErrors = {};
 
-    const trimmedClass = classRoom.Class.trim();
-    const trimmedRoomNo = classRoom.RoomNo.toString().trim();
+    if (!classRoom.Class.trim()) newErrors.Class = "Class name is required";
+    if (!classRoom.RoomNo.trim()) newErrors.RoomNo = "Room number is required";
 
-    if (!trimmedClass || !trimmedRoomNo){
-      toast.error("Please fill in both Class and Room Number .");
-      return;
-    }
+    const isDuplicate = classrooms.some(
+      (c) =>
+        c.Class.trim().toLowerCase() === classRoom.Class.trim().toLowerCase() ||
+        c.RoomNo.trim() === classRoom.RoomNo.trim()
+    );
 
-    const isDuplicate = classrooms.some(c => {
-      const isSameClass = c.Class.trim().toLowerCase() === trimmedClass.toLocaleLowerCase();
-      const isSameRoom = c.RoomNo.toString().trim() === trimmedRoomNo;
+    if (isDuplicate && !isEditMode)
+      newErrors.Class = "This class name or room number already exists";
 
-      if (isEditMode && c._id === editClassId) return false;
-
-      return (
-        (isSameClass && isSameRoom) || 
-        (isSameClass || isSameRoom)
-      )
-    });
-
-    if (isDuplicate){
-      toast.error("Duplicate entry: This Class or Room is already assigned. ")
-      return;
-    }
-
-
+    setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) return;
 
     try {
       if (isEditMode && editClassId) {
-        await axios.put(`https://backend-just.onrender.com/api/class/update/class_info/${editClassId}`, classRoom);
-        toast.success("Classroom updated successfully");
-         
+        await axios.put(`${baseUrl}/api/class/update/class_info/${editClassId}`, classRoom);
+        toast.success("Classroom updated successfully!");
       } else {
-        await axios.post("https://backend-just.onrender.com/api/class/class_Info", classRoom);
-        toast.success("ClassRoom added successfully");
+        await axios.post(`${baseUrl}/api/class/class_Info`, classRoom);
+        toast.success("Classroom created successfully!");
       }
 
-     
-      resetFormAndModal(); //reset the model after fetching the data
-      await fetchClassRooms();
-
-    } catch (error) {    
-      console.log(error);
-      toast.error("Error submitting classroom info");
+      resetFormAndModal();
+      fetchClassRooms();
+    } catch (error) {
+      // console.error("Error submitting classroom info", error);
+      if (isEditMode) {
+        toast.error("Classroom failed to update or duplicate exists! ");
+      } else {
+        toast.error("Failed to submit new classroom!")
+      }
+      console.error("Error submitting classroom info", error);
     }
   };
 
   const OpenEditModal = (classroom) => {
     setIsEditMode(true);
-    setIsEditClassId(classroom._id);
+    setEditClassId(classroom._id);
     setClassRoom({
       Class: classroom.Class,
-      RoomNo: classroom.RoomNo
+      RoomNo: classroom.RoomNo,
+      ClassRoomSubjectPlan: classroom.ClassRoomSubjectPlan?.map((s) => s._id) || [],
     });
     setModalIsOpen(true);
   };
 
   const handleOnDelete = async (id) => {
     try {
-      await axios.delete(`https://backend-just.onrender.com/api/class/delete/class_info/${id}`);
-      toast.success("Classroom deleted successfully");
+      await axios.delete(`${baseUrl}/api/class/delete/class_info/${id}`);
       fetchClassRooms();
     } catch (error) {
-      toast.error("Error deleting classroom");
-      console.log("Delete failed", error);
+      console.error("Delete failed", error);
     }
   };
 
-  useEffect(() => {
-    fetchClassRooms();
-  }, []);
-
   return (
     <Card className="bg-indigo-50 p-6 max-w-5xl mx-auto mt-10">
+      <ToastContainer position="top-right" autoClose={3000} />
       <CardContent>
-        <h2 className="text-3xl text-center font-bold mb-4">Assign Classroom Directory</h2>
+        <h2 className="text-3xl text-center font-bold mb-4">
+          Assign Classroom Directory
+        </h2>
 
         <div className="flex justify-end mb-4">
           <Button
             onClick={() => setModalIsOpen(true)}
             className="px-6 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-700 transition"
           >
-           + Add Class
+            + Add Class
           </Button>
         </div>
 
@@ -136,34 +157,47 @@ const ClassManager = () => {
           onSubmit={SubmitClassInfo}
           classRoom={classRoom}
           onChange={inputHandler}
+          handleSubjectSelection={handleSubjectSelection}
+          subjects={subjects}
           isEditMode={isEditMode}
+          errors={errors}
         />
 
-        <table className="w-full text-left border">
+        <table className="w-full text-left border mt-4">
           <thead>
             <tr className="bg-gray-200">
-              <th className="p-2 border border-gray-400">ClassName</th>
+              <th className="p-2 border border-gray-400">Class Name</th>
               <th className="p-2 border border-gray-400">Room No</th>
+              <th className="p-2 border border-gray-400">ClassRoom Subject Plan</th>
               <th className="p-2 border border-gray-400">Update</th>
               <th className="p-2 border border-gray-400">Delete</th>
             </tr>
           </thead>
           <tbody>
-            {classrooms.map((classroom, index) => (
-              <tr key={classroom._id || index} className="border-t">
-                <td className="p-2 border border-gray-400">{classroom.Class}</td>
-                <td className="p-2 border border-gray-400">{classroom.RoomNo}</td>
+            {classrooms.map((c) => (
+              <tr key={c._id} className="border-t">
+                <td className="p-2 border border-gray-400">{c.Class}</td>
+                <td className="p-2 border border-gray-400">{c.RoomNo}</td>
                 <td className="p-2 border border-gray-400">
-                  <Button onClick={() => OpenEditModal(classroom)}>
+                  {c.ClassRoomSubjectPlan?.length > 0
+                    ? c.ClassRoomSubjectPlan.map((s) => s.subjectName).join(", ")
+                    : "No Subjects Assigned"}
+                </td>
+                <td className="p-2 border border-gray-400 text-center">
+                  <Button onClick={() => OpenEditModal(c)}>
                     <FaEdit className="text-blue-700" />
                   </Button>
                 </td>
-                <td className="p-2 border border-gray-400">
-                  <Button onClick={() => handleOnDelete(classroom._id)}>
+
+                
+                <td className="p-2 border border-gray-400 text-center">
+                  <Button onClick={() => handleOnDelete(c._id)}>
                     <FaTrash className="text-red-700" />
                   </Button>
                 </td>
               </tr>
+
+              
             ))}
           </tbody>
         </table>

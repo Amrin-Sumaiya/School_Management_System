@@ -1,96 +1,116 @@
-import Class from "../MODEL/classModel.js";
+import Classes from "../MODEL/classModel.js";
+import Subject from "../MODEL/SubjectModel.js";
 
+
+// Create Classroom
 export const create = async (req, res) => {
-    try {
-        const newClass = new Class(req.body); // FIXED: Use 'Class' model
-        const { RoomNo } = newClass;
+  // console.log("ClassRoomSubjectPlan===========>>>>", req.body);
 
-        const classExist = await Class.findOne({ RoomNo });
-        if (classExist) {
-            return res.status(400).json({ message: "ClassRoom already assigned." });
-        }
+  try {
+    const { Class, RoomNo, ClassRoomSubjectPlan } = req.body;
 
-        const savedData = await newClass.save();
-        res.status(200).json(savedData);
-
-    } catch (error) {
-        res.status(500).json({ errorMessage: error.message }); // FIXED: lowercase 'message'
+    const classExist = await Classes.findOne({ RoomNo });
+    if (classExist) {
+      return res.status(400).json({ message: "ClassRoom already assigned." });
     }
-}
+
+    const newClass = new Classes({
+      Class,
+      RoomNo,
+      ClassRoomSubjectPlan,
+    });
+
+    const savedData = await newClass.save();
+
+    const populatedData = await Classes.findById(savedData._id).populate(
+      "ClassRoomSubjectPlan",
+      "subjectName subjectCode"
+    );
+
+    res.status(200).json(populatedData);
+  } catch (error) {
+    res.status(500).json({ errorMessage: error.message });
+  }
+};
 
 
-//get All classrom data information
-export const getAllClassInfo = async(req, res)=> {
-    try {
+// Get all classrooms
+export const getAllClassInfo = async (req, res) => {
+  try {
+    const classData = await Classes.find()
+      .populate("ClassRoomSubjectPlan", "subjectName subjectCode description")
+      .lean();
 
-        const classData = await Class.find();
-        if(!classData || classData.length === 0){
-            return res.status(404).json({ message: "ClassRoom not FOund"});
-
-        }
-        res.status(200).json(classData)
-
-    } catch ( error ){
-        res.status(500).json({ errorMessage: error.message });
-
+    if (!classData || classData.length === 0) {
+      return res.status(404).json({ message: "ClassRoom not found" });
     }
-}
 
-// get specific classrom 
+    res.status(200).json(classData);
+  } catch (error) {
+    res.status(500).json({ errorMessage: error.message });
+  }
+};
 
-export const getClassroomById = async(req,res) =>{
-    try {
-        const id = req.params.id;
-        const classExist = await Class.findById(id);
-        if(!classExist){
-            return res.status(404).json({ message: "ClassRoom not FOund"});
+// Get classroom by ID
+export const getClassroomById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const classExist = await Classes.findById(id).populate(
+      "ClassRoomSubjectPlan",
+      "subjectName subjectCode"
+    );
 
-        }
-        res.status(200).json(classExist)
-
-
-    } catch (error){
-        res.status(500).json({ errorMessage: error.message });
+    if (!classExist) {
+      return res.status(404).json({ message: "ClassRoom not found" });
     }
-}
+    res.status(200).json(classExist);
+  } catch (error) {
+    res.status(500).json({ errorMessage: error.message });
+  }
+};
 
+// Update classroom
+export const update = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { Class, RoomNo, ClassRoomSubjectPlan } = req.body;
 
-//Update Classroom Information 
-export const update = async (req, res) =>{
-    try{
-
-        const id = req.params.id;
-        const classExist = await Class.findById(id);
-        if(!classExist){
-            return res.status(404).json({ message: "ClassRoom not FOund"});
-
-        }
-
-        const updateData= await Class.findByIdAndUpdate(id, req.body, {
-            new:true
-        })
-        res.status(200).json(updateData)
-
-    } catch(error){
-        res.status(500).json({ errorMessage: error.message });
+    const classExist = await Classes.findById(id);
+    if (!classExist) {
+      return res.status(404).json({ message: "ClassRoom not found" });
     }
-}
 
+    await Classes.findByIdAndUpdate(
+      id,
+      { Class, RoomNo, ClassRoomSubjectPlan },
+      { new: true }
+    );
 
-//Delete Classroom Information
-export const deleteClassInfo = async(req, res) => {
-    try {
-        const id = req.params.id;
-        const classExist = await Class.findById(id);
+    // Fetch updated document with populated subjects
+    const updatedData = await Classes.findById(id).populate(
+      "ClassRoomSubjectPlan",
+      "subjectName subjectCode"
+    );
 
-        if (!classExist) {
-            return res.status(404).json({ message: "Classroom not found" });
-        }
+    res.status(200).json(updatedData);
+  } catch (error) {
+    res.status(500).json({ errorMessage: error.message });
+  }
+};
 
-        await Class.findByIdAndDelete(id);
-        res.status(200).json({ message: "Classroom information deleted successfully" });
-    } catch (error) {
-        res.status(500).json({ errorMessage: error.message });
+// Delete classroom
+export const deleteClassInfo = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const classExist = await Classes.findById(id);
+
+    if (!classExist) {
+      return res.status(404).json({ message: "Classroom not found" });
     }
-}
 
+    await Classes.findByIdAndDelete(id);
+    res.status(200).json({ message: "Classroom information deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ errorMessage: error.message });
+  }
+};

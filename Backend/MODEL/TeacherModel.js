@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Subject from "./SubjectModel.js";
+
 
 
 const All_TeachersSchema = new mongoose.Schema({

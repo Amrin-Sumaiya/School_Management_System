@@ -181,7 +181,7 @@ const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             <p><strong>Guardian Contact:</strong> {selectedStudent.gurdianContact}</p>
             <p><strong>Address:</strong> {selectedStudent.address}</p>
             <p><strong>Blood Group:</strong> {selectedStudent.bloodGroup}</p>
-            <p><strong>Bith-Date:</strong> {selectedStudent.dob}</p>
+            <p><strong>Birth-Date:</strong> {selectedStudent.dob}</p>
             <p><strong>Caste:</strong> {selectedStudent.caste}</p>
             
           </div>

@@ -148,7 +148,7 @@ useEffect(() => {
       setMarks({});
       setOpenSection(null);
     } catch (err) {
-      console.error("Error submitting result:", err);
+      
       toast.error("Something went wrong during submission.");
     }
   }; 

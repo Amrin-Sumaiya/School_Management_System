@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import Exam from "./ExamModel.js"
-import student from "./userModel.js"
-import Subject from "./SubjectModel.js"
+import student from "./userModel.js";
+ import Subject from "./SubjectModel.js";
 
 
 const resultSchema = new mongoose.Schema({

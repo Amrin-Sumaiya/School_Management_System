@@ -1,10 +1,7 @@
 import mongoose from "mongoose";
 
 const examSchema = new mongoose.Schema({
-    examName: {
-        type: String,
-        required: true, //half yearly, yearly 
-    },
+
 
     examDate: {
         type: Date,
@@ -13,23 +10,15 @@ const examSchema = new mongoose.Schema({
 
     examType: {
         type: String,
-        required: true, // written, viva, quiz
+        required: true,
+        enum: ["Class Test (CT)", "Half Yearly", "Yearly", "Pre-Test", "Test"],
     },
-
 
     examMarks: {
         type: Number,
         required: true,
     },
 
-    classLevel: {
-        type: String,
-        required: true, // "class 8"
-    },
-    examRoomNumber: {
-        type: String,
-        required: true,
-    }
 
 }, { timestamps: true });
 

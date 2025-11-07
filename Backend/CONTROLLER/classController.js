@@ -1,5 +1,7 @@
+
 import Classes from "../MODEL/classModel.js";
 import Subject from "../MODEL/SubjectModel.js";
+
 
 
 // Create Classroom
@@ -111,6 +113,31 @@ export const deleteClassInfo = async (req, res) => {
     await Classes.findByIdAndDelete(id);
     res.status(200).json({ message: "Classroom information deleted successfully" });
   } catch (error) {
+    res.status(500).json({ errorMessage: error.message });
+  }
+};
+
+ //get subjects for a specific class
+
+
+export const getClassWiseSubjects = async (req, res) => {
+  try {
+    const id = req.params.id;
+    
+    const classExist = await Classes.findById(id).populate(
+      "ClassRoomSubjectPlan",
+      "subjectName subjectCode"
+    );
+
+
+    if (!classExist) {
+  return res.status(404).json({ message: "Class not found" });
+    }
+
+ res.status(200).json(classExist.ClassRoomSubjectPlan);
+    
+  } catch (error) {
+    console.error("Error fetching class subjects:", error);
     res.status(500).json({ errorMessage: error.message });
   }
 };

@@ -90,7 +90,7 @@ const All_Teachers = () => {
               <th className="border p-4">Name</th>
               <th className="border p-4">Age</th>
               <th className="border p-4">Sex</th>
-              <th className="border p-4">Assigned Subject</th>
+              <th className="border p-4">Subject Teacher Of Class</th>
               <th className="border p-4">Class Teacher Of</th>
               <th className="border p-4">Contact</th>
               <th className="border p-4">Email</th>
@@ -107,18 +107,18 @@ const All_Teachers = () => {
                 <td className="border p-4">{teacher.name}</td>
                 <td className="border p-4">{teacher.age}</td>
                 <td className="border p-4">{teacher.sex}</td>
+                 <td className="border p-4">
+  {teacher.subjectTeacherOfClass?.length > 0 ? (
+    teacher.subjectTeacherOfClass.map((item, idx) => (
+      <span key={idx} className="block">
+        {item.classId?.Class} → {item.subjectId?.subjectName}
+      </span>
+    ))
+  ) : (
+    "N/A"
+  )}
+</td>
 
-                <td className="border p-4">
-                  {teacher.subjects && teacher.subjects.length > 0 ? (
-                    teacher.subjects.map((sub, idx) => (
-                      <span key={sub._id || idx} className="block">
-                        {sub.subjectCode} ({sub.subjectName})
-                      </span>
-                    ))
-                  ) : (
-                    'N/A'
-                  )}
-                </td>
 
                 <td className="border p-4">
                   {teacher.classTeacherOf?.Class || 'N/A'}

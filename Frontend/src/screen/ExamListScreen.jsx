@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 
 const ExamListScreen = () => {
   const [exams, setExams] = useState([]);
+    const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -35,7 +36,7 @@ const ExamListScreen = () => {
       });
   };
 
-  const navigate = useNavigate();
+
   return (
     <div className='p-4'>
       <div className='bg-indigo-50 shadow-lg rounded-xl p-6'>
@@ -55,11 +56,8 @@ const ExamListScreen = () => {
           <thead>
             <tr className='bg-gray-300 text-center text-black'>
               <th className='border border-gray-500 px-4 py-3'>Exam Date</th>
-              <th className='border border-gray-500 px-4 py-3'>Exam Name</th>
               <th className='border border-gray-500 px-4 py-3'>Exam Type</th>
               <th className='border border-gray-500 px-4 py-3'>Exam Marks</th>
-              <th className='border border-gray-500 px-4 py-3'>Class Level</th>
-              <th className='border border-gray-500 px-4 py-3'>Room Number</th>
               <th className='border border-gray-500 px-4 py-3'>Update</th>
               <th className='border border-gray-500 px-4 py-3'>Delete</th>
             </tr>
@@ -67,24 +65,15 @@ const ExamListScreen = () => {
           <tbody>
             {exams.map((exam) => {
               return (
-                <tr key={exam._id}>
+                <tr key={exam._id} className="text-center">
                   <td className='border border-gray-500 px-4 py-3'>
-                    {exam.examDate}
-                  </td>
-                  <td className='border border-gray-500 px-4 py-3'>
-                    {exam.examName}
+                    {new Date(exam.examDate).toLocaleDateString()}
                   </td>
                   <td className='border border-gray-500 px-4 py-3'>
                     {exam.examType}
                   </td>
                   <td className='border border-gray-500 px-2 py-3'>
                     {exam.examMarks}
-                  </td>
-                  <td className='border border-gray-500 px-2 py-3'>
-                    {exam.classLevel}
-                  </td>
-                  <td className='border border-gray-500 px-2 py-3'>
-                    {exam.examRoomNumber}
                   </td>
                   <td className='border border-gray-600 px-2 py-3'>
                     <button

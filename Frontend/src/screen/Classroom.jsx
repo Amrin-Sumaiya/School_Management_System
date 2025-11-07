@@ -128,8 +128,10 @@ const ClassManager = () => {
   const handleOnDelete = async (id) => {
     try {
       await axios.delete(`${baseUrl}/api/class/delete/class_info/${id}`);
+      toast.success("Classroom deleted successfully!");
       fetchClassRooms();
     } catch (error) {
+      toast.error("Failed to delete classroom!");
       console.error("Delete failed", error);
     }
   };
@@ -168,7 +170,7 @@ const ClassManager = () => {
             <tr className="bg-gray-200">
               <th className="p-2 border border-gray-400">Class Name</th>
               <th className="p-2 border border-gray-400">Room No</th>
-              <th className="p-2 border border-gray-400">ClassRoom Subject Plan</th>
+              <th className="p-2 border border-gray-400">ClassWise Subject Plan</th>
               <th className="p-2 border border-gray-400">Update</th>
               <th className="p-2 border border-gray-400">Delete</th>
             </tr>

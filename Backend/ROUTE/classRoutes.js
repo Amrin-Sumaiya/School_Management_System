@@ -1,12 +1,13 @@
 import express from "express"
 import
- {create, deleteClassInfo, getAllClassInfo, getClassroomById, update } from "../CONTROLLER/classController.js"
+ {create, deleteClassInfo, getAllClassInfo, getClassroomById, update, getClassWiseSubjects } from "../CONTROLLER/classController.js"
 
 const route = express.Router();
 
 route.post("/class_Info", create)
 route.get("/all_classInfo", getAllClassInfo)
 route.get("/classes/:id", getClassroomById)
+route.get("/class_subjects/:id", getClassWiseSubjects)
 route.put("/update/class_info/:id", update)
 route.delete("/delete/class_info/:id", deleteClassInfo)
 

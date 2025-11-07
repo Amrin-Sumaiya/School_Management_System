@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {toast} from 'react-toastify'
+import {toast , ToastContainer} from 'react-toastify'
 import axios from 'axios';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
@@ -67,9 +67,11 @@ const openModal = (subject) => {
             try{
                 await axios.put(`https://backend-just.onrender.com/api/subject/update/${currentSubject.id}`, currentSubject);
                 closeModal();
+                toast.success("Subject updated successfully");
                 fetchData()
             } catch ( error){
                 console.error("Update failed", error);
+                toast.error("Failed to update subject");
             }
         }
       //hanlde input change in modal
@@ -100,6 +102,9 @@ const openModal = (subject) => {
             + Add Subject
           </button>
         </div>
+    
+<ToastContainer />
+
         <table className='min-w-full border-collapse border border-gray-300'>
           <thead>
             <tr className='bg-gray-200 text-center text-black'>

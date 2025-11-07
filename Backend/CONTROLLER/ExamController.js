@@ -4,11 +4,11 @@ export const create = async(req, res) =>{
     try {
 
         const newExam = new ExamInfo(req.body);
-        const {classLevel, examDate} = newExam;
+        const {examType, examDate} = newExam;
 
-        const examExist = await ExamInfo.findOne({classLevel, examDate})
+        const examExist = await ExamInfo.findOne({examType, examDate})
         if(examExist){
-            return res.status(400).json({ message: "An exam with this class and date already exists."})
+            return res.status(400).json({ message: "Exam with same type and date already exists."})
         }
 
         const savedData = await newExam.save();

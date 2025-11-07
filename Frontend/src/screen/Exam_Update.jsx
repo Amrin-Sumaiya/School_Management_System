@@ -10,34 +10,30 @@ const Exam_Update = () => {
 
   const [examData, setExamData] = useState({
     examDate: '',
-    examName: '',
     examType: '',
     examMarks: '',
-    classLevel: '',
-    examRoomNumber: '',
   });
 
-  const [classList, setClassList] = useState([]); //fetch all classlist
-  useEffect(() => {
-    axios 
-    .get('https://backend-just.onrender.com/api/class/all_classInfo')
-    .then((res) => setClassList(res.data))
-    .catch((error) => console.error('Error fetching classes: '))
-  }, []);
+
+  const marksMapping = {
+      "Class Test (CT)" : 10,
+      "Half Yearly" : 30,
+      "Yearly" : 50,
+      "Pre-Test" : 100,
+      "Test" : 100,
+  }
+
 
 useEffect(() => {
     axios.get(`https://backend-just.onrender.com/api/exam/specific_exam_Info/${id}`)
-        .then((response) => {
-            const data = response.data;
+        .then((res) => {
+            const data = res.data;
             setExamData(prev => ({
                 ...prev,
                 ...data,
-                examDate: data.examDate ? new Date(data.examDate).toISOString().split('T')[0] : prev.examDate,
-                examName: data.examName ?? prev.examName,
-                examType: data.examType ?? prev.examType,
-                examMarks: data.examMarks ?? prev.examMarks,
-                classLevel: data.classLevel ?? prev.classLevel,
-                examRoomNumber: data.examRoomNumber ?? prev.examRoomNumber,
+                examDate: data.examDate ? new Date(data.examDate).toISOString().split('T')[0] : "",
+                examType: data.examType || "",
+                examMarks: data.examMarks || "",
             }));
         })
         .catch((error) => {
@@ -48,32 +44,44 @@ useEffect(() => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setExamData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+
+    if (name === "examType"){
+      setExamData({
+        ...examData,
+        examType: value,
+        examMarks: marksMapping[value] || "",
+      });
+    }
+
+    // prevent manual typing marks
+    else if (name === "examMarks"){
+      toast.error("You cannot change exam marks manually.", { position: "top-right" });
+    } else {
+      setExamData({ ...examData, [name]: value });
+    }
+
   };
 
   // Handle form submission
-const submitForm = (e) => {
+const submitForm = async (e) => {
     e.preventDefault();
 
     const updatedData = {
         ...examData,
-        examDate: new Date(examData.examDate).toISOString(), // safer unless confirmed YYYY-MM-DD is required
+        examDate: new Date(examData.examDate).toISOString(),
         examMarks: Number(examData.examMarks),
-        classLevel: examData.classLevel,
     };
 
     try {
-       axios.put(`https://backend-just.onrender.com/api/exam/update/${id}`, updatedData);
-      toast.success("Exam updated Successfully", { position: "top-right" });
-      navigate("/exam-list");
+        await axios.put(`https://backend-just.onrender.com/api/exam/update/${id}`, updatedData);
+        toast.success("Exam updated Successfully");
+        setTimeout(() => navigate("/exam-list"), 2000);
     } catch (error) {
-      console.error(error);
-      toast.error("Update failed!", { position: "top-right" });
+        console.error(error);
+        toast.error("Update failed!");
     }
 };
+
 
 
   return (
@@ -97,23 +105,6 @@ const submitForm = (e) => {
           />
         </div>
 
-<div>
-  <label className='block text-sm font-medium text-black'>
-    Exam Name
-  </label>
-  <select
-    name='examName'
-    onChange={handleChange}
-    className='mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2'
-    required
-  >
-    <option value=''>Select Exam</option>
-    <option value='1st Term'>1st Term</option>
-    <option value='2nd Term'>2nd Term</option>
-    <option value='3rd Term'>3rd Term</option>
-  </select>
-</div>
-
 
         {/* Column 2 */}
         <div>
@@ -125,10 +116,12 @@ const submitForm = (e) => {
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
             required
           >
-            <option value="">Select Type</option>
-            <option value="Written">Written</option>
-            <option value="Oral">Oral</option>
-            <option value="Practical">Practical</option>
+              <option value="">Select Exam Type</option>
+              <option value="Class Test (CT)">Class Test (CT)</option>
+              <option value="Half Yearly">Half Yearly</option>
+              <option value="Yearly">Yearly</option>
+              <option value="Pre-Test">Pre-Test</option>
+              <option value="Test">Test</option>
           </select>
         </div>
 
@@ -139,40 +132,9 @@ const submitForm = (e) => {
             name="examMarks"
             value={examData.examMarks}
             onChange={handleChange}
-            placeholder="100"
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-black">Class Level</label>
-          <select
-            name="classLevel"
-            value={examData.classLevel}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-            required
-          >
-            <option value="">Select Class</option>
-            {classList.map((cls) => (
-              <option key={cls._id} value={cls.Class}>
-                {cls.Class}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-black">Room Number</label>
-          <input
-            type="text"
-            name="examRoomNumber"
-            value={examData.examRoomNumber}
-            onChange={handleChange}
-            placeholder="601(A)"
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
-            required
+            readOnly
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-100 cursor-not-allowed"
+            
           />
         </div>
 

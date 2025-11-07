@@ -12,7 +12,7 @@ const Update_Teacher = () => {
     name: '',
     age: '',
     sex: '',
-   subjects: '',
+
    classTeacherOf: '',
    contact: '',
     email: '',
@@ -43,15 +43,6 @@ setTeacher({
       }
     };
 
-    const fetchSubjects = async () => {
-      try {
-        const res = await axios.get(`https://backend-just.onrender.com/api/subject/all_subjects`);
-        setSubjects(res.data);
-      } catch (error) {
-        toast.error('Failed to fetch subjects');
-        console.error(error);
-      }
-    };
 
     const fetchClasses = async () => {
       try {
@@ -121,30 +112,7 @@ setTeacher({
           />
         </div>
 
-        {/* Assign Subjects */}
-<div>
-  <label className="block font-medium">Assigned Subjects</label>
-  <select
-    name="subjects"
-    multiple
-    value={teacher.subjects || []}
-    onChange={(e) =>
-      setTeacher({
-        ...teacher,
-        subjects: Array.from(e.target.selectedOptions, (opt) => opt.value),
-      })
-    }
-    className="w-full border p-2 rounded-md"
-    required
-  >
-    {subjects.map((sub) => (
-      <option key={sub._id} value={sub._id}>
-        {sub.subjectCode} - {sub.subjectName}
-      </option>
-    ))}
-  </select>
-  
-</div>
+
 
         {/* Sex */}
         <div>

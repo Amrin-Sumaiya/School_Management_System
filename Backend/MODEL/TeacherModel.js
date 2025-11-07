@@ -13,15 +13,7 @@ const All_TeachersSchema = new mongoose.Schema({
         type: String,
         required : true 
     },
-    
-  // multiple subjects assigned
-  subjects: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Subject",
-      required: true
-    }
-  ],  
+ 
 
 //optional feilds
   classTeacherOf: {
@@ -30,6 +22,20 @@ const All_TeachersSchema = new mongoose.Schema({
     required: false, //optional
     default: null,
   },
+
+  // subject teacher
+subjectTeacherOfClass: [
+  {
+    classId: {
+       type: mongoose.Schema.Types.ObjectId, 
+       ref: "Classes",
+        required: true },
+    subjectId: 
+    { type: mongoose.Schema.Types.ObjectId,
+       ref: "Subject", required: true }
+  }
+],
+
 
     sex: {
         type: String,

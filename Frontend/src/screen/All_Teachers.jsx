@@ -108,15 +108,17 @@ const All_Teachers = () => {
                 <td className="border p-4">{teacher.age}</td>
                 <td className="border p-4">{teacher.sex}</td>
                  <td className="border p-4">
-  {teacher.subjectTeacherOfClass?.length > 0 ? (
-    teacher.subjectTeacherOfClass.map((item, idx) => (
-      <span key={idx} className="block">
-        {item.classId?.Class} → {item.subjectId?.subjectName}
-      </span>
-    ))
-  ) : (
-    "N/A"
-  )}
+<button onClick={() => {
+  setSelectedTeacher({
+    ...teacher, 
+    modalType: 'subjectDetails'
+  });
+  setIsModalOpen(true);
+}}
+className="text-blue-600 hover:text-blue-800">
+  <FaEye className="inline-block mr-1" /> 
+
+</button>
 </td>
 
 
@@ -168,18 +170,38 @@ const All_Teachers = () => {
         className="bg-white rounded-md p-6 max-w-md mx-auto mt-24 shadow-xl border border-gray-300"
         overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
       >
-        <h3 className="text-xl font-bold mb-4 text-indigo-700 text-center">
+
+{selectedTeacher && (
+  <>
+    {selectedTeacher.modalType === 'subjectDetails' ? (
+      <div className="space-y-2 text-gray-700">
+        <h4 className="font-semibold text-center mb-2 text-indigo-600">Subject Teacher Of</h4>
+        {selectedTeacher.subjectTeacherOfClass?.length > 0 ? (
+          selectedTeacher.subjectTeacherOfClass.map((item, idx) => (
+            <p key={idx}>
+              <strong>Class:</strong> {item.classId?.Class || 'N/A'} — 
+              <strong> Subject:</strong> {item.subjectId?.subjectName || 'N/A'}
+            </p>
+          ))
+        ) : (
+          <p className="text-center">No subjects assigned.</p>
+        )}
+      </div>
+    ) : (
+      <div className="space-y-2 text-gray-700">
+            <h3 className="text-xl font-bold mb-4 text-indigo-700 text-center">
           Teacher Details
         </h3>
-        {selectedTeacher && (
-          <div className="space-y-2 text-gray-700">
-            <p><strong>Name:</strong> {selectedTeacher.name}</p>
-            <p><strong>University:</strong> {selectedTeacher.university || 'N/A'}</p>
-            <p><strong>Passing Year:</strong> {selectedTeacher.passingYear || 'N/A'}</p>
-            <p><strong>Department:</strong> {selectedTeacher.department || 'N/A'}</p>
-            <p><strong>Experience:</strong> {selectedTeacher.experience || 'N/A'}</p>
-          </div>
-        )}
+        <p><strong>Name:</strong> {selectedTeacher.name}</p>
+        <p><strong>University:</strong> {selectedTeacher.university || 'N/A'}</p>
+        <p><strong>Passing Year:</strong> {selectedTeacher.passingYear || 'N/A'}</p>
+        <p><strong>Department:</strong> {selectedTeacher.department || 'N/A'}</p>
+        <p><strong>Experience:</strong> {selectedTeacher.experience || 'N/A'}</p>
+      </div>
+    )}
+  </>
+)}
+
         <div className="mt-6 text-center">
           <button
             onClick={closeModal}

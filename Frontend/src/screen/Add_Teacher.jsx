@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaPlusCircle } from "react-icons/fa";
 
 const Add_Teacher = () => {
   const navigate = useNavigate();
@@ -24,10 +24,8 @@ const Add_Teacher = () => {
   const [assignedSubjects, setAssignedSubjects] = useState([
     { classId: "", subjectId: "", availableSubjects: [] },
   ]);
-
   const [classes, setClasses] = useState([]);
 
-  //  Fetch all classes once
   useEffect(() => {
     const fetchClasses = async () => {
       try {
@@ -40,11 +38,9 @@ const Add_Teacher = () => {
         toast.error("Failed to fetch classes");
       }
     };
-
     fetchClasses();
   }, []);
 
-  //  Fetch subjects for a selected class
   const fetchClassSubjects = async (classId, idx) => {
     if (!classId) return;
     try {
@@ -59,8 +55,6 @@ const Add_Teacher = () => {
       toast.error("Failed to load subjects for this class");
     }
   };
-
-  
 
   const handleOnChange = (e) => {
     setTeacher({ ...teacher, [e.target.name]: e.target.value });
@@ -86,253 +80,150 @@ const Add_Teacher = () => {
       navigate("/all-teacher-list");
     } catch (error) {
       console.error("Error adding teacher:", error);
-      toast.error(
-        error.response?.data?.message || "Failed to add teacher"
-      );
+      toast.error(error.response?.data?.message || "Failed to add teacher");
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-indigo-50 p-6 rounded-md shadow-md mt-6">
-      {/* Back Button */}
-      <div className="mb-4">
-        <button
-          onClick={() => navigate("/all-teacher-list")}
-          className="flex items-center gap-2 px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-800 transition"
-        >
-          <FaArrowLeft /> Back
-        </button>
-      </div>
+    <div className="min-h-screen  py-10 px-4">
+      {/* Header */}
+    
+{/* Header */}
+<div className="flex items-center justify-center gap-4 mb-10">
+  <button
+    onClick={() => navigate("/all-teacher-list")}
+    className="flex items-center justify-center w-10 h-10 bg-indigo-600 text-white rounded-full shadow-md hover:bg-indigo-700 hover:scale-105 transition-all duration-200"
+    title="Back"
+  >
+    <FaArrowLeft className="text-lg" />
+  </button>
+  <h1 className="text-3xl font-bold text-indigo-900 tracking-wide">
+    Add New Teacher
+  </h1>
+</div>
 
-      <h2 className="text-2xl font-bold text-center mb-6 text-indigo-900">
-        Add New Teacher
-      </h2>
+     
 
+      {/* Form Container */}
       <form
         onSubmit={handleOnSubmit}
-        className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        className="max-w-5xl mx-auto bg-gradient-to-br from-indigo-100  to-indigo-50 backdrop-blur-lg p-8 rounded-2xl shadow-lg border border-indigo-100 space-y-8"
       >
-        {/* Basic Info */}
-        <div>
-          <label className="block font-medium mb-1">Full Name</label>
-          <input
-            type="text"
-            name="name"
-            value={teacher.name}
-            onChange={handleOnChange}
-            placeholder="Enter full name"
-            className="w-full border p-2 rounded-md"
-            required
-          />
-        </div>
+        {/* Personal Info */}
+        <section>
+          <h2 className="text-lg font-semibold text-indigo-800 border-b pb-2 mb-4">
+            👤 Personal Information
+          </h2>
+          <div className="grid grid-cols-1  md:grid-cols-2 gap-6">
+            <Input label="Full Name" name="name" value={teacher.name} onChange={handleOnChange} />
+            <Input label="Age" name="age" type="number" value={teacher.age} onChange={handleOnChange} />
+            <Select label="Gender" name="sex" value={teacher.sex} onChange={handleOnChange}>
+              <option value="">Select Gender</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </Select>
+            <Select
+              label="Class Teacher Of"
+              name="classTeacherOf"
+              value={teacher.classTeacherOf}
+              onChange={handleOnChange}
+            >
+              <option value="">Select Class (optional)</option>
+              {classes.map((cls) => (
+                <option key={cls._id} value={cls._id}>
+                  {cls.Class}
+                </option>
+              ))}
+            </Select>
+            <Input label="Email" name="email" type="email" value={teacher.email} onChange={handleOnChange} />
+            <Input label="Contact" name="contact" value={teacher.contact} onChange={handleOnChange} />
+            <Input label="Join Date" name="join_date" type="date" value={teacher.join_date} onChange={handleOnChange} />
+          </div>
+        </section>
 
-        <div>
-          <label className="block font-medium mb-1">Age</label>
-          <input
-            type="number"
-            name="age"
-            value={teacher.age}
-            onChange={handleOnChange}
-            placeholder="Enter age"
-            className="w-full border p-2 rounded-md"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block font-medium mb-1">Sex</label>
-          <select
-            name="sex"
-            value={teacher.sex}
-            onChange={handleOnChange}
-            className="w-full border p-2 rounded-md"
-            required
-          >
-            <option value="">Select Gender</option>
-            <option>Male</option>
-            <option>Female</option>
-            <option>Other</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block font-medium mb-1">Class Teacher Of</label>
-          <select
-            name="classTeacherOf"
-            value={teacher.classTeacherOf}
-            onChange={handleOnChange}
-            className="w-full border p-2 rounded-md"
-          >
-            <option value="">Select Class (optional)</option>
-            {classes.map((cls) => (
-              <option key={cls._id} value={cls._id}>
-                {cls.Class}
-              </option>
-            ))}
-          </select>
-        </div>
+        {/* Academic Info */}
+        <section>
+          <h2 className="text-lg font-semibold text-indigo-800 border-b pb-2 mb-4">
+            🎓 Academic Information
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Input label="University" name="university" value={teacher.university} onChange={handleOnChange} />
+            <Input label="Department" name="department" value={teacher.department} onChange={handleOnChange} />
+            <Input label="Passing Year" name="passingYear" value={teacher.passingYear} onChange={handleOnChange} />
+            <Input label="Experience (in years)" name="experience" value={teacher.experience} onChange={handleOnChange} />
+          </div>
+        </section>
 
         {/* Subject Assignments */}
-        <div className="md:col-span-2">
-          <label className="block font-medium mb-1">
-            Subject Teacher Assignments
-          </label>
+        <section>
+          <h2 className="text-lg font-semibold text-indigo-800 border-b pb-2 mb-4">
+            📘 Subject Teacher of
+          </h2>
 
-          {assignedSubjects.map((row, idx) => (
-            <div key={idx} className="flex gap-2 mb-2">
-              {/* Class Select */}
-              <select
-                value={row.classId}
-                onChange={async (e) => {
-                  const newRows = [...assignedSubjects];
-                  newRows[idx].classId = e.target.value;
-                  newRows[idx].subjectId = "";
-                  setAssignedSubjects(newRows);
-                  await fetchClassSubjects(e.target.value, idx);
-                }}
-                className="border p-2 rounded-md w-1/2"
+          <div className="space-y-4">
+            {assignedSubjects.map((row, idx) => (
+              <div
+                key={idx}
+                className="bg-indigo-50 border border-indigo-100 p-4 rounded-lg flex flex-col md:flex-row gap-4 shadow-sm"
               >
-                <option value="">Select Class</option>
-                {classes
-                  .filter((cls) => cls._id !== teacher.classTeacherOf)
-                  .map((cls) => (
-                    <option key={cls._id} value={cls._id}>
-                      {cls.Class}
+                <select
+                  value={row.classId}
+                  onChange={async (e) => {
+                    const newRows = [...assignedSubjects];
+                    newRows[idx].classId = e.target.value;
+                    newRows[idx].subjectId = "";
+                    setAssignedSubjects(newRows);
+                    await fetchClassSubjects(e.target.value, idx);
+                  }}
+                  className="w-full md:w-1/2 p-2 border rounded-md focus:ring-2 focus:ring-indigo-400"
+                >
+                  <option value="">Select Class</option>
+                  {classes
+                    .filter((cls) => cls._id !== teacher.classTeacherOf)
+                    .map((cls) => (
+                      <option key={cls._id} value={cls._id}>
+                        {cls.Class}
+                      </option>
+                    ))}
+                </select>
+
+                <select
+                  value={row.subjectId}
+                  onChange={(e) => {
+                    const newRows = [...assignedSubjects];
+                    newRows[idx].subjectId = e.target.value;
+                    setAssignedSubjects(newRows);
+                  }}
+                  className="w-full md:w-1/2 p-2 border rounded-md focus:ring-2 focus:ring-indigo-400"
+                >
+                  <option value="">Select Subject</option>
+                  {(row.availableSubjects || []).map((s) => (
+                    <option key={s._id} value={s._id}>
+                      {s.subjectName}
                     </option>
                   ))}
-              </select>
+                </select>
+              </div>
+            ))}
 
-              {/* Subject Select */}
-              <select
-                value={row.subjectId}
-                onChange={(e) => {
-                  const newRows = [...assignedSubjects];
-                  newRows[idx].subjectId = e.target.value;
-                  setAssignedSubjects(newRows);
-                }}
-                className="border p-2 rounded-md w-1/2"
-              >
-                <option value="">Select Subject</option>
-                {(row.availableSubjects || []).map((s) => (
-                  <option key={s._id} value={s._id}>
-                    {s.subjectName}
-                  </option>
-                ))}
-              </select>
-
-              {/* Add new row */}
-              <button
-                type="button"
-                onClick={() =>
-                  setAssignedSubjects([
-                    ...assignedSubjects,
-                    { classId: "", subjectId: "", availableSubjects: [] },
-                  ])
-                }
-                className="bg-green-600 text-white px-3 rounded-md"
-              >
-                +
-              </button>
-            </div>
-          ))}
-        </div>
-
-        {/* Other Fields */}
-        <div>
-          <label className="block font-medium mb-1">Contact</label>
-          <input
-            type="text"
-            name="contact"
-            value={teacher.contact}
-            onChange={handleOnChange}
-            placeholder="Enter phone number"
-            className="w-full border p-2 rounded-md"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block font-medium mb-1">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={teacher.email}
-            onChange={handleOnChange}
-            placeholder="Enter email"
-            className="w-full border p-2 rounded-md"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block font-medium mb-1">Join Date</label>
-          <input
-            type="date"
-            name="join_date"
-            value={teacher.join_date}
-            onChange={handleOnChange}
-            className="w-full border p-2 rounded-md"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block font-medium mb-1">University</label>
-          <input
-            type="text"
-            name="university"
-            value={teacher.university}
-            onChange={handleOnChange}
-            placeholder="Enter university"
-            className="w-full border p-2 rounded-md"
-          />
-        </div>
-
-        <div>
-          <label className="block font-medium mb-1">Department</label>
-          <input
-            type="text"
-            name="department"
-            value={teacher.department}
-            onChange={handleOnChange}
-            placeholder="Enter department"
-            className="w-full border p-2 rounded-md"
-          />
-        </div>
-
-        <div>
-          <label className="block font-medium mb-1">Passing Year</label>
-          <input
-            type="text"
-            name="passingYear"
-            value={teacher.passingYear}
-            onChange={handleOnChange}
-            placeholder="Enter passing year"
-            className="w-full border p-2 rounded-md"
-          />
-        </div>
-
-        <div>
-          <label className="block font-medium mb-1">Experience</label>
-          <input
-            type="text"
-            name="experience"
-            value={teacher.experience}
-            onChange={handleOnChange}
-            placeholder="Enter experience"
-            className="w-full border p-2 rounded-md"
-          />
-        </div>
+            <button
+              type="button"
+              onClick={() =>
+                setAssignedSubjects([
+                  ...assignedSubjects,
+                  { classId: "", subjectId: "", availableSubjects: [] },
+                ])
+              }
+              className="flex items-center gap-2 text-indigo-600 hover:text-indigo-800 transition"
+            >
+              <FaPlusCircle /> Add Another Assignment
+            </button>
+          </div>
+        </section>
 
         {/* Buttons */}
-        <div className="md:col-span-2 flex justify-between mt-4">
-          <button
-            type="submit"
-            className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
-          >
-            Submit
-          </button>
-
+        <div className="flex justify-end gap-4 pt-6 border-t">
           <button
             type="reset"
             onClick={() =>
@@ -350,7 +241,7 @@ const Add_Teacher = () => {
                 experience: "",
               })
             }
-            className="bg-gray-500 text-white px-6 py-2 rounded-md hover:bg-gray-700"
+            className="px-5 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition"
           >
             Reset
           </button>
@@ -358,14 +249,54 @@ const Add_Teacher = () => {
           <button
             type="button"
             onClick={() => navigate("/all_teachers")}
-            className="bg-red-700 text-white px-6 py-2 rounded-md hover:bg-red-800"
+            className="px-5 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
           >
             Cancel
+          </button>
+
+          <button
+            type="submit"
+            className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition shadow"
+          >
+            Save Teacher
           </button>
         </div>
       </form>
     </div>
   );
 };
+
+// Reusable Components
+const Input = ({ label, name, type = "text", value, onChange }) => (
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-1">
+      {label}
+    </label>
+    <input
+      type={type}
+      name={name}
+      value={value}
+      onChange={onChange}
+      className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+      required
+    />
+  </div>
+);
+
+const Select = ({ label, name, value, onChange, children }) => (
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-1">
+      {label}
+    </label>
+    <select
+      name={name}
+      value={value}
+      onChange={onChange}
+      className="w-full border border-gray-300 p-2 rounded-md focus:ring-2 focus:ring-indigo-400 transition"
+    >
+      {children}
+    </select>
+  </div>
+);
 
 export default Add_Teacher;

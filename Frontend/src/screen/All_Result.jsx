@@ -1,34 +1,44 @@
-import axios from "axios";
+import React, { useEffect, useState } from "react";
 import axiosAuthInstance from "../common/axiosAuthInstance";
-import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { FaEdit } from "react-icons/fa";
 
 const All_Result = ({ teacherId }) => {
-
-  const [openSection, setOpenSection] = useState(null);
   const [selectedClass, setSelectedClass] = useState("");
-  const [selectedStudent, setSelectedStudent] = useState(null);
-  const [selectedExam, setSelectedExam] = useState(null);
-  const [selectedSubjects, setSelectedSubjects] = useState([]);
-  const [marks, setMarks] = useState({});
-const [loadingSubjects, setLoadingSubjects] = useState(false);
-
-  const [classLevels, setClassLevels] = useState([]);
+  const [selectedSubject, setSelectedSubject] = useState("");
   const [students, setStudents] = useState([]);
-  const [exams, setExams] = useState([]);
+  const [classLevels, setClassLevels] = useState([]);
   const [subjects, setSubjects] = useState([]);
+  const [marksData, setMarksData] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // Fetch teacherId based on userId
+  // Predefined exam structure
+  const examTypes = {
+    CT1: 10,
+    CT2: 10,
+    HalfYearly: 30,
+    Yearly: 50,
+  };
+
+  //  Grade calculation based on total
+  const calculateGrade = (total) => {
+    const percentage = (total / 100) * 100; // since total max = 100
+    if (percentage >= 90) return "A+";
+    if (percentage >= 80) return "A";
+    if (percentage >= 70) return "B";
+    if (percentage >= 60) return "C";
+    if (percentage >= 50) return "D";
+    if (percentage >= 33) return "E";
+    return "F";
+  };
+
+  //  Fetch teacherId
   useEffect(() => {
-    const userId = JSON.parse ( localStorage.getItem("userInfo")).userID;
-    if (userId) {
-      teacherId = userId;
-         
-    }
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (userInfo?.userID) teacherId = userInfo.userID;
   }, []);
 
-  // fetch classes
+  //  Fetch classes
   useEffect(() => {
     axiosAuthInstance
       .get("https://backend-just.onrender.com/api/class/all_classInfo")
@@ -36,11 +46,11 @@ const [loadingSubjects, setLoadingSubjects] = useState(false);
       .catch((err) => console.error("Error fetching classes:", err));
   }, []);
 
-  // fetch students when class selected
+  //  Fetch students for selected class
   useEffect(() => {
     if (selectedClass) {
       setLoading(true);
-     axiosAuthInstance
+      axiosAuthInstance
         .get(
           `https://backend-just.onrender.com/api/classlevels-with-students?class=${encodeURIComponent(
             selectedClass
@@ -48,297 +58,254 @@ const [loadingSubjects, setLoadingSubjects] = useState(false);
         )
         .then((res) => {
           if (Array.isArray(res.data)) setStudents(res.data);
-          else setStudents([]); 
+          else setStudents([]);
         })
-        .catch((err) => {
-          console.error("Error fetching students:", err);
-          setStudents([]);
-        })
+        .catch((err) => console.error("Error fetching students:", err))
         .finally(() => setLoading(false));
     }
   }, [selectedClass]);
 
-  // fetch exams
+  // Fetch teacher’s subjects
   useEffect(() => {
-   axiosAuthInstance 
-      .get("https://backend-just.onrender.com/api/exam/all_exams")
-      .then((res) => setExams(res.data))
-      .catch((err) => console.error("Error fetching exams:", err));
-  }, []);
+    if (!teacherId) return;
+    axiosAuthInstance
+      .get(`https://backend-just.onrender.com/api/teachers/teacher/${teacherId}`)
+      .then((res) => {
+        if (res.data && Array.isArray(res.data.subjects)) {
+          setSubjects(res.data.subjects);
+        } else {
+          setSubjects([]);
+        }
+      })
+      .catch((err) => console.error("Error fetching subjects:", err));
+  }, [teacherId]);
 
-  // fetch teacher's subjects
-useEffect(() => {
+  //  Handle marks change with validation
+  const handleMarksChange = (studentId, exam, value) => {
+    const numValue = Number(value);
+    const maxAllowed = examTypes[exam];
 
-  if (!teacherId) return;
-
-  setLoadingSubjects(true);
-  axiosAuthInstance
-    .get(`https://backend-just.onrender.com/api/teachers/teacher/${teacherId}`)
-    .then((res) => {
-     
-      if (res.data && Array.isArray(res.data.subjects)) {
-        setSubjects(res.data.subjects);
-      } else {
-        setSubjects([]);
-      }
-    })
-    .catch((err) => {
-      console.error("Error fetching subjects:", err);
-      setSubjects([]);
-    })
-    .finally(() => setLoadingSubjects(false));
-}, [teacherId]);
-
-
-  const toggleSection = (section) => {
-    setOpenSection(openSection === section ? null : section);
-  };
-
-  const toggleSubject = (subjectId) => {
-    if (selectedSubjects.includes(subjectId)) {
-      const updated = selectedSubjects.filter((s) => s !== subjectId);
-      setSelectedSubjects(updated);
-      const updatedMarks = { ...marks };
-      delete updatedMarks[subjectId];
-      setMarks(updatedMarks);
-    } else {
-      setSelectedSubjects([...selectedSubjects, subjectId]);
-    }
-  };
-
-  const getGradeAndRemarks = (mark) => {
-    if (mark >= 90) return { grade: "A+", remarks: "Excellent" };
-    else if (mark >= 70) return { grade: "A", remarks: "Very Good" };
-    else if (mark >= 60) return { grade: "A-", remarks: "Good" };
-    else if (mark >= 50) return { grade: "B", remarks: "Average" };
-    else if (mark >= 40) return { grade: "C", remarks: "Below Average" };
-    else if (mark >= 33) return { grade: "D", remarks: "Bad" };
-    return { grade: "F", remarks: "Poor" };
-  };
-
-  const handleSubmit = async () => {
-    if (!selectedClass || !selectedStudent || !selectedExam || selectedSubjects.length === 0) {
-      toast.error("Please complete all fields before submitting.");
+    if (numValue > maxAllowed) {
+      toast.error(`Max marks for ${exam} is ${maxAllowed}`);
       return;
     }
 
-    try {
-      for (const subjectId of selectedSubjects) {
-        const mark = Number(marks[subjectId]) || 0;
-        const { grade, remarks } = getGradeAndRemarks(mark);
+    setMarksData((prev) => ({
+      ...prev,
+      [studentId]: {
+        ...prev[studentId],
+        [exam]: numValue,
+      },
+    }));
+  };
 
-        const resultData = {
-          studentId: selectedStudent._id,
-          examId: selectedExam._id,
-          classLevel: selectedClass,
-          subjectId,
-          totalMarks: mark,
-          grade,
-          remarks,
-        };
+  // Calculate grade dynamically
+  const getStudentGrade = (studentId) => {
+    const studentMarks = marksData[studentId];
+    if (!studentMarks) return "";
+    const total =
+      (studentMarks.CT1 || 0) +
+      (studentMarks.CT2 || 0) +
+      (studentMarks.HalfYearly || 0) +
+      (studentMarks.Yearly || 0);
+    return calculateGrade(total);
+  };
 
-        await axiosAuthInstance.post("https://backend-just.onrender.com/api/result/results", resultData);
-      }
-
-      toast.success("Result Submitted Successfully!");
-      setSelectedClass("");
-      setSelectedStudent(null);
-      setSelectedExam(null);
-      setSelectedSubjects([]);
-      setMarks({});
-      setOpenSection(null);
-    } catch (err) {
-      
-      toast.error("Something went wrong during submission.");
+  // Submit/update result for one student
+  const handleUpdate = async (studentId) => {
+    const studentMarks = marksData[studentId];
+    if (!studentMarks) {
+      toast.error("Please enter marks before submitting.");
+      return;
     }
-  }; 
+
+    const total =
+      (studentMarks.CT1 || 0) +
+      (studentMarks.CT2 || 0) +
+      (studentMarks.HalfYearly || 0) +
+      (studentMarks.Yearly || 0);
+    const grade = calculateGrade(total);
+
+    const payload = {
+      studentId,
+      classLevel: selectedClass,
+      subjectId: selectedSubject,
+      totalMarks: total,
+      grade,
+    };
+
+    try {
+      await axiosAuthInstance.post(
+        "https://backend-just.onrender.com/api/result/results",
+        payload
+      );
+      toast.success("Result updated successfully!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to update result!");
+    }
+  };
+
+  // Submit all students' results together
+  const handleSubmitAll = async () => {
+    if (!selectedClass || !selectedSubject) {
+      toast.error("Please select both class and subject before submitting.");
+      return;
+    }
+
+    const resultsPayload = students.map((student) => {
+      const studentMarks = marksData[student._id] || {};
+      const total =
+        (studentMarks.CT1 || 0) +
+        (studentMarks.CT2 || 0) +
+        (studentMarks.HalfYearly || 0) +
+        (studentMarks.Yearly || 0);
+      const grade = calculateGrade(total);
+
+      return {
+        studentId: student._id,
+        classLevel: selectedClass,
+        subjectId: selectedSubject,
+        totalMarks: total,
+        grade,
+      };
+    });
+
+    try {
+      await Promise.all(
+        resultsPayload.map((data) =>
+          axiosAuthInstance.post(
+            "https://backend-just.onrender.com/api/result/results",
+            data
+          )
+        )
+      );
+      toast.success("All results submitted successfully!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to submit all results!");
+    }
+  };
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      <div className="bg-white shadow-xl rounded-xl overflow-hidden">
-        <div className="bg-green-100 text-black text-2xl font-bold p-6 text-center">
-          📘 Assign Exam Results
-        </div>
+    <div className="max-w-5xl mx-auto p-6">
+      <h2 className="text-2xl font-bold text-center mb-6 text-blue-700">
+        🧾 Result Submission
+      </h2>
 
-        {/* 1️⃣ Select Class */}
-        <AccordionSection
-          title="1️⃣ Select Class"
-          isOpen={openSection === "class"}
-          onClick={() => toggleSection("class")}
+      {/* Select Class */}
+      <div className="mb-4">
+        <label className="block font-medium mb-2">Select Class:</label>
+        <select
+          value={selectedClass}
+          onChange={(e) => {
+            setSelectedClass(e.target.value);
+            setMarksData({});
+          }}
+          className="border border-gray-300 rounded-md px-3 py-2 w-full"
         >
-          {loading ? (
-            <p>Loading classes...</p>
-          ) : (
-            <div className="grid grid-cols-3 gap-2">
-              {classLevels.map((cls) => (
-                <button
-                  key={cls._id}
-                  className={`py-2 rounded text-sm font-medium ${
-                    selectedClass === cls._id
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-100 hover:bg-blue-50"
-                  }`}
-                  onClick={() => {
-                    setSelectedClass(cls._id);
-                    setSelectedStudent(null);
-                    setSelectedExam(null);
-                    setSelectedSubjects([]);
-                    setMarks({});
-                  }}
-                >
-                  {cls.Class}
-                </button>
-              ))}
-            </div>
-          )}
-        </AccordionSection>
-
-        {/* 2️⃣ Select Student */}
-        <AccordionSection
-          title="2️⃣ Select Student"
-          isOpen={openSection === "student"}
-          onClick={() => toggleSection("student")}
-        >
-          {!selectedClass ? (
-            <p className="text-red-500">Please select a class first.</p>
-          ) : students.length === 0 ? (
-            <p className="text-gray-500">No students available for this class.</p>
-          ) : (
-            <div className="grid grid-cols-2 gap-2">
-              {students.map((student) => (
-                <button
-                  key={student._id}
-                  className={`py-2 rounded text-sm font-medium ${
-                    selectedStudent && selectedStudent._id === student._id
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-100 hover:bg-green-50"
-                  }`}
-                  onClick={() => {
-                    setSelectedStudent(student);
-                    setSelectedExam(null);
-                    setSelectedSubjects([]);
-                    setMarks({});
-                  }}
-                >
-                  {student.name}
-                </button>
-              ))}
-            </div>
-          )}
-        </AccordionSection>
-
-        {/* 3️⃣ Select Exam */}
-        <AccordionSection
-          title="3️⃣ Select Exam"
-          isOpen={openSection === "exam"}
-          onClick={() => toggleSection("exam")}
-        >
-          {!selectedStudent ? (
-            <p className="text-red-500">Please select a student first.</p>
-          ) : (
-            <div className="grid grid-cols-2 gap-2">
-              {exams.map((exam) => (
-                <button
-                  key={exam._id}
-                  className={`py-2 rounded text-sm font-medium ${
-                    selectedExam && selectedExam._id === exam._id
-                      ? "bg-blue-300 text-white"
-                      : "bg-gray-100 hover:bg-yellow-100"
-                  }`}
-                  onClick={() => {
-                    setSelectedExam(exam);
-                    setSelectedSubjects([]);
-                    setMarks({});
-                  }}
-                >
-                  {exam.examName}
-                </button>
-              ))}
-            </div>
-          )}
-        </AccordionSection>
-  {/* subjects  */}
-      <AccordionSection
-  title="4️⃣ Assign Subject Marks"
-  isOpen={openSection === "subjects"}
-  onClick={() => toggleSection("subjects")}
->
-  {!selectedExam ? (
-    <p className="text-red-500">Please select an exam first.</p>
-  ) : loadingSubjects ? (
-    <p>Loading subjects...</p>
-  ) : subjects.length === 0 ? (
-    <p className="text-gray-500">No subjects assigned to this teacher.</p>
-  ) : (
-    <div className="space-y-4">
-      {subjects.map((subject) => {
-        const mark = Number(marks[subject._id]) || 0;
-        const { grade, remarks } = getGradeAndRemarks(mark);
-
-        return (
-          <div key={subject._id} className="flex flex-col md:flex-row md:justify-between md:items-center border p-3 rounded-lg shadow-sm">
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={selectedSubjects.includes(subject._id)}
-                onChange={() => toggleSubject(subject._id)}
-                className="accent-blue-gray-500 w-5 h-5"
-              />
-              <span className="font-medium">
-                {subject.subjectCode} - {subject.subjectName}
-              </span>
-            </label>
-
-            {selectedSubjects.includes(subject._id) && (
-              <div className="flex flex-col md:flex-row md:items-center gap-3 mt-2 md:mt-0 w-full md:w-auto">
-                <input
-                  type="number"
-                  className="border-gray-300 border-2 px-3 py-1 rounded w-full md:w-28 focus:border-blue-400 focus:outline-none"
-                  placeholder="Marks"
-                  value={marks[subject._id] || ""}
-                  onChange={(e) => setMarks({ ...marks, [subject._id]: e.target.value })}
-                />
-                {marks[subject._id] && (
-                  <div className="flex flex-col md:flex-row md:items-center gap-2 text-sm text-gray-700">
-                    <span className="px-2 py-1 bg-green-100 rounded font-semibold">Grade: {grade}</span>
-                    <span className="px-2 py-1 bg-yellow-100 rounded">Remarks: {remarks}</span>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        );
-      })}
-    </div>
-  )}
-</AccordionSection>
-
-
-
-        <div className="p-6 text-center">
-          <button
-            onClick={handleSubmit}
-            className="bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 px-6 rounded"
-          >
-            Submit Result
-          </button>
-        </div>
+          <option value="">-- Select Class --</option>
+          {classLevels.map((cls) => (
+            <option key={cls._id} value={cls._id}>
+              {cls.Class}
+            </option>
+          ))}
+        </select>
       </div>
+
+      {/* Select Subject */}
+      <div className="mb-6">
+        <label className="block font-medium mb-2">Select Subject:</label>
+        <select
+          value={selectedSubject}
+          onChange={(e) => setSelectedSubject(e.target.value)}
+          className="border border-gray-300 rounded-md px-3 py-2 w-full"
+        >
+          <option value="">-- Select Subject --</option>
+          {subjects.map((subj) => (
+            <option key={subj._id} value={subj._id}>
+              {subj.subjectName}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Table */}
+      <h3 className="text-lg font-semibold mb-3 text-indigo-700">
+        Students Exam Result Submission:
+      </h3>
+
+      {loading ? (
+        <p>Loading students...</p>
+      ) : students.length === 0 ? (
+        <p className="text-gray-500">No students found for this class.</p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="min-w-full border-collapse border border-gray-800">
+            <thead className="bg-gray-300">
+              <tr>
+                <th className="border border-gray-400 text-indigo-800 p-2">Roll</th>
+                <th className="border border-gray-400 p-2">Name</th>
+                <th className="border border-gray-400 p-2">CT-1</th>
+                <th className="border border-gray-400 p-2">CT-2</th>
+                <th className="border border-gray-400 p-2">Half Yearly</th>
+                <th className="border border-gray-400 p-2">Yearly</th>
+                <th className="border border-gray-400 p-2">Grade</th>
+                <th className="border border-gray-400 p-2">Update</th>
+              </tr>
+            </thead>
+            <tbody>
+              {students.map((student, idx) => (
+                <tr key={student._id || idx} className="text-center">
+                  <td className="border border-gray-400 p-2">
+                    {student.studentId || idx + 1}
+                  </td>
+                  <td className="border border-gray-400 p-2">{student.name}</td>
+                  {Object.keys(examTypes).map((exam) => (
+                    <td key={exam} className="border border-gray-400 p-2">
+                      <input
+                        type="number"
+                        min="0"
+                        max={examTypes[exam]}
+                          placeholder={examTypes[exam]}
+                        value={marksData[student._id]?.[exam] || ""}
+                        onChange={(e) =>
+                          handleMarksChange(student._id, exam, e.target.value)
+                        }
+                        className="w-20 border rounded px-2 py-1 text-center"
+                      />
+                    </td>
+                  ))}
+                  <td className="border border-gray-400 p-2 font-semibold text-blue-600">
+                    {getStudentGrade(student._id)}
+                  </td>
+                  <td className="border border-gray-400 p-2">
+<FaEdit
+  onClick={() => handleUpdate(student._id)}
+  className="text-blue-600  cursor-pointer hover:text-green-800 inline-block"
+/>
+
+                     
+                   
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/*  Submit All Button */}
+          <div className="mt-6 text-center">
+            <button
+              onClick={handleSubmitAll}
+              className="bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 px-6 rounded shadow"
+            >
+              Submit  Results
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
-
-const AccordionSection = ({ title, isOpen, onClick, children }) => (
-  <div className="border-t">
-    <div
-      className="flex justify-between items-center px-6 py-4 bg-gray-50 cursor-pointer hover:bg-gray-200"
-      onClick={onClick}
-    >
-      <h3 className="font-semibold text-lg">{title}</h3>
-      <span className="text-xl">{isOpen ? "−" : "+"}</span>
-    </div>
-    {isOpen && <div className="px-6 py-4">{children}</div>}
-  </div>
-);
 
 export default All_Result;

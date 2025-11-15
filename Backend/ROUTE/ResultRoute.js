@@ -1,7 +1,8 @@
 import express from "express"
 
 import {create, DeleteResultData, getAllResultsData, 
-    getResultById, updateResultData, getFailedStudentsByYear } from "../CONTROLLER/ResultController.js"
+    getResultById, updateResultData, 
+    getFailedStudentsByYear, getResultsByClassAndSubject } from "../CONTROLLER/ResultController.js"
 
 const route = express.Router()
 
@@ -13,4 +14,6 @@ route.delete("/delete/result_of_/:id", DeleteResultData)
 
 route.get("/failed_students/:year?", getFailedStudentsByYear)
 
+//class and subject wise result 
+route.get("/result-by-class-subject", getResultsByClassAndSubject)
 export default route;

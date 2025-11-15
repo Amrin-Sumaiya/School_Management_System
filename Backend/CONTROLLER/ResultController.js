@@ -1,152 +1,254 @@
-import Result from "../MODEL/ResultModel.js"
+// CONTROLLER/ResultController.js
+import Result from "../MODEL/ResultModel.js";
 
-export const create = async (req, res) =>{ 
-    try{ 
-    const newResult = new Result(req.body);
-    const {examId, studentId, subjectCode } = newResult;
+const MILLIS_24H = 24 * 60 * 60 * 1000;
 
-    const resultExist = await Result.findOne({examId, studentId, subjectCode });
-    if (resultExist){
-        return res.status(400).json({ message: "Result Already Exist"});
-
-    }
-    const savedData = await newResult.save()
-    res.status(200).json(savedData)
-} catch (error){
-    res.status(500).json({ errorMessage: error.message })
-} 
-
-} 
-       
-//get All Exam Data from the database 
-
-export const getAllResultsData = async (req, res) =>{
-    try{  
-
-        const resultsData = await Result.find();
-        if(!resultsData || resultsData.length === 0){
-            return res.status(404).json({ message: "Result Data not Found "})
-        }
-
-        res.status(200).json(resultsData)
-
-    }catch (error){
-        res.status(500).json({ errorMessage: error.message });
-    }
-}
-
-//get Result With specific id wise 
-
-export const getResultById = async(req, res) =>{
-    try{
-
-        const id = req.params.id;
-        const resultExist = await Result.findById(id);
-       
-        if(!resultExist){
-            return res.status(404).json({ message: "Result not Found "})
-        }
-
-        res.status(200).json(resultExist)
-
-    } catch(error){
-        res.status(500).json({ errorMessage: error.message })
-    }
-}
-
-// Update Result Data 
-
-export const updateResultData = async (req, res) =>{
-    try {
-
-        const id = req.params.id;
-        const resultExist = await Result.findById(id);
-       
-        if(!resultExist){
-            return res.status(404).json({ message: "Result not Found "})
-        }
-
-       const updatedData = await Result.findByIdAndUpdate(id, req.body, {
-            new:true
-        });
-
-        res.status(200).json({ message: "Result Updated Successfully "})
-
-    } catch (error){
-        res.status(500)({ errorMessage: error.message })
-    }
-}
-
-//Delete specific Result Data 
-
-export const DeleteResultData = async ( req, res) =>{
-    try{
-
-        const id = req.params.id;
-        const resultExist = await Result.findById(id);
-       
-        if(!resultExist){
-            return res.status(404).json({ message: "Result not Found "})
-        }
-
-        await Result.findByIdAndDelete(id);
-        res.status(200).json({ message: "Result Deleted Successfully "})
-
-    } catch(error){
-        res.status(500)({ errorMessage: error.message})
-    }
-}
-
-//Get all failed students by year
-
-export const getFailedStudentsByYear = async (req, res) => {
-    try {
-let { year } = req.params;
-
-if (!year ) { 
-    const currentYear = new Date().getFullYear();
-    year = currentYear.toString();
-}
-
-console.log("Fetching failed students for year: ", year);
-
-        const startDate = new Date(`${year}-01-01`);
-        const endDate = new Date(`${parseInt(year) + 1}-01-01`);
-
-        const failedStudents = await Result.find({
-            grade: "F",
-            createdAt: { $gte: startDate, $lt: endDate },
-        }).populate({
-  path: "studentId",
-  select: "name studentId gurdianContact class",
-  populate: {
-    path: "class",
-    select: "Class", // field from classModel.js
-  },
-})
-
-        .populate("subjectId", "subjectName")
-        .populate("examId", "examName")
-        // .populate("classLevel", "Class");
-
-        if (!failedStudents.length) {
-            return res.status(404).json({ message: "No failed studetns found for this year" });
-        }
-        // console.log("Failed students data: ", failedStudents);
-        
-
-const formatted = failedStudents.map((item) => ({
-      studentObjectId: item.studentId?._id?.toString() || "N/A", //  keep actual ObjectId
-  rollNumber: item.studentId?.studentId || "N/A",  
-    name: item.studentId?.name || "N/A",
-    class: item.studentId?.class || "N/A",
-    gurdianContact: item.studentId?.gurdianContact ||  item.studentId?.guardianContact || "N/A",
-    subject: item.subjectId?.subjectName || "N/A",
-    exam: item.examId?.examName || "N/A",
-}));
-        res.status(200).json(formatted);
-    } catch (error) {
-        res.status(500).json({ errorMessage: error.message });
-    }
+/**
+ * Helper to compute grade from total (0-100)
+ */
+const calculateGrade = (total) => {
+  if (total >= 90) return "A+";
+  if (total >= 80) return "A";
+  if (total >= 70) return "B";
+  if (total >= 60) return "C";
+  if (total >= 50) return "D";
+  if (total >= 33) return "E";
+  return "F";
 };
 
+/**
+ * Create or update a result.
+ * - If a matching result exists and is older than 24h => locked => 403
+ * - If exists and within 24h => update allowed
+ * - If not exists => create
+ */
+export const create = async (req, res) => {
+  try {
+    const {
+      studentId,
+      classLevel,
+      subjectId,
+      CT1 = 0,
+      CT2 = 0,
+      HalfYearly = 0,
+      Yearly = 0,
+      remarks = "",
+    } = req.body;
+
+    if (!studentId || !classLevel || !subjectId) {
+      return res.status(400).json({ message: "studentId, classLevel and subjectId are required." });
+    }
+
+    // compute totals and grade
+    const totalMarks =
+      Number(CT1 || 0) + Number(CT2 || 0) + Number(HalfYearly || 0) + Number(Yearly || 0);
+    const grade = calculateGrade(totalMarks);
+
+    const existing = await Result.findOne({ studentId, classLevel, subjectId });
+
+    if (existing) {
+      const age = Date.now() - new Date(existing.createdAt).getTime();
+      if (age > MILLIS_24H) {
+        // locked
+        return res.status(403).json({ message: "Result locked: cannot modify after 24 hours." });
+      }
+      // update existing
+      existing.CT1 = CT1;
+      existing.CT2 = CT2;
+      existing.HalfYearly = HalfYearly;
+      existing.Yearly = Yearly;
+      existing.totalMarks = totalMarks;
+      existing.grade = grade;
+      existing.remarks = remarks;
+      const saved = await existing.save();
+      return res.status(200).json({ message: "Result updated", result: saved });
+    }
+
+    // create new
+    const newResult = new Result({
+      studentId,
+      classLevel,
+      subjectId,
+      CT1,
+      CT2,
+      HalfYearly,
+      Yearly,
+      totalMarks,
+      grade,
+      remarks,
+    });
+
+    const saved = await newResult.save();
+    return res.status(201).json({ message: "Result created", result: saved });
+  } catch (error) {
+    console.error("Create Result Error:", error);
+    // if unique index collision somehow
+    if (error.code === 11000) {
+      return res.status(409).json({ message: "Result already exists (unique constraint)." });
+    }
+    return res.status(500).json({ errorMessage: error.message });
+  }
+};
+
+/**
+ * Get all results (populated)
+ */
+export const getAllResultsData = async (req, res) => {
+  try {
+    const resultsData = await Result.find()
+      .populate("studentId", "name studentId")
+      .populate("subjectId", "subjectName")
+      .populate("classLevel", "Class");
+
+    return res.status(200).json(resultsData);
+  } catch (error) {
+    console.error("Get All Results Error:", error);
+    return res.status(500).json({ errorMessage: error.message });
+  }
+};
+
+/**
+ * Get results for a given classLevel + subjectId
+ * Query params: ?classLevel=...&subjectId=...
+ * Returns an array of results (may be empty)
+ */
+export const getResultsByClassAndSubject = async (req, res) => {
+  try {
+    const { classLevel, subjectId } = req.query;
+    if (!classLevel || !subjectId) {
+      return res.status(400).json({ message: "classLevel and subjectId are required as query parameters." });
+    }
+
+    const results = await Result.find({ classLevel, subjectId }).lean();
+
+    // return results with createdAt so frontend can compute lock
+    return res.status(200).json(results);
+  } catch (error) {
+    console.error("Get Results By Class & Subject Error:", error);
+    return res.status(500).json({ errorMessage: error.message });
+  }
+};
+
+/**
+ * Get by id
+ */
+export const getResultById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await Result.findById(id)
+      .populate("studentId", "name studentId")
+      .populate("subjectId", "subjectName")
+      .populate("classLevel", "Class");
+
+    if (!result) return res.status(404).json({ message: "Result not found" });
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Get Result By ID Error:", error);
+    return res.status(500).json({ errorMessage: error.message });
+  }
+};
+
+/**
+ * Update by id (enforce 24h lock)
+ */
+export const updateResultData = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const existing = await Result.findById(id);
+    if (!existing) return res.status(404).json({ message: "Result not found" });
+
+    const age = Date.now() - new Date(existing.createdAt).getTime();
+    if (age > MILLIS_24H) {
+      return res.status(403).json({ message: "Result locked: cannot modify after 24 hours." });
+    }
+
+    // update allowed
+    const updates = req.body;
+    // compute totals if CT fields provided (fallback to existing)
+    const CT1 = updates.CT1 !== undefined ? updates.CT1 : existing.CT1;
+    const CT2 = updates.CT2 !== undefined ? updates.CT2 : existing.CT2;
+    const HalfYearly = updates.HalfYearly !== undefined ? updates.HalfYearly : existing.HalfYearly;
+    const Yearly = updates.Yearly !== undefined ? updates.Yearly : existing.Yearly;
+    const totalMarks = Number(CT1) + Number(CT2) + Number(HalfYearly) + Number(Yearly);
+    const grade = calculateGrade(totalMarks);
+
+    const updated = await Result.findByIdAndUpdate(
+      id,
+      {
+        ...updates,
+        CT1,
+        CT2,
+        HalfYearly,
+        Yearly,
+        totalMarks,
+        grade,
+      },
+      { new: true }
+    );
+
+    return res.status(200).json({ message: "Result updated successfully", result: updated });
+  } catch (error) {
+    console.error("Update Result Error:", error);
+    return res.status(500).json({ errorMessage: error.message });
+  }
+};
+
+/**
+ * Delete
+ */
+export const DeleteResultData = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const deleted = await Result.findByIdAndDelete(id);
+    if (!deleted) return res.status(404).json({ message: "Result not found" });
+    return res.status(200).json({ message: "Result deleted successfully" });
+  } catch (error) {
+    console.error("Delete Result Error:", error);
+    return res.status(500).json({ errorMessage: error.message });
+  }
+};
+
+/**
+ * Get failed students by year (unchanged)
+ */
+export const getFailedStudentsByYear = async (req, res) => {
+  try {
+    let { year } = req.params;
+    if (!year) year = new Date().getFullYear().toString();
+
+    const startDate = new Date(`${year}-01-01`);
+    const endDate = new Date(`${parseInt(year, 10) + 1}-01-01`);
+
+    const failedStudents = await Result.find({
+      grade: "F",
+      createdAt: { $gte: startDate, $lt: endDate },
+    })
+      .populate({
+        path: "studentId",
+        select: "name studentId gurdianContact guardianContact class",
+        populate: { path: "class", select: "Class" },
+      })
+      .populate("subjectId", "subjectName")
+      .populate("classLevel", "Class");
+
+    if (!failedStudents.length) {
+      return res.status(200).json([]);
+    }
+
+    const formatted = failedStudents.map((item) => ({
+      studentObjectId: item.studentId?._id?.toString() || "N/A",
+      rollNumber: item.studentId?.studentId || "N/A",
+      name: item.studentId?.name || "N/A",
+      class: item.studentId?.class || item.classLevel || "N/A",
+      gurdianContact:
+        item.studentId?.gurdianContact || item.studentId?.guardianContact || "N/A",
+      subject: item.subjectId?.subjectName || "N/A",
+      exam: item.examId?.examName || "N/A",
+    }));
+
+    return res.status(200).json(formatted);
+  } catch (error) {
+    console.error("Get Failed Students Error:", error);
+    return res.status(500).json({ errorMessage: error.message });
+  }
+};

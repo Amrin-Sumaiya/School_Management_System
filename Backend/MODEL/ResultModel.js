@@ -1,8 +1,4 @@
 import mongoose from "mongoose";
-import Exam from "./ExamModel.js"
-import student from "./userModel.js";
- import Subject from "./SubjectModel.js";
-
 
 const resultSchema = new mongoose.Schema({
 
@@ -13,29 +9,36 @@ const resultSchema = new mongoose.Schema({
     required: true,
   },
 
-  examId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref:Exam,
-    required: true,
-  },
 
   classLevel: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Classes",
     required: true,
   },
 
   
 subjectId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: Subject,
+    ref: "Subject",
     required: true,
 
 },
- 
 
-  totalMarks: {
+CT1: {
     type: Number,
-    required: true,
+    default: 0,
+  },
+  CT2: {
+    type: Number,
+    default: 0,
+  },
+  HalfYearly: {
+    type: Number,
+    default: 0,
+  },
+  Yearly: {
+    type: Number,
+    default: 0,
   },
 
   grade: {
@@ -48,5 +51,7 @@ subjectId: {
     default: "",
   }
 }, { timestamps: true });
+
+resultSchema.index({ studentId: 1, classLevel: 1, subjectId: 1 }, { unique: true });
 
 export default mongoose.model("Result", resultSchema);

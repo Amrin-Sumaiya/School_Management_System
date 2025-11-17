@@ -206,10 +206,20 @@ const Update_Student = () => {
             type="text"
             name="gurdianContact"
             value={student.gurdianContact}
-            onChange={handleChange}
+            onChange={(e) => {
+              const value = e.target.value;
+
+              const regex = /^(\+88)?01[0-9]{9}$/;
+
+              if (value === " " || regex.test(value)) {
+                setStudent({ ...student, gurdianContact: value });
+              }
+            }}
+            placeholder="+8801XXXXXXXXX"
+            maxLength={14}
             required
             className="w-full border p-2 rounded-md border-blue-gray-500"
-            placeholder="Enter Number"
+            
           />
         </div>
 

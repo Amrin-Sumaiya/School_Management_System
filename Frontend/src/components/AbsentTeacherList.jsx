@@ -6,7 +6,6 @@ const TABLE_HEAD = [
   'Roll Number',
   'Name',
   'Class',
-  'Exam',
   'Subject',
   'Contact',
 ];
@@ -17,7 +16,7 @@ export function AbsentTeacherList() {
 
   const currentYear = new Date().getFullYear();
 
-  // ✅ Fetch failed students directly (no need to load class list separately)
+  // Fetch failed students directly (no need to load class list separately)
   useEffect(() => {
     const fetchFailedStudents = async () => {
       try {
@@ -78,8 +77,6 @@ export function AbsentTeacherList() {
                   <td className="p-4">{student.rollNumber}</td>
                   <td className="p-4">{student.name}</td>
                  <td className="p-4">{student.class?.Class || 'N/A'}</td>
-
-                  <td className="p-4">{student.exam}</td>
                   <td className="p-4">{student.subject}</td>
                   <td className="p-4">{student.gurdianContact}</td>
                 </tr>

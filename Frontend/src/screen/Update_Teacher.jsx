@@ -58,11 +58,22 @@ const Update_Teacher = () => {
           experience: data.experience || "",
         });
 
-        setAssignedSubjects(
-          subjectAssignments.length > 0
-            ? subjectAssignments
-            : [{ classId: "", subjectId: "", availableSubjects: [] }]
-        );
+        useEffect(() => {
+  assignedSubjects.forEach((row, index) => {
+    if (row.classId && row.availableSubjects.length === 0) {
+      fetchClassSubjects(row.classId, index);
+    }
+  });
+}, [assignedSubjects]);
+
+
+setAssignedSubjects(
+  subjectAssignments.length > 0
+    ? subjectAssignments
+    : [{ classId: "", subjectId: "", availableSubjects: [] }]
+);
+
+// When assignedSubjects is loaded from backend, fetch subjects
 
         // Load available subjects for each existing class assignment
         subjectAssignments.forEach((row, idx) => {
@@ -70,7 +81,7 @@ const Update_Teacher = () => {
         });
       } catch (error) {
         console.error("Error fetching teacher:", error);
-        toast.error("Failed to fetch teacher details");
+        
       }
     };
 
@@ -82,7 +93,7 @@ const Update_Teacher = () => {
         setClasses(res.data);
       } catch (error) {
         console.error("Error fetching classes:", error);
-        toast.error("Failed to fetch classes");
+      
       }
     };
 
@@ -102,7 +113,7 @@ const Update_Teacher = () => {
       setAssignedSubjects(newRows);
     } catch (err) {
       console.error("Error fetching class subjects:", err);
-      toast.error("Failed to load subjects for this class");
+      
     }
   };
 
@@ -132,9 +143,7 @@ const Update_Teacher = () => {
       navigate("/all-teacher-list");
     } catch (error) {
       console.error("Error updating teacher:", error);
-      toast.error(
-        error.response?.data?.message || "Failed to update teacher"
-      );
+   
     }
   };
 
@@ -187,7 +196,27 @@ const Update_Teacher = () => {
               ))}
             </Select>
             <Input label="Email" name="email" type="email" value={teacher.email} onChange={handleOnChange} />
-            <Input label="Contact" name="contact" value={teacher.contact} onChange={handleOnChange} />
+ <div>
+  <label className="block text-sm font-medium text-gray-700 mb-1">Contact</label>
+  <input
+    type="text"
+    name="contact"
+    value={teacher.contact}
+    onChange={(e) => {
+      const value = e.target.value;
+      const regex = /^(\+88)?01[0-9]{9}$/;
+
+      if (value === "" || regex.test(value)) {
+        setTeacher({ ...teacher, contact: value });
+      }
+    }}
+    placeholder="+8801XXXXXXXXX"
+    maxLength={14}
+    required
+    className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+  />
+</div>
+
             <Input label="Join Date" name="join_date" type="date" value={teacher.join_date?.slice(0, 10)} onChange={handleOnChange} />
           </div>
         </section>

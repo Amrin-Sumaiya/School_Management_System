@@ -137,7 +137,27 @@ const Add_Teacher = () => {
               ))}
             </Select>
             <Input label="Email" name="email" type="email" value={teacher.email} onChange={handleOnChange} />
-            <Input label="Contact" name="contact" value={teacher.contact} onChange={handleOnChange} />
+        <div>
+  <label className="block text-sm font-medium text-gray-700 mb-1">Contact</label>
+  <input
+    type="text"
+    name="contact"
+    value={teacher.contact}
+    onChange={(e) => {
+      const value = e.target.value;
+      const regex = /^(\+88)?01[0-9]{9}$/;
+
+      if (value === "" || regex.test(value)) {
+        setTeacher({ ...teacher, contact: value });
+      }
+    }}
+    placeholder="+8801XXXXXXXXX"
+    maxLength={14}
+    required
+    className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+  />
+</div>
+
             <Input label="Join Date" name="join_date" type="date" value={teacher.join_date} onChange={handleOnChange} />
           </div>
         </section>

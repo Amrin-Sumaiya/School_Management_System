@@ -106,24 +106,24 @@ export const superAdminNav = [
   //     },
   //   ],
   // },
-  // {
-  //   id: 12,
-  //   sequenceNumber: 12.0,
-  //   englishDescription: 'Report',
-  //   banglaDescription: `রিপোর্ট`,
-  //   iconValue: <TbReportSearch />,
-  //   link: '#',
-  //   childList: [
-  //     {
-  //       id: 13,
-  //       sequenceNumber: 12.1,
-  //       englishDescription: 'Exam Report',
-  //       banglaDescription: 'পরীক্ষার রিপোর্ট',
-  //       iconValue: <TbReportSearch />,
-  //       link: '/exam-report',
-  //     },
-  //   ],
-  // },
+  {
+    id: 12,
+    sequenceNumber: 12.0,
+    englishDescription: 'Result Management',
+    banglaDescription: `রিপোর্ট`,
+    iconValue: <TbReportSearch />,
+    link: '#',
+    childList: [
+      {
+        id: 13,
+        sequenceNumber: 12.1,
+        englishDescription: 'All Students Result',
+        banglaDescription: 'পরীক্ষার রিপোর্ট',
+        iconValue: <TbReportSearch />,
+        link: '/exam-report',
+      },
+    ],
+  },
 ];
 
 export const teacherSideNav = [

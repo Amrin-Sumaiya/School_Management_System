@@ -2,7 +2,9 @@ import express from "express"
 
 import {create, DeleteResultData, getAllResultsData, 
     getResultById, updateResultData, 
-    getFailedStudentsByYear, getResultsByClassAndSubject } from "../CONTROLLER/ResultController.js"
+    getFailedStudentsByYear,
+     getResultsByClassAndSubject,
+      getClassWiseResultForAdmin, getStudentResult } from "../CONTROLLER/ResultController.js"
 
 const route = express.Router()
 
@@ -16,4 +18,7 @@ route.get("/failed_students/:year?", getFailedStudentsByYear)
 
 //class and subject wise result 
 route.get("/result-by-class-subject", getResultsByClassAndSubject)
+route.get("/admin-results", getClassWiseResultForAdmin) 
+route.get("/student-result/:id", getStudentResult);
+// all students result api
 export default route;

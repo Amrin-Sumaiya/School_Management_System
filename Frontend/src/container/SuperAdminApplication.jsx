@@ -15,6 +15,7 @@ import NotFoundScreen from '../screen/NotFoundScreen';
 import SuperAdminDashboard from '../screen/SuperAdminDashboard';
 import ClasswisePresent from '../screen/ClasswisePresent';
 import ClasswiseAbsent from '../screen/ClasswiseAbsent';
+import AdminResultReport from '../screen/AdminResultReport';
 import AssignRoutes from './AssignRoutes';
 
 
@@ -83,6 +84,11 @@ const routes = [
     {
    path: '/classwise-absent-students',
    components: <ClasswiseAbsent />,
+  },
+  {
+    path: '/result-report',
+    components: <AdminResultReport />,
+
   },
 
 

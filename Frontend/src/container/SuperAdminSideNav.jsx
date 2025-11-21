@@ -120,7 +120,7 @@ export const superAdminNav = [
         englishDescription: 'All Students Result',
         banglaDescription: 'পরীক্ষার রিপোর্ট',
         iconValue: <TbReportSearch />,
-        link: '/exam-report',
+        link: '/result-report',
       },
     ],
   },

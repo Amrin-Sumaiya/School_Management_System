@@ -20,7 +20,7 @@ const Add_Teacher = () => {
     department: "",
     experience: "",
   });
-
+  const [contactError, setContactError] = useState("");
   const [assignedSubjects, setAssignedSubjects] = useState([
     { classId: "", subjectId: "", availableSubjects: [] },
   ]);
@@ -145,17 +145,26 @@ const Add_Teacher = () => {
     value={teacher.contact}
     onChange={(e) => {
       const value = e.target.value;
-      const regex = /^(\+88)?01[0-9]{9}$/;
+        if (!/^[0-9]*$/.test(value)) return;
 
-      if (value === "" || regex.test(value)) {
-        setTeacher({ ...teacher, contact: value });
+      if (value === "" || /^01[0-9]{9}$/.test(value)) {
+       setContactError("");
+      } else {
+        setContactError("Enter a valid mobile number (11 digits)");
       }
     }}
     placeholder="+8801XXXXXXXXX"
-    maxLength={14}
+    maxLength={11}
     required
-    className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+    className={`w-full border p-2 rounded-md focus:outline-none focus:ring-1 transition
+      ${contactError ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"}`}
   />
+  {contactError && (
+    <div className="flex items-center gap-2 mt-1 text-red-600 text-sm">
+      <span className="font-bold text-lg">!</span>
+      <span>{contactError}</span>
+    </div>
+  )}
 </div>
 
             <Input label="Join Date" name="join_date" type="date" value={teacher.join_date} onChange={handleOnChange} />

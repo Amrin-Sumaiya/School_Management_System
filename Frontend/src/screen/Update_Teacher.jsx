@@ -22,12 +22,31 @@ const Update_Teacher = () => {
     experience: "",
   });
 
+  const [contactError, setContactError] = useState("");
+
   const [assignedSubjects, setAssignedSubjects] = useState([
     { classId: "", subjectId: "", availableSubjects: [] },
   ]);
+
   const [classes, setClasses] = useState([]);
 
-  // Fetch teacher data + classes
+  // Fetch subjects for a class
+  const fetchClassSubjects = async (classId, idx) => {
+    if (!classId) return;
+    try {
+      const res = await axios.get(
+        `https://backend-just.onrender.com/api/class/class_subjects/${classId}`
+      );
+
+      const newRows = [...assignedSubjects];
+      newRows[idx].availableSubjects = res.data;
+      setAssignedSubjects(newRows);
+    } catch (err) {
+      console.error("Error fetching class subjects:", err);
+    }
+  };
+
+  // Fetch teacher + class list
   useEffect(() => {
     const fetchTeacher = async () => {
       try {
@@ -36,7 +55,6 @@ const Update_Teacher = () => {
         );
         const data = res.data;
 
-        // Rebuild assigned subjects
         const subjectAssignments =
           data.subjectTeacherOfClass?.map((item) => ({
             classId: item.classId?._id || "",
@@ -58,30 +76,17 @@ const Update_Teacher = () => {
           experience: data.experience || "",
         });
 
-        useEffect(() => {
-  assignedSubjects.forEach((row, index) => {
-    if (row.classId && row.availableSubjects.length === 0) {
-      fetchClassSubjects(row.classId, index);
-    }
-  });
-}, [assignedSubjects]);
+        setAssignedSubjects(
+          subjectAssignments.length > 0
+            ? subjectAssignments
+            : [{ classId: "", subjectId: "", availableSubjects: [] }]
+        );
 
-
-setAssignedSubjects(
-  subjectAssignments.length > 0
-    ? subjectAssignments
-    : [{ classId: "", subjectId: "", availableSubjects: [] }]
-);
-
-// When assignedSubjects is loaded from backend, fetch subjects
-
-        // Load available subjects for each existing class assignment
         subjectAssignments.forEach((row, idx) => {
           if (row.classId) fetchClassSubjects(row.classId, idx);
         });
       } catch (error) {
         console.error("Error fetching teacher:", error);
-        
       }
     };
 
@@ -93,7 +98,6 @@ setAssignedSubjects(
         setClasses(res.data);
       } catch (error) {
         console.error("Error fetching classes:", error);
-      
       }
     };
 
@@ -101,30 +105,28 @@ setAssignedSubjects(
     fetchTeacher();
   }, [id]);
 
-  // Fetch subjects for a class
-  const fetchClassSubjects = async (classId, idx) => {
-    if (!classId) return;
-    try {
-      const res = await axios.get(
-        `https://backend-just.onrender.com/api/class/class_subjects/${classId}`
-      );
-      const newRows = [...assignedSubjects];
-      newRows[idx].availableSubjects = res.data;
-      setAssignedSubjects(newRows);
-    } catch (err) {
-      console.error("Error fetching class subjects:", err);
-      
-    }
-  };
+  // Auto-load subjects any time a new class is selected
+  useEffect(() => {
+    assignedSubjects.forEach((row, idx) => {
+      if (row.classId && row.availableSubjects.length === 0) {
+        fetchClassSubjects(row.classId, idx);
+      }
+    });
+  }, [assignedSubjects]);
 
-  // Handle change
+  // Handle input change
   const handleOnChange = (e) => {
     setTeacher({ ...teacher, [e.target.name]: e.target.value });
   };
 
-  // Submit updated teacher
+  // Submit teacher update
   const handleOnSubmit = async (e) => {
     e.preventDefault();
+
+    if (contactError) {
+      toast.error("Please fix the contact number.");
+      return;
+    }
 
     const updatedTeacherData = {
       ...teacher,
@@ -139,11 +141,12 @@ setAssignedSubjects(
         `https://backend-just.onrender.com/api/teachers/update/teacher/${id}`,
         updatedTeacherData
       );
+
       toast.success("Teacher updated successfully!");
       navigate("/all-teacher-list");
     } catch (error) {
       console.error("Error updating teacher:", error);
-   
+      toast.error("Failed to update teacher");
     }
   };
 
@@ -158,6 +161,7 @@ setAssignedSubjects(
         >
           <FaArrowLeft className="text-lg" />
         </button>
+
         <h1 className="text-3xl font-bold text-indigo-900 tracking-wide">
           Update Teacher Information
         </h1>
@@ -173,15 +177,18 @@ setAssignedSubjects(
           <h2 className="text-lg font-semibold text-indigo-800 border-b pb-2 mb-4">
             👤 Personal Information
           </h2>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Input label="Full Name" name="name" value={teacher.name} onChange={handleOnChange} />
             <Input label="Age" name="age" type="number" value={teacher.age} onChange={handleOnChange} />
+
             <Select label="Gender" name="sex" value={teacher.sex} onChange={handleOnChange}>
               <option value="">Select Gender</option>
               <option>Male</option>
               <option>Female</option>
               <option>Other</option>
             </Select>
+
             <Select
               label="Class Teacher Of"
               name="classTeacherOf"
@@ -195,29 +202,56 @@ setAssignedSubjects(
                 </option>
               ))}
             </Select>
+
             <Input label="Email" name="email" type="email" value={teacher.email} onChange={handleOnChange} />
- <div>
-  <label className="block text-sm font-medium text-gray-700 mb-1">Contact</label>
-  <input
-    type="text"
-    name="contact"
-    value={teacher.contact}
-    onChange={(e) => {
-      const value = e.target.value;
-      const regex = /^(\+88)?01[0-9]{9}$/;
 
-      if (value === "" || regex.test(value)) {
-        setTeacher({ ...teacher, contact: value });
-      }
-    }}
-    placeholder="+8801XXXXXXXXX"
-    maxLength={14}
-    required
-    className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
-  />
-</div>
+            {/* Contact Validation (same as Add_Teacher.jsx) */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Contact</label>
 
-            <Input label="Join Date" name="join_date" type="date" value={teacher.join_date?.slice(0, 10)} onChange={handleOnChange} />
+              <input
+                type="text"
+                name="contact"
+                value={teacher.contact}
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  // Only allow digits
+                  if (!/^[0-9]*$/.test(value)) return;
+
+                  setTeacher({ ...teacher, contact: value });
+
+                  if (value === "" || /^01[0-9]{9}$/.test(value)) {
+                    setContactError("");
+                  } else {
+                    setContactError("Enter a valid mobile number (11 digits)");
+                  }
+                }}
+                placeholder="01XXXXXXXXX"
+                maxLength={11}
+                required
+                className={`w-full border p-2 rounded-md focus:outline-none focus:ring-1 transition ${
+                  contactError
+                    ? "border-red-500 focus:ring-red-400"
+                    : "border-gray-300 focus:ring-indigo-400"
+                }`}
+              />
+
+              {contactError && (
+                <div className="flex items-center gap-2 mt-1 text-red-600 text-sm">
+                  <span className="font-bold text-lg">!</span>
+                  <span>{contactError}</span>
+                </div>
+              )}
+            </div>
+
+            <Input
+              label="Join Date"
+              name="join_date"
+              type="date"
+              value={teacher.join_date?.slice(0, 10)}
+              onChange={handleOnChange}
+            />
           </div>
         </section>
 
@@ -226,11 +260,12 @@ setAssignedSubjects(
           <h2 className="text-lg font-semibold text-indigo-800 border-b pb-2 mb-4">
             🎓 Academic Information
           </h2>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Input label="University" name="university" value={teacher.university} onChange={handleOnChange} />
             <Input label="Department" name="department" value={teacher.department} onChange={handleOnChange} />
             <Input label="Passing Year" name="passingYear" value={teacher.passingYear} onChange={handleOnChange} />
-            <Input label="Experience (in years)" name="experience" value={teacher.experience} onChange={handleOnChange} />
+            <Input label="Experience" name="experience" value={teacher.experience} onChange={handleOnChange} />
           </div>
         </section>
 
@@ -246,6 +281,7 @@ setAssignedSubjects(
                 key={idx}
                 className="bg-indigo-50 border border-indigo-100 p-4 rounded-lg flex flex-col md:flex-row gap-4 shadow-sm"
               >
+                {/* Class Select */}
                 <select
                   value={row.classId}
                   onChange={async (e) => {
@@ -267,6 +303,7 @@ setAssignedSubjects(
                     ))}
                 </select>
 
+                {/* Subject Select */}
                 <select
                   value={row.subjectId}
                   onChange={(e) => {
@@ -310,6 +347,7 @@ setAssignedSubjects(
           >
             Cancel
           </button>
+
           <button
             type="submit"
             className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition shadow"

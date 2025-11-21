@@ -26,7 +26,7 @@ const Update_Student = () => {
     dob: '',
     address: '',
   });
-
+  const [contactError, setContactError] = useState("");
   const [classOptions, setClassOptions] = useState([]);
   
   useEffect(() => {
@@ -208,19 +208,30 @@ const Update_Student = () => {
             value={student.gurdianContact}
             onChange={(e) => {
               const value = e.target.value;
+// Allow digit only
+if (!/^[0-9]*$/.test(value)) return;
+setStudent({ ...student, gurdianContact: value});
+  //validation 
+  if (value === "" ||/^01[0-9]{9}$/.test(value)) {
+                setContactError("");
+              } else {
+                setContactError("Enter a valid mobile number (11 digits)");
+  } 
 
-              const regex = /^(\+88)?01[0-9]{9}$/;
-
-              if (value === " " || regex.test(value)) {
-                setStudent({ ...student, gurdianContact: value });
-              }
             }}
             placeholder="+8801XXXXXXXXX"
-            maxLength={14}
+            maxLength={11}
             required
-            className="w-full border p-2 rounded-md border-blue-gray-500"
-            
-          />
+    className={`w-full border p-2 rounded-md focus:outline-none focus:ring-2 transition
+      ${contactError ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"}`}
+  />
+
+  {contactError && (
+    <div className="flex items-center gap-2 mt-1 text-red-600 text-sm">
+      <span className="font-bold text-lg">!</span>
+      <span>{contactError}</span>
+    </div>
+  )}
         </div>
 
         <div>

@@ -252,3 +252,109 @@ export const getFailedStudentsByYear = async (req, res) => {
     return res.status(500).json({ errorMessage: error.message });
   }
 };
+
+
+//Get result for admin classlevel and subject wise 
+// student fetched from class wise getting the subjectwise result of every students
+
+export const getClassWiseResultForAdmin = async (req, res) => {
+  try {
+    const { classLevel, subjectId } = req.query;
+
+    if (!classLevel) {
+      return res.status(400).json({ message: "classLevel is required as query parameter." });
+    }
+
+    let query = { classLevel };
+    // Only filter by subjectId if it's provided and not 'all'
+    if (subjectId && subjectId !== "all") {
+      query.subjectId = subjectId;
+    }
+
+    // Fetch results
+    const results = await Result.find(query)
+      .populate("studentId", "name studentId class")
+      .populate("subjectId", "subjectName")
+      .lean();
+
+    // Group results by student
+    const grouped = results.reduce((acc, r) => {
+      const studentId = r.studentId._id.toString();
+      if (!acc[studentId]) {
+        acc[studentId] = {
+          name: r.studentId.name,
+          class: r.studentId.class,
+          studentId: r.studentId.studentId,
+          subjects: [],
+        };
+      }
+      acc[studentId].subjects.push({
+        subjectName: r.subjectId.subjectName,
+        totalMarks:
+          Number(r.CT1 || 0) +
+          Number(r.CT2 || 0) +
+          Number(r.HalfYearly || 0) +
+          Number(r.Yearly || 0),
+        grade: r.grade,
+      });
+      return acc;
+    }, {});
+
+    return res.status(200).json(Object.values(grouped));
+  } catch (error) {
+    console.error("Get Result For Admin Error: ", error);
+    return res.status(500).json({ errorMessage: error.message });
+  }
+};
+
+
+//studetns wise result 
+export const getStudentResult = async (req, res) => {
+  try {
+    const  studentId  = req.params.id.trim();
+
+    if (!studentId) {
+      return res.status(400).json({ message: "studentId is required" });
+    }
+
+    const results = await Result.find({ studentId })
+    .populate("studentId", "name studentId class")
+      .populate("subjectId", "subjectName")
+      .populate("classLevel", "Class");
+
+    if (!results || results.length === 0) {
+      return res.status(404).json({ 
+        status: "No Data Found",
+        message:  "No results found for this student" });
+    }
+
+    // extract student info from first result
+    const studentInfo = {
+      name: results[0].studentId.name,
+      studentId: results[0].studentId.studentId,
+      class: results[0].classLevel.Class
+    };
+
+    console.log(studentInfo)
+    // format subjects
+    const subjects = results.map(r => ({
+      subjectName: r.subjectId.subjectName,
+      total:
+        Number(r.CT1) +
+        Number(r.CT2) +
+        Number(r.HalfYearly) +
+        Number(r.Yearly),
+      grade: r.grade
+    }));
+
+    return res.status(200).json({
+      ...studentInfo,
+      subjects
+    });
+
+  } catch (error) {
+    console.error("Student Result Error:", error);
+    return res.status(500).json({ errorMessage: error.message });
+  }
+};
+

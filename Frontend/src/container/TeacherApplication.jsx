@@ -1,4 +1,4 @@
-import All_Students from '../screen/All_Students';
+import My_studentList from '../screen/My_studentList';
 import Attendance from '../screen/attendance';
 import NotFoundScreen from '../screen/NotFoundScreen';
 import TeacherDashboard from '../screen/TeacherDashboard';
@@ -13,8 +13,8 @@ const routes = [
     components: <TeacherDashboard />,
   },
   {
-    path: '/student-list',
-    components: <All_Students />,
+    path: '/my-student-list',
+    components: < My_studentList />,
   },
 
       {

@@ -1,58 +1,14 @@
 
-// import Student from '../MODEL/userModel.js'
-
-// export const create = async (req, res) => {
-//   try {
-     
-//     const { class: classNumRaw, version} = req.body;
-//     const classNum = Number(classNumRaw);
-
-//     const classTeacherExist = await Student.find({
-//       class: 8,
-    
-//     });
-
-//     if (classTeacherExist) {
-//       return res.status(400).json({ message: "Class Teacher Already Took Attendance"});
-//     }
-
-//     const students = await Student.find({ class: classNum, version })
-
-//     if (!students.length){
-//       return res.status(400).json({ message: "No students found for this class/version"})
-//     }
-
-//     const newClassTeacher = new ClassTeacher(req.body);
-//     const savedData = await newClassTeacher.save();
-//     res.status(200).json({
-//       message: "Attendance started",
-//       classInfo: savedData,
-//       students,
-//     });
-//   } catch (error) {
-//     res.status(500).json({ errorMessage: error.message });
-//   }
-// };
-
-
-
-
-
-
 //get attendace by class teacher
-
-
 
 import Student from '../MODEL/userModel.js'
 
 export const getStudentsByClassAndVersion = async (req, res) =>{
   try{
-    // const classNum = parseInt(req.params.class); //get classNumber from URL 
+    const classId = req.params.class; // this is ObjectId of Classes model
 
- 
-
-    const students = await Student.find({ class: req.params.class,});
-    
+    // Find students by class (ObjectId reference)
+    const students = await Student.find({ class: classId }).populate("class");
 
     if(!students.length){
       return res.status(404).json({ message: "No student attendance found for this class"})
@@ -60,14 +16,23 @@ export const getStudentsByClassAndVersion = async (req, res) =>{
 
     const filtered = students.map(student =>({
 
-    
 id:student?._id,
       studentId: student.studentId,
       name: student.name,
+      class: student.class,
+      age: student.age,
+      sex: student.sex,
+      email: student.email,
+      religion: student.religion,
+      caste: student.caste,
+      bloodGroup: student.bloodGroup,
+      dob: student.dob,
+      address: student.address,
+      fatherName: student.fatherName,
+      motherName: student.motherName,
+      gurdianContact: student.gurdianContact,
+      gurdianProffesion: student.gurdianProffesion,
     }))
-
-
-
 
       res.status(200).json(filtered)
     
@@ -76,3 +41,21 @@ id:student?._id,
     res.status(500).json({ errorMessage: error.message });
   }
 }
+
+// //get specific studetns details
+
+// export const getAllStudentsForClassTeacher = async (req, res) => {
+//   try {
+//     const classId = req.params.class; //teacher's class id
+
+//     //get the same students as attendance api
+//     const students = await Student.find({ class: classId});
+
+//     if (!students.length) {
+//       return res.status(404).json({ message: "No students found for this class"})
+//     }
+//     res.status(200).json(students); //return full students
+//   } catch ( error){
+//     res.status(500).json({ errorMessage: error.message });
+//   }
+// }

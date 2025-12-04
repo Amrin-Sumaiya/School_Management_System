@@ -4,6 +4,7 @@ import NotFoundScreen from '../screen/NotFoundScreen';
 import TeacherDashboard from '../screen/TeacherDashboard';
 import AssignRoutes from './AssignRoutes';
 import AllResult from '../screen/All_Result';
+import ResultOfClassTeacher from '../screen/ResultOfClassTeacher';
 
 
 
@@ -26,7 +27,12 @@ const routes = [
     components: <AllResult />,
 
   },
+///specific_students_result
+  {
+    path : '/specific_students_result',
+    components: <ResultOfClassTeacher />,
 
+  },
     {
     path: '*',
     components: <NotFoundScreen />,

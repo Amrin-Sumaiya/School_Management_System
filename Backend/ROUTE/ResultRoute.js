@@ -4,7 +4,8 @@ import {create, DeleteResultData, getAllResultsData,
     getResultById, updateResultData, 
     getFailedStudentsByYear,
      getResultsByClassAndSubject,
-      getClassWiseResultForAdmin, getStudentResult } from "../CONTROLLER/ResultController.js"
+      getClassWiseResultForAdmin, getStudentResult,
+    getStudentResultForClassTeacher } from "../CONTROLLER/ResultController.js"
 
 const route = express.Router()
 
@@ -21,4 +22,6 @@ route.get("/result-by-class-subject", getResultsByClassAndSubject)
 route.get("/admin-results", getClassWiseResultForAdmin) 
 route.get("/student-result/:id", getStudentResult);
 // all students result api
+
+route.get("/class-teacher-student-result/:id", getStudentResultForClassTeacher);
 export default route;

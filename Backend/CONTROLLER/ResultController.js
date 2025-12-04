@@ -149,7 +149,7 @@ export const getResultById = async (req, res) => {
 };
 
 /**
- * Update by id (enforce 24h lock)
+ * Update by id (within 24h lock)
  */
 export const updateResultData = async (req, res) => {
   try {
@@ -357,4 +357,84 @@ export const getStudentResult = async (req, res) => {
     return res.status(500).json({ errorMessage: error.message });
   }
 };
+
+
+
+//GET student result for classTeacher  for a specific result 
+
+
+
+export const getStudentResultForClassTeacher = async (req, res) => {
+  try {
+    console.log(req.params);
+    console.log("Fetching student result for class teacher...");  
+    
+    const classId = req.params.id.trim();
+
+
+    if (!classId) {
+      return res.status(400).json({ message: "classId is required" });
+      
+    }
+    
+
+    // fetch results of all studetns in this 
+    
+    const results = await Result.find({ studentId: classId })
+    .populate({
+  path: "studentId",
+  select: "name studentId class",
+  populate: { path: "class", select: "Class" }
+})
+
+    .populate("subjectId", "subjectName")
+    .populate("classLevel", "Class")
+    .lean();
+
+
+    if (!results.length) {
+      return res.status(404).json({ message: "No results found for this student" });
+ }
+   // Group results by student just like in admin version
+
+   const grouped = results.reduce(( acc, r) => {
+    const stuId = r.studentId._id.toString();
+
+    if (!acc[stuId]) {
+      acc[stuId] = { 
+        id: stuId, 
+        name: r.studentId.name,
+        class: r.studentId.class,
+        studentId: r.studentId.studentId,
+        subjects: [],
+      };
+    }
+
+
+
+
+    acc[stuId].subjects.push({
+      subjectName: r.subjectId.subjectName,
+      total: 
+      Number(r.CT1 || 0) +
+      Number(r.CT2 || 0) +
+      Number(r.HalfYearly || 0) +
+      Number(r.Yearly || 0),
+      grade: r.grade,
+    })
+
+    return acc;
+   }, {});
+
+   return res.status(200).json(Object.values(grouped));
+
+    } catch (error){
+      console.error("Teacher Get Student Result Error:", error);
+      return res.status(500).json({ errorMessage: error.message });
+    }
+
+
+    
+  }
+
 

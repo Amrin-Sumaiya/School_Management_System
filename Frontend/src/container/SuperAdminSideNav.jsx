@@ -178,6 +178,15 @@ export const teacherSideNav = [
         iconValue: <TbReportSearch />,
         link: '/all_result',
       },
+
+       {
+        id: 18,
+        sequenceNumber: 6.2,
+        englishDescription: 'My Student"s Result',
+        banglaDescription: 'ফলাফল জমা',
+        iconValue: <TbReportSearch />,
+        link: '/specific_students_result',
+      },
     ],
   },
 ];
